@@ -1,25 +1,29 @@
-package com.mcnedward.app.ui;
+package com.mcnedward.app.ui.cell_renderer;
 
 import java.awt.Component;
+import java.io.File;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
-
-import com.mcnedward.app.classobject.ClassObject;
 
 /**
  * @author Edward - Jun 12, 2016
  *
  */
-public class ClassObjectListCellRenderer extends DefaultListCellRenderer {
+public class FileListCellRenderer extends DefaultListCellRenderer {
 	private static final long serialVersionUID = 1L;
 
 	public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 		super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-		if (value instanceof ClassObject) {
-			ClassObject classObject = (ClassObject) value;
-			setText(classObject.getName());
-			setToolTipText(classObject.toString());
+		if (value instanceof File) {
+			File file = (File) value;
+			if (file.isDirectory()) {
+				setText(file.getName() + " DIR");
+				setToolTipText(file.getAbsolutePath());
+			} else {
+				setText(file.getName());
+				setToolTipText(file.getAbsolutePath());
+			}
 		}
 		return this;
 	}

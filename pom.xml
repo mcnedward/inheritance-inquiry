@@ -20,9 +20,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.github.javaparser</groupId>
-			<artifactId>javaparser-core</artifactId>
-			<version>2.4.0</version>
+			<groupId>com.mcnedward.ii</groupId>
+			<artifactId>interface-inquiry</artifactId>
+			<version>0.1.0</version>
 		</dependency>
 	</dependencies>
 </project>

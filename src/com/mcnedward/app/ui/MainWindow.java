@@ -1,6 +1,7 @@
 package com.mcnedward.app.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -18,15 +19,16 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
-import com.mcnedward.app.analyze.Analyser;
-import com.mcnedward.app.classobject.AnalysisResult;
-import com.mcnedward.app.listener.AnalysisListener;
+import com.mcnedward.ii.InterfaceInquiry;
+import com.mcnedward.ii.element.JavaProject;
+import com.mcnedward.ii.listener.ProjectBuildListener;
 
 /**
  * @author Edward - Jun 12, 2016
@@ -35,32 +37,36 @@ import com.mcnedward.app.listener.AnalysisListener;
 public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 
+	public static final String FONT_NAME = "Segoe UI";
+	
 	private static int MIN_WIDTH = 500;
 	private static int MIN_HEIGHT = 250;
 	private static int WIDTH = 600;
-	private static int HEIGHT = 300;
+	private static int HEIGHT = 500;
 	private static int MAX_WIDTH = 650;
 	private static int MAX_HEIGHT = 400;
 
 	private static String PROJECT_LOCATION = "C:/users/edward/dev/workspace/eatingcinci-spring";
 
-	private Analyser analyser;
+	private static InterfaceInquiry mInterfaceInquiry;
 
 	// Panels
-	private JPanel topLevelPanel;
-	private JPanel filePanel;
-	private ResultsPanel resultsPanel;
+	private JPanel mTopLevelPanel;
+	private JPanel mFilePanel;
+	private ResultsPanel mResultsPanel;
 	// Buttons
-	private JButton btnBrowse;
-	private JButton btnLoad;
+	private JButton mBtnBrowse;
+	private JButton mBtnLoad;
 	// ComboBox
-	private JComboBox<String> comboBox;
+	private JComboBox<String> mComboBox;
 	// TextFields
-	private JTextField txtProjectLocation;
-	private JPanel contentPanel;
-	private JProgressBar progressBar;
-	private JLabel lblProgress;
-	private JPanel progressPanel;
+	private JTextField mTxtProjectLocation;
+	private JTextField mTxtRemoteUrl;
+	private JPanel mContentPanel;
+	private JProgressBar mProgressBar;
+	private JLabel mLblProgress;
+	private JPanel mProgressPanel;
+	private JTabbedPane tabbedPane;
 
 	/**
 	 * Launch the application.
@@ -78,12 +84,9 @@ public class MainWindow extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public MainWindow() {
 		initialize();
-		analyser = new Analyser();
+		mInterfaceInquiry = new InterfaceInquiry();
 	}
 
 	private void initialize() {
@@ -93,9 +96,9 @@ public class MainWindow extends JFrame {
 		JLabel lblProjectLocation = new JLabel("Project Location");
 		getContentPane().add(lblProjectLocation, BorderLayout.WEST);
 
-		txtProjectLocation = new JTextField();
-		getContentPane().add(txtProjectLocation, BorderLayout.CENTER);
-		txtProjectLocation.setColumns(10);
+		mTxtProjectLocation = new JTextField();
+		getContentPane().add(mTxtProjectLocation, BorderLayout.CENTER);
+		mTxtProjectLocation.setColumns(10);
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -108,83 +111,125 @@ public class MainWindow extends JFrame {
 		setLocation(dimension.width / 2 - WIDTH / 2, dimension.height / 2 - HEIGHT / 2);
 		setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
 		setMaximumSize(new Dimension(MAX_WIDTH, MAX_HEIGHT));
-		topLevelPanel = new JPanel();
-		topLevelPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(topLevelPanel);
+		mTopLevelPanel = new JPanel();
+		mTopLevelPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(mTopLevelPanel);
 
 		initializeComponents();
 	}
 
 	private void initializeComponents() {
-		topLevelPanel.setLayout(new BorderLayout(0, 10));
-		filePanel = new JPanel();
-		topLevelPanel.add(filePanel, BorderLayout.NORTH);
-		filePanel.setLayout(new GridLayout(2, 1, 0, 0));
-		filePanel.setLayout(new BorderLayout(10, 0));
+		mTopLevelPanel.setLayout(new BorderLayout(0, 10));
+
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+		mTopLevelPanel.add(tabbedPane, BorderLayout.NORTH);
+		mFilePanel = new JPanel();
+		tabbedPane.addTab("File", null, mFilePanel, null);
+		mFilePanel.setLayout(new GridLayout(2, 1, 0, 0));
+		mFilePanel.setLayout(new BorderLayout(10, 0));
 
 		JLabel lblFileLocation = new JLabel("Project Location:");
-		filePanel.add(lblFileLocation, BorderLayout.WEST);
-		lblFileLocation.setFont(new Font("Segoe UI", Font.BOLD, 12));
+		mFilePanel.add(lblFileLocation, BorderLayout.WEST);
+		lblFileLocation.setFont(new Font(FONT_NAME, Font.BOLD, 12));
 
-		comboBox = new JComboBox<String>();
-		comboBox.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		comboBox.setEditable(true);
-		comboBox.addItem(PROJECT_LOCATION);
-		filePanel.add(comboBox, BorderLayout.CENTER);
+		mComboBox = new JComboBox<String>();
+		mComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		mComboBox.setEditable(true);
+		mComboBox.addItem(PROJECT_LOCATION);
+		mFilePanel.add(mComboBox, BorderLayout.CENTER);
 
 		JPanel panel = new JPanel();
-		filePanel.add(panel, BorderLayout.EAST);
+		mFilePanel.add(panel, BorderLayout.EAST);
 		panel.setLayout(new GridLayout(0, 2, 0, 0));
 
-		btnBrowse = new JButton("Browse");
-		panel.add(btnBrowse);
-		btnBrowse.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		btnBrowse.addActionListener(new ActionListener() {
+		mBtnBrowse = new JButton("Browse");
+		panel.add(mBtnBrowse);
+		mBtnBrowse.setFont(new Font(FONT_NAME, Font.PLAIN, 12));
+		mBtnBrowse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				browseAction();
 			}
 		});
 
-		btnLoad = new JButton("Load");
-		panel.add(btnLoad);
-		btnLoad.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		btnLoad.addActionListener(new ActionListener() {
+		mBtnLoad = new JButton("Load");
+		panel.add(mBtnLoad);
+		mBtnLoad.setFont(new Font(FONT_NAME, Font.PLAIN, 12));
+		mBtnLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				loadAction();
 			}
 		});
 
-		contentPanel = new JPanel();
-		topLevelPanel.add(contentPanel, BorderLayout.CENTER);
+		mContentPanel = new JPanel();
+		mTopLevelPanel.add(mContentPanel, BorderLayout.CENTER);
 
+		initGitPanel();
 		initProgressPanel();
 		initResultsPanel();
 	}
+	
+	private void initGitPanel() {
+		JPanel gitPanel = new JPanel();
+		tabbedPane.addTab("Git", null, gitPanel, null);
+		gitPanel.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblUrl = new JLabel("Remote URL:");
+		lblUrl.setFont(new Font(MainWindow.FONT_NAME, Font.BOLD, 12));
+		lblUrl.setBorder(new EmptyBorder(0, 0, 0, 10));
+		gitPanel.add(lblUrl, BorderLayout.WEST);
+		
+		mTxtRemoteUrl = new JTextField();
+		mTxtRemoteUrl.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		gitPanel.add(mTxtRemoteUrl);
+		mTxtRemoteUrl.setColumns(10);
+		mTxtRemoteUrl.setText("https://github.com/mcnedward/program-analysis.git");
+		
+		JButton btnDownload = new JButton("Download");
+		btnDownload.setFont(new Font(MainWindow.FONT_NAME, Font.PLAIN, 12));
+		gitPanel.add(btnDownload, BorderLayout.EAST);
+		
+		final JFrame parent = this;
+		btnDownload.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String remoteUrl = mTxtRemoteUrl.getText();
+				if (remoteUrl == null || remoteUrl.equals("")) {
+					JOptionPane.showMessageDialog(null, "You need to enter the URL to a git remote repository.", "Git Download", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				AuthDialog dialog = new AuthDialog(parent, remoteUrl);
+				dialog.setVisible(true);
+				if (dialog.isSuccessful()) {
+					load(dialog.getGitFile(), dialog.getRepoName(), true);
+				}
+			}
+		});
+	}
 
 	private void initProgressPanel() {
-		contentPanel.setLayout(new BorderLayout(0, 0));
+		mContentPanel.setLayout(new BorderLayout(0, 0));
 
-		progressPanel = new JPanel();
-		progressPanel.setLayout(new BorderLayout(0, 0));
-		lblProgress = new JLabel("LOADING");
-		lblProgress.setHorizontalAlignment(SwingConstants.CENTER);
-		progressPanel.add(lblProgress, BorderLayout.NORTH);
+		mProgressPanel = new JPanel();
+		mProgressPanel.setLayout(new BorderLayout(0, 0));
+		mLblProgress = new JLabel("LOADING");
+		mLblProgress.setHorizontalAlignment(SwingConstants.CENTER);
+		mProgressPanel.add(mLblProgress, BorderLayout.NORTH);
 
 		JPanel panel_1 = new JPanel();
-		progressPanel.add(panel_1, BorderLayout.CENTER);
-		progressBar = new JProgressBar();
-		panel_1.add(progressBar);
-		
+		mProgressPanel.add(panel_1, BorderLayout.CENTER);
+		mProgressBar = new JProgressBar();
+		panel_1.add(mProgressBar);
+
 		int progressWidth = 400;
 		int progressHeight = 20;
 		Dimension progressBarDimensions = new Dimension(progressWidth, progressHeight);
-		progressBar.setPreferredSize(progressBarDimensions);
-		progressBar.setMaximumSize(progressBarDimensions);
-		progressBar.setMinimumSize(progressBarDimensions);
+		mProgressBar.setPreferredSize(progressBarDimensions);
+		mProgressBar.setMaximumSize(progressBarDimensions);
+		mProgressBar.setMinimumSize(progressBarDimensions);
 	}
 
 	private void initResultsPanel() {
-		resultsPanel = new ResultsPanel();
+		mResultsPanel = new ResultsPanel();
 	}
 
 	private void browseAction() {
@@ -192,7 +237,7 @@ public class MainWindow extends JFrame {
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
 		File file;
-		Object selectedItem = comboBox.getSelectedItem();
+		Object selectedItem = mComboBox.getSelectedItem();
 		if (selectedItem != null && !"".equals(selectedItem.toString()))
 			file = new File(selectedItem.toString());
 		else {
@@ -203,38 +248,38 @@ public class MainWindow extends JFrame {
 		int result = fileChooser.showOpenDialog(MainWindow.this);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = fileChooser.getSelectedFile();
-			comboBox.addItem(selectedFile.getAbsolutePath());
-			comboBox.setSelectedItem(selectedFile.getAbsolutePath());
+			mComboBox.addItem(selectedFile.getAbsolutePath());
+			mComboBox.setSelectedItem(selectedFile.getAbsolutePath());
 			// fileLocation = selectedFile.getAbsolutePath();
 			// loadAction();
 		}
 	}
 
 	private void loadAction() {
-		String fileLocation = (String) comboBox.getSelectedItem();
+		String fileLocation = (String) mComboBox.getSelectedItem();
 		if (fileLocation == null || fileLocation.equals("")) {
-			JOptionPane.showMessageDialog(null, "You need to enter a file.", "Project Load", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "You need to select a file.", "Project Load", JOptionPane.WARNING_MESSAGE);
 			return;
 		}
 		File selectedFile = new File(fileLocation);
-		if (selectedFile.isDirectory()) {
-			boolean isProject = false;
-			for (File file : selectedFile.listFiles()) {
-				if (file.getName().contains(".project")) {
-					isProject = true;
-					break;
-				}
-			}
-			if (isProject) {
-				load(selectedFile, true);
-			} else {
-				JOptionPane.showMessageDialog(null, "You need to select a Java project directory or file.", "Project Load",
-						JOptionPane.ERROR_MESSAGE);
-			}
-		}
+		// if (selectedFile.isDirectory()) {
+		// boolean isProject = false;
+		// for (File file : selectedFile.listFiles()) {
+		// if (file.getName().contains(".project")) {
+		// isProject = true;
+		// break;
+		// }
+		// }
+		// if (isProject) {
+		load(selectedFile, selectedFile.getName(), false); // Don't care about .project files for now
+		// } else {
+		// JOptionPane.showMessageDialog(null, "You need to select a Java project directory or file.", "Project Load",
+		// JOptionPane.ERROR_MESSAGE);
+		// }
+		// }
 		if (selectedFile.isFile()) {
 			if (selectedFile.getPath().endsWith(".java")) {
-				load(selectedFile, true);
+				load(selectedFile, selectedFile.getName(), false);
 			} else {
 				JOptionPane.showMessageDialog(null, "You need to select a Java project directory or file.", "Project Load",
 						JOptionPane.ERROR_MESSAGE);
@@ -250,26 +295,33 @@ public class MainWindow extends JFrame {
 	 * @param clearList
 	 *            True if the project explorer list should be cleared
 	 */
-	private void load(File file, boolean clearList) {
+	public void load(File file, String projectName, boolean deleteAfterBuild) {
 		// Clear the contents and add the progress bar
-		contentPanel.removeAll();
-		contentPanel.validate();
-		contentPanel.repaint();
-		contentPanel.add(progressPanel, BorderLayout.CENTER);
+		mContentPanel.removeAll();
+		mContentPanel.validate();
+		mContentPanel.repaint();
+		mContentPanel.add(mProgressPanel, BorderLayout.CENTER);
 
-		analyser.analyze(file, new AnalysisListener() {
-			public void finished(AnalysisResult result) {
-				contentPanel.removeAll();
-				contentPanel.validate();
-				contentPanel.repaint();
-				contentPanel.add(resultsPanel, BorderLayout.CENTER);
-				resultsPanel.loadClasses(result);
+		mInterfaceInquiry.buildProject(file, projectName, deleteAfterBuild, new ProjectBuildListener() {
+			public void finished(JavaProject project) {
+				mContentPanel.removeAll();
+				mContentPanel.validate();
+				mContentPanel.repaint();
+				mContentPanel.add(mResultsPanel, BorderLayout.CENTER);
+				mResultsPanel.loadProject(project);
 			}
 
 			@Override
 			public void onProgressChange(String message, int progress) {
-				lblProgress.setText(message);
-				progressBar.setValue(progress);
+				mLblProgress.setText(message);
+				mProgressBar.setValue(progress);
+			}
+			
+			@Override
+			public void onBuildError(String message, Exception exception) {
+				mLblProgress.setText(message);
+				mLblProgress.setForeground(Color.RED);
+				exception.printStackTrace();
 			}
 		});
 	}

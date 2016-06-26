@@ -13,10 +13,10 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import com.mcnedward.app.classobject.ClassObject;
+import com.mcnedward.app.ui.cell_renderer.JavaElementListCellRenderer;
+import com.mcnedward.ii.element.JavaElement;
 
 /**
  * @author Edward - Jun 12, 2016
@@ -25,77 +25,73 @@ import com.mcnedward.app.classobject.ClassObject;
 public class InterfacePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	private DefaultListModel<ClassObject> interfaceListModel;
-	private JList<ClassObject> interfaceList;
-	private DefaultListModel<String> selectedInterfaceListModel;
-	private JList<String> selectedInterfaceList;
-	private JPanel selectedInterfacePanel;
-	private JLabel selectedInterfaceLabel;
+	private DefaultListModel<JavaElement> mInterfaceListModel;
+	private JList<JavaElement> mInterfaceList;
+	private DefaultListModel<String> mSelectedInterfaceListModel;
+	private JList<String> mSelectedInterfaceList;
+	private JPanel mSelectedInterfacePanel;
+	private JLabel mSelectedInterfaceLabel;
 
-	private List<ClassObject> classes;
+	private List<JavaElement> mElements;
 
 	public InterfacePanel() {
 		init();
 	}
 
-	public void load(List<ClassObject> classes) {
-		this.classes = classes;
-		interfaceListModel.clear();
-		for (ClassObject classObject : classes) {
-			if (classObject.isInterface())
-				interfaceListModel.addElement(classObject);
+	public void load(List<JavaElement> elements) {
+		this.mElements = elements;
+		mInterfaceListModel.clear();
+		for (JavaElement javaElement : elements) {
+			if (javaElement.isInterface())
+				mInterfaceListModel.addElement(javaElement);
 		}
 	}
 
-	private void findInterfaceUsages(ClassObject selectedClass) {
-		selectedInterfaceListModel.clear();
-		for (ClassObject classObject : classes) {
+	private void findInterfaceUsages(JavaElement selectedClass) {
+		mSelectedInterfaceListModel.clear();
+		for (JavaElement javaElement : mElements) {
 			String selectedClassName = selectedClass.getName();
-			if (classObject.getInterfaces().contains(selectedClassName)) {
-				selectedInterfaceListModel.addElement("implemented by " + classObject.getName());
+			if (javaElement.getInterfaces().contains(selectedClassName)) {
+				mSelectedInterfaceListModel.addElement("implemented by " + javaElement.getName());
 			}
-			else if (classObject.getExtends().contains(selectedClassName)) {
-				selectedInterfaceListModel.addElement("extended by " + classObject.getName());
+			else if (javaElement.getSuperClasses().contains(selectedClassName)) {
+				mSelectedInterfaceListModel.addElement("extended by " + javaElement.getName());
 			}
 		}
-		selectedInterfacePanel.setVisible(true);
-		selectedInterfaceLabel.setText(selectedClass.getName());
+		mSelectedInterfacePanel.setVisible(true);
+		mSelectedInterfaceLabel.setText(selectedClass.getName());
 	}
 
 	private void init() {
 		setLayout(new BorderLayout(0, 0));
 
-		JLabel lblInterfaces = new JLabel("Interfaces");
-		lblInterfaces.setHorizontalAlignment(SwingConstants.CENTER);
-		add(lblInterfaces, BorderLayout.NORTH);
-
 		JPanel gridPanel = new JPanel();
 		add(gridPanel, BorderLayout.CENTER);
 		gridPanel.setLayout(new GridLayout(0, 2, 0, 0));
 
-		interfaceListModel = new DefaultListModel<>();
-		interfaceList = new JList<>(interfaceListModel);
-		interfaceList.setCellRenderer(new ClassObjectListCellRenderer());
-		JPanel interfacePanel = createList(interfaceList, new JLabel("Select an interface to inspect"), new MouseAdapter() {
+		mInterfaceListModel = new DefaultListModel<>();
+		mInterfaceList = new JList<>(mInterfaceListModel);
+		mInterfaceList.setCellRenderer(new JavaElementListCellRenderer());
+		JPanel interfacePanel = createList(mInterfaceList, new JLabel("Select an interface to inspect"), new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				int index = interfaceList.getSelectedIndex();
-				ClassObject selectedClassObject = interfaceListModel.getElementAt(index);
+				int index = mInterfaceList.getSelectedIndex();
+				JavaElement selectedClassObject = mInterfaceListModel.getElementAt(index);
 				findInterfaceUsages(selectedClassObject);
 			}
 		});
 		gridPanel.add(interfacePanel);
 
-		selectedInterfaceLabel = new JLabel();
-		selectedInterfaceListModel = new DefaultListModel<>();
-		selectedInterfaceList = new JList<>(selectedInterfaceListModel);
-		selectedInterfacePanel = createList(selectedInterfaceList, selectedInterfaceLabel, new MouseAdapter() {
+		mSelectedInterfaceLabel = new JLabel();
+		mSelectedInterfaceListModel = new DefaultListModel<>();
+		mSelectedInterfaceList = new JList<>(mSelectedInterfaceListModel);
+		mSelectedInterfacePanel = createList(mSelectedInterfaceList, mSelectedInterfaceLabel, new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 			}
 		});
-		gridPanel.add(selectedInterfacePanel);
-		selectedInterfacePanel.setVisible(false);
+		gridPanel.add(mSelectedInterfacePanel);
+		mSelectedInterfacePanel.setVisible(false);
 	}
 
 	/**
@@ -108,7 +104,7 @@ public class InterfacePanel extends JPanel {
 	 * @return The panel containing the list.
 	 */
 	private JPanel createList(JList<?> listFiles, JLabel label, MouseAdapter mouseAdapter) {
-		listFiles.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		listFiles.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		listFiles.setVisibleRowCount(10);
 		listFiles.setSelectedIndex(0);
 		listFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
