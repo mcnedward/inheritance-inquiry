@@ -61,6 +61,7 @@ public class FileDialog extends BaseDialog {
 		
 		mComboBox = new JComboBox<>();
 		panel_1.add(mComboBox);
+        mComboBox.addActionListener(e -> loadAction());
 		mComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		mComboBox.setEditable(true);
 
@@ -71,20 +72,12 @@ public class FileDialog extends BaseDialog {
 		JButton btnBrowse = new JButton("Browse");
 		panel.add(btnBrowse);
 		btnBrowse.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		btnBrowse.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				browseAction();
-			}
-		});
+		btnBrowse.addActionListener(e -> browseAction());
 
 		JButton btnLoad = new JButton("Load");
 		panel.add(btnLoad);
 		btnLoad.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		btnLoad.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				loadAction();
-			}
-		});
+		btnLoad.addActionListener(e -> loadAction());
 
 		setDialogSize(WIDTH, HEIGHT);
 		

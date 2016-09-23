@@ -25,8 +25,8 @@ import javax.swing.border.EmptyBorder;
 
 import com.mcnedward.app.ui.MainWindow;
 import com.mcnedward.app.ui.utils.PrefUtil;
-import com.mcnedward.ii.GitService;
 import com.mcnedward.ii.listener.GitDownloadListener;
+import com.mcnedward.ii.service.GitService;
 
 /**
  * @author Edward - Jun 26, 2016
