@@ -20,7 +20,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.mcnedward.ii</groupId>
-			<artifactId>interface-inquiry</artifactId>
+			<artifactId>inheritance-inquiry</artifactId>
 			<version>0.1.0</version>
 		</dependency>
 
