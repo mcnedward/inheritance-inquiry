@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.mcnedward.app.ui.TabPanel">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.mcnedward.app.ui.solution.TabPanel">
   <grid id="27dc6" binding="mRoot" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
@@ -19,8 +19,7 @@
         </properties>
         <border type="none"/>
         <children>
-          <grid id="7623b" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
+          <grid id="7623b" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints>
               <tabbedpane title="DIT">
                 <tooltip value="Depth of Inheritance Tree"/>
@@ -29,15 +28,12 @@
             <properties/>
             <border type="none"/>
             <children>
-              <nested-form id="2fd00" form-file="com/mcnedward/app/ui/DitPanel.form" binding="mDitPanel">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                </constraints>
+              <nested-form id="925f4" form-file="com/mcnedward/app/ui/solution/metric/MetricPanel.form" binding="mDitPanel">
+                <constraints border-constraint="Center"/>
               </nested-form>
             </children>
           </grid>
-          <grid id="ac9e6" binding="mNocPane" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
+          <grid id="ac9e6" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints>
               <tabbedpane title="NOC">
                 <tooltip value="Number of Children"/>
@@ -45,10 +41,13 @@
             </constraints>
             <properties/>
             <border type="none"/>
-            <children/>
+            <children>
+              <nested-form id="315eb" form-file="com/mcnedward/app/ui/solution/metric/MetricPanel.form" binding="mNocPanel">
+                <constraints border-constraint="Center"/>
+              </nested-form>
+            </children>
           </grid>
-          <grid id="f59a" binding="mWmcPane" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
+          <grid id="f59a" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints>
               <tabbedpane title="WMC">
                 <tooltip value="Weighted Method Count"/>
@@ -56,7 +55,11 @@
             </constraints>
             <properties/>
             <border type="none"/>
-            <children/>
+            <children>
+              <nested-form id="4ed9b" form-file="com/mcnedward/app/ui/solution/metric/MetricPanel.form" binding="mWmcPanel">
+                <constraints border-constraint="Center"/>
+              </nested-form>
+            </children>
           </grid>
         </children>
       </tabbedpane>

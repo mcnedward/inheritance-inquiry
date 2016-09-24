@@ -1,4 +1,4 @@
-package com.mcnedward.app.ui;
+package com.mcnedward.app.ui.solution;
 
 import com.mcnedward.ii.element.JavaSolution;
 import com.mcnedward.ii.utils.IILogger;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.mcnedward.app.ui.SolutionPanel">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.mcnedward.app.ui.solution.SolutionPanel">
   <grid id="27dc6" binding="mRoot" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
       <xy x="20" y="20" width="452" height="400"/>
@@ -67,7 +67,7 @@
           <size top="5" left="0" bottom="0" right="0"/>
         </border>
         <children>
-          <nested-form id="402ff" form-file="com/mcnedward/app/ui/TabPanel.form" binding="mTabPanel">
+          <nested-form id="402ff" form-file="com/mcnedward/app/ui/solution/TabPanel.form" binding="mTabPanel">
             <constraints border-constraint="Center"/>
           </nested-form>
         </children>

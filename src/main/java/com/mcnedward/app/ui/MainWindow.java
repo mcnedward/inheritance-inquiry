@@ -2,6 +2,7 @@ package com.mcnedward.app.ui;
 
 import com.mcnedward.app.ui.dialog.FileDialog;
 import com.mcnedward.app.ui.dialog.GitDialog;
+import com.mcnedward.app.ui.solution.SolutionPanel;
 import com.mcnedward.ii.builder.ProjectBuilder;
 import com.mcnedward.ii.element.JavaSolution;
 import com.mcnedward.ii.listener.SolutionBuildListener;
