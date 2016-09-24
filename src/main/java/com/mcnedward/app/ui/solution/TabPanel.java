@@ -5,6 +5,7 @@ import com.mcnedward.ii.service.metric.element.DitMetric;
 import com.mcnedward.ii.service.metric.element.NocMetric;
 import com.mcnedward.ii.service.metric.element.WmcMetric;
 import com.mcnedward.ii.utils.IILogger;
+import com.mcnedward.ii.utils.ServiceFactory;
 
 import javax.swing.*;
 
@@ -21,9 +22,9 @@ public class TabPanel {
 
     public void update(JavaSolution solution) {
         IILogger.debug("Updating TabPanel");
-        mDitPanel.update(solution.getDitMetricInfo(), solution.getDitMetrics());
-        mNocPanel.update(solution.getNocMetricInfo(), solution.getNocMetrics());
-        mWmcPanel.update(solution.getWmcMetricInfo(), solution.getWmcMetrics());
+        mDitPanel.update(solution, ServiceFactory.ditGraphService(), solution.getDitMetricInfo(), solution.getDitMetrics());
+        mNocPanel.update(solution, ServiceFactory.nocGraphService(), solution.getNocMetricInfo(), solution.getNocMetrics());
+        mWmcPanel.update(solution, null, solution.getWmcMetricInfo(), solution.getWmcMetrics());
         mGraphPanel.update(solution);
     }
 }

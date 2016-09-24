@@ -2,14 +2,23 @@ package com.mcnedward.app.ui.solution;
 
 import com.mcnedward.app.ui.PlaceholderTextField;
 import com.mcnedward.app.ui.cellRenderer.MetricCellRenderer;
+import com.mcnedward.ii.element.JavaSolution;
+import com.mcnedward.ii.exception.GraphBuildException;
+import com.mcnedward.ii.service.graph.GraphService;
+import com.mcnedward.ii.service.graph.IGraphService;
+import com.mcnedward.ii.service.graph.JungGraph;
 import com.mcnedward.ii.service.metric.element.Metric;
 import com.mcnedward.ii.service.metric.element.MetricInfo;
 import com.mcnedward.ii.utils.IILogger;
+import com.mcnedward.ii.utils.ServiceFactory;
+import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,10 +43,16 @@ public class MetricPanel<T extends Metric> {
     private JButton mBtnGenerate;
     private JPanel mInfoPanel;
     private JTextField mTxtFilter;
+    private JPanel mGraphPanel;
 
+    private JavaSolution mSolution;
+    private IGraphService mGraphService;
     private List<T> mMetrics;
+    private Map<String, JPanel> mGraphMap;
 
-    public void update(MetricInfo metricInfo, List<T> metrics) {
+    public void update(JavaSolution solution, IGraphService graphService, MetricInfo metricInfo, List<T> metrics) {
+        mSolution = solution;
+        mGraphService = graphService;
         updateMetricInfo(metricInfo);
         updateMetrics(metrics);
 
@@ -68,6 +83,8 @@ public class MetricPanel<T extends Metric> {
         mMetricList.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         mMetricList.setVisibleRowCount(10);
         mMetricList.setSelectedIndex(0);
+        mMetricList.setDragEnabled(true);
+        mMetricList.addMouseListener(listMouseListener());
         mMetricList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 //        mDitMetricList.addMouseListener();
         JScrollPane scrollPane = new JScrollPane(mMetricList);
@@ -82,8 +99,89 @@ public class MetricPanel<T extends Metric> {
     }
 
     private void generateGraphs() {
-        List<T> selectedMetrics = mMetricList.getSelectedValuesList();
-        IILogger.info("Generating graphs.");
+        if (mGraphService == null) {
+            JOptionPane.showMessageDialog(null, "No graphs for this metric.", "No Graphs", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        List<String> selectedMetrics = new ArrayList<>();
+        if (mGenerateAll.isSelected()) {
+            for (int i = 0; i < mMetricListModel.size(); i++) {
+                selectedMetrics.add(mMetricListModel.getElementAt(i).fullyQualifiedName);
+            }
+        } else {
+            List<T> metrics = mMetricList.getSelectedValuesList();
+            for (T metric : metrics)
+                selectedMetrics.add(metric.fullyQualifiedName);
+        }
+        if (mGraphMap == null)
+            mGraphMap = new HashMap<>();
+        else
+            mGraphMap.clear();
+        try {
+            IILogger.info("Generating graphs for: %s", selectedMetrics);
+            Integer width = mGraphPanel.getWidth();
+            Integer height = mGraphPanel.getHeight();
+
+            List<JungGraph> graphs = mGraphService.buildHierarchyGraphs(mSolution, selectedMetrics, width, height);
+            if (graphs.size() == 0) {
+                throw new GraphBuildException("No graphs were built...");
+            }
+            for (JungGraph graph : graphs) {
+                mGraphMap.put(graph.getElementName(), graph.getGraphPane());
+            }
+            updateGraph(graphs.get(0).getGraphPane());
+        } catch (GraphBuildException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Graph Build Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private MouseListener listMouseListener() {
+        return new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (mGraphMap != null && mGraphMap.size() > 0) {
+                    JList<T> list = (JList<T>) e.getSource();
+                    if (e.getClickCount() == 2) {
+                        // Double-click detected
+                        int index = list.locationToIndex(e.getPoint());
+                        T metric = list.getModel().getElementAt(index);
+                        JPanel graphPanel = mGraphMap.get(metric.fullyQualifiedName);
+                        if (graphPanel != null) {
+                            updateGraph(graphPanel);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        };
+    }
+
+    private void updateGraph(JPanel graph) {
+        if (mGraphPanel.getComponents().length > 0) {
+            mGraphPanel.remove(0);
+        }
+        mGraphPanel.add(graph);
+        mGraphPanel.revalidate();
+        mGraphPanel.repaint();
     }
 
     private void createUIComponents() {
