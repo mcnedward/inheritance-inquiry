@@ -29,8 +29,8 @@ public class MainWindow extends JFrame {
     private static final String SOLUTION_CARD = "SolutionCard";
     private static int MIN_WIDTH = 500;
     private static int MIN_HEIGHT = 250;
-    private static int WIDTH = 600;
-    private static int HEIGHT = 500;
+    private static int WIDTH = 800;
+    private static int HEIGHT = 700;
     private static int MAX_WIDTH = 650;
     private static int MAX_HEIGHT = 400;
 
@@ -210,7 +210,6 @@ public class MainWindow extends JFrame {
             public void onProgressChange(String message, int progress) {
                 mLblProgress.setText(message);
                 mProgressBar.setValue(progress);
-                IILogger.info(message);
             }
 
             @Override

@@ -1,6 +1,5 @@
 package com.mcnedward.app.ui.solution;
 
-import com.mcnedward.app.ui.solution.metric.MetricPanel;
 import com.mcnedward.ii.element.JavaSolution;
 import com.mcnedward.ii.service.metric.element.DitMetric;
 import com.mcnedward.ii.service.metric.element.NocMetric;
@@ -18,12 +17,13 @@ public class TabPanel {
     private MetricPanel<DitMetric> mDitPanel;
     private MetricPanel<NocMetric> mNocPanel;
     private MetricPanel<WmcMetric> mWmcPanel;
+    private GraphPanel mGraphPanel;
 
     public void update(JavaSolution solution) {
         IILogger.debug("Updating TabPanel");
         mDitPanel.update(solution.getDitMetricInfo(), solution.getDitMetrics());
         mNocPanel.update(solution.getNocMetricInfo(), solution.getNocMetrics());
         mWmcPanel.update(solution.getWmcMetricInfo(), solution.getWmcMetrics());
-
+        mGraphPanel.update(solution);
     }
 }

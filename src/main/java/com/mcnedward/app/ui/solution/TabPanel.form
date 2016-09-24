@@ -28,7 +28,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <nested-form id="925f4" form-file="com/mcnedward/app/ui/solution/metric/MetricPanel.form" binding="mDitPanel">
+              <nested-form id="925f4" form-file="com/mcnedward/app/ui/solution/MetricPanel.form" binding="mDitPanel">
                 <constraints border-constraint="Center"/>
               </nested-form>
             </children>
@@ -42,7 +42,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <nested-form id="315eb" form-file="com/mcnedward/app/ui/solution/metric/MetricPanel.form" binding="mNocPanel">
+              <nested-form id="315eb" form-file="com/mcnedward/app/ui/solution/MetricPanel.form" binding="mNocPanel">
                 <constraints border-constraint="Center"/>
               </nested-form>
             </children>
@@ -56,7 +56,19 @@
             <properties/>
             <border type="none"/>
             <children>
-              <nested-form id="4ed9b" form-file="com/mcnedward/app/ui/solution/metric/MetricPanel.form" binding="mWmcPanel">
+              <nested-form id="4ed9b" form-file="com/mcnedward/app/ui/solution/MetricPanel.form" binding="mWmcPanel">
+                <constraints border-constraint="Center"/>
+              </nested-form>
+            </children>
+          </grid>
+          <grid id="300d5" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <tabbedpane title="Graphs"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <nested-form id="49a34" form-file="com/mcnedward/app/ui/solution/GraphPanel.form" binding="mGraphPanel">
                 <constraints border-constraint="Center"/>
               </nested-form>
             </children>
