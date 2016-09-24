@@ -1,4 +1,4 @@
-package com.mcnedward.app.ui.cell_renderer;
+package com.mcnedward.app.ui.cellRenderer;
 
 import com.mcnedward.ii.element.JavaElement;
 

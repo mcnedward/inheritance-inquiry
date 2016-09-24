@@ -15,7 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
-import com.mcnedward.app.ui.cell_renderer.JavaElementListCellRenderer;
+import com.mcnedward.app.ui.cellRenderer.JavaElementListCellRenderer;
 import com.mcnedward.ii.element.JavaElement;
 
 /**

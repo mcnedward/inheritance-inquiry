@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.mcnedward.app.ui.SolutionPanel">
+  <grid id="27dc6" binding="mRoot" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="452" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="6999a" binding="mTitlePanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="North"/>
+        <properties/>
+        <border type="none">
+          <font/>
+          <title-color color="-4473925"/>
+          <color color="-16777216"/>
+        </border>
+        <children>
+          <grid id="335f3" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+            <constraints border-constraint="West"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="c305" class="javax.swing.JLabel" binding="mProjectName">
+                <constraints/>
+                <properties>
+                  <font name="Segoe UI" size="18"/>
+                  <text value="Project"/>
+                </properties>
+              </component>
+              <component id="5e9a6" class="javax.swing.JLabel" binding="mProjectVersion">
+                <constraints/>
+                <properties>
+                  <font name="Segoe UI" size="16"/>
+                  <text value="Version"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="daff9" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+            <constraints border-constraint="East"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="7a145" class="javax.swing.JLabel" binding="mClassCount">
+                <constraints/>
+                <properties>
+                  <font name="Segoe UI" size="14"/>
+                  <text value="Classes"/>
+                </properties>
+              </component>
+              <component id="d9c0c" class="javax.swing.JLabel" binding="mInheritanceCount">
+                <constraints/>
+                <properties>
+                  <font name="Segoe UI" size="14"/>
+                  <text value="Inheritance Usage"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <grid id="770fb" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="Center"/>
+        <properties/>
+        <border type="empty">
+          <size top="5" left="0" bottom="0" right="0"/>
+        </border>
+        <children>
+          <nested-form id="402ff" form-file="com/mcnedward/app/ui/TabPanel.form" binding="mTabPanel">
+            <constraints border-constraint="Center"/>
+          </nested-form>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

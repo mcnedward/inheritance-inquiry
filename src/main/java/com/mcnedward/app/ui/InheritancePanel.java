@@ -1,7 +1,7 @@
 package com.mcnedward.app.ui;
 
-import com.mcnedward.app.ui.cell_renderer.InheritanceListCellRenderer;
-import com.mcnedward.app.ui.cell_renderer.InheritanceListModelItem;
+import com.mcnedward.app.ui.cellRenderer.InheritanceListCellRenderer;
+import com.mcnedward.app.ui.cellRenderer.InheritanceListModelItem;
 import com.mcnedward.ii.element.JavaElement;
 import com.mcnedward.ii.element.JavaSolution;
 

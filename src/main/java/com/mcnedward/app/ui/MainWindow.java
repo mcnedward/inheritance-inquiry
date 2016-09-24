@@ -14,7 +14,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.logging.Logger;
 
 /**
  * @author Edward - Jun 12, 2016
@@ -26,7 +25,7 @@ public class MainWindow extends JFrame {
 
     private static final String HELP_CARD = "HelpCard";
     private static final String PROGRESS_CARD = "ProgressCard";
-    private static final String RESULTS_CARD = "ResultsCard";
+    private static final String SOLUTION_CARD = "SolutionCard";
     private static int MIN_WIDTH = 500;
     private static int MIN_HEIGHT = 250;
     private static int WIDTH = 600;
@@ -39,22 +38,11 @@ public class MainWindow extends JFrame {
     // Panels
     private JFrame root = this;
     private JPanel mTopLevelPanel;
-    private ResultsPanel mResultsPanel;
-    // TextFields
-    private JTextField mTxtProjectLocation;
+    private SolutionPanel mSolutionPanel;
     private JPanel mContentPanel;
     private CardLayout mCardLayout;
     private JProgressBar mProgressBar;
     private JLabel mLblProgress;
-    private JMenuBar menuBar;
-    private JMenu mnAnalyze;
-    private JMenuItem mntmFromFile;
-    private JMenuItem mntmFromGit;
-    private JPanel mHelpCard;
-    private JLabel lblNewLabel;
-    private JButton mBtnFromFile;
-    private JButton mBtnFromGit;
-    private JPanel mProgressCard;
     // Dialogs
     private FileDialog mFileDialog;
     private GitDialog mGitDialog;
@@ -71,11 +59,11 @@ public class MainWindow extends JFrame {
         initMenu();
         initHelpCard();
         initProgressCard();
-        initResultsCard();
+        initSolutionCard();
     }
 
     private void initSetup() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Interface Inquiry");
 
         try {
@@ -94,9 +82,9 @@ public class MainWindow extends JFrame {
         JLabel lblProjectLocation = new JLabel("Project Location");
         getContentPane().add(lblProjectLocation, BorderLayout.WEST);
 
-        mTxtProjectLocation = new JTextField();
-        getContentPane().add(mTxtProjectLocation, BorderLayout.CENTER);
-        mTxtProjectLocation.setColumns(10);
+        JTextField txtProjectLocation = new JTextField();
+        getContentPane().add(txtProjectLocation, BorderLayout.CENTER);
+        txtProjectLocation.setColumns(10);
 
         mTopLevelPanel = new JPanel();
         mTopLevelPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -110,14 +98,14 @@ public class MainWindow extends JFrame {
     }
 
     private void initMenu() {
-        menuBar = new JMenuBar();
+        JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
 
-        mnAnalyze = new JMenu("Analyze");
+        JMenu mnAnalyze = new JMenu("Analyze");
         menuBar.add(mnAnalyze);
 
         mFileDialog = new FileDialog(this);
-        mntmFromFile = new JMenuItem("From file");
+        JMenuItem mntmFromFile = new JMenuItem("From file");
         mntmFromFile.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -127,7 +115,7 @@ public class MainWindow extends JFrame {
         mnAnalyze.add(mntmFromFile);
 
         mGitDialog = new GitDialog(this);
-        mntmFromGit = new JMenuItem("From git");
+        JMenuItem mntmFromGit = new JMenuItem("From git");
         mnAnalyze.add(mntmFromGit);
         mntmFromGit.addActionListener(new ActionListener() {
             @Override
@@ -135,10 +123,18 @@ public class MainWindow extends JFrame {
                 openGitDialog();
             }
         });
+
+        JMenu settingMenu = new JMenu("Settings");
+        menuBar.add(settingMenu);
+        JMenuItem fileSettings = new JMenuItem("Clear File Settings");
+        fileSettings.addActionListener(e -> {
+            FileDialog.clearPreference();
+        });
+        settingMenu.add(fileSettings);
     }
 
     private void initHelpCard() {
-        mHelpCard = new JPanel();
+        JPanel mHelpCard = new JPanel();
         mContentPanel.add(mHelpCard, HELP_CARD);
 
         String helpMessage = "Use the Analyze option or the buttons below to select a local file or remote git repository";
@@ -146,35 +142,35 @@ public class MainWindow extends JFrame {
 
         JPanel helpMessagePanel = new JPanel();
         mHelpCard.add(helpMessagePanel, BorderLayout.NORTH);
-        lblNewLabel = new JLabel(helpMessage);
+        JLabel lblNewLabel = new JLabel(helpMessage);
         helpMessagePanel.add(lblNewLabel);
         lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         JPanel helpButtonsPanel = new JPanel();
         mHelpCard.add(helpButtonsPanel);
 
-        mBtnFromFile = new JButton("From File");
-        helpButtonsPanel.add(mBtnFromFile);
-        mBtnFromFile.addActionListener(e -> openFileDialog());
+        JButton btnFromFile = new JButton("From File");
+        helpButtonsPanel.add(btnFromFile);
+        btnFromFile.addActionListener(e -> openFileDialog());
 
-        mBtnFromGit = new JButton("From Git");
-        helpButtonsPanel.add(mBtnFromGit);
-        mBtnFromGit.addActionListener(e -> openGitDialog());
+        JButton btnFromGit = new JButton("From Git");
+        helpButtonsPanel.add(btnFromGit);
+        btnFromGit.addActionListener(e -> openGitDialog());
     }
 
     private void initProgressCard() {
-        mProgressCard = new JPanel();
-        mContentPanel.add(mProgressCard, PROGRESS_CARD);
-        mProgressCard.setLayout(new BorderLayout(0, 0));
+        JPanel progressCard = new JPanel();
+        mContentPanel.add(progressCard, PROGRESS_CARD);
+        progressCard.setLayout(new BorderLayout(0, 0));
 
         JPanel progressMessagePanel = new JPanel();
-        mProgressCard.add(progressMessagePanel, BorderLayout.NORTH);
+        progressCard.add(progressMessagePanel, BorderLayout.NORTH);
         mLblProgress = new JLabel("Loading...");
         progressMessagePanel.add(mLblProgress, BorderLayout.NORTH);
         mLblProgress.setHorizontalAlignment(SwingConstants.CENTER);
 
         JPanel panel_1 = new JPanel();
-        mProgressCard.add(panel_1, BorderLayout.CENTER);
+        progressCard.add(panel_1, BorderLayout.CENTER);
         mProgressBar = new JProgressBar();
         panel_1.add(mProgressBar);
 
@@ -186,9 +182,9 @@ public class MainWindow extends JFrame {
         mProgressBar.setMinimumSize(progressBarDimensions);
     }
 
-    private void initResultsCard() {
-        mResultsPanel = new ResultsPanel();
-        mContentPanel.add(mResultsPanel, RESULTS_CARD);
+    private void initSolutionCard() {
+        mSolutionPanel = new SolutionPanel();
+        mContentPanel.add(mSolutionPanel.getRoot(), SOLUTION_CARD);
     }
 
     /**
@@ -205,8 +201,8 @@ public class MainWindow extends JFrame {
         return new SolutionBuildListener() {
             public void finished(JavaSolution solution) {
                 IILogger.info("Build complete!");
-                mCardLayout.show(mContentPanel, RESULTS_CARD);
-                mResultsPanel.loadProject(solution);
+                mSolutionPanel.loadSolution(solution);
+                mCardLayout.show(mContentPanel, SOLUTION_CARD);
             }
 
             @Override
@@ -219,6 +215,7 @@ public class MainWindow extends JFrame {
             @Override
             public void onBuildError(String message, Exception exception) {
                 JOptionPane.showMessageDialog(mContentPanel, message, "BuildError", JOptionPane.ERROR_MESSAGE);
+                IILogger.error(exception);
                 mCardLayout.show(mContentPanel, HELP_CARD);
             }
         };
