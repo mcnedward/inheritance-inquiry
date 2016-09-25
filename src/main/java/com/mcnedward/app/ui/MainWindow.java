@@ -29,8 +29,8 @@ public class MainWindow extends JFrame {
     private static final String SOLUTION_CARD = "SolutionCard";
     private static int MIN_WIDTH = 500;
     private static int MIN_HEIGHT = 250;
-    private static int WIDTH = 800;
-    private static int HEIGHT = 700;
+    private static int WIDTH = 1000;
+    private static int HEIGHT = 850;
     private static int MAX_WIDTH = 650;
     private static int MAX_HEIGHT = 400;
 
@@ -74,11 +74,17 @@ public class MainWindow extends JFrame {
             System.out.println("Something went wrong when trying to use the System Look and Feel...");
         }
 
-        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds(100, 100, WIDTH, HEIGHT);
-        setLocation(dimension.width / 2 - WIDTH / 2, dimension.height / 2 - HEIGHT / 2);
-        setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
-        setMaximumSize(new Dimension(MAX_WIDTH, MAX_HEIGHT));
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        int screenWidth = gd.getDisplayMode().getWidth();
+        int screenHeight = gd.getDisplayMode().getHeight();
+        int width = (int) (screenWidth * 0.8f);
+        int height = (int) (screenHeight * 0.8f);
+        int minWidth = (int) (screenWidth * 0.6f);
+        int minHeight = (int) (screenHeight * 0.6f);
+        setBounds(100, 100, width, height);
+        setLocation(screenWidth / 2 - width / 2, screenHeight / 2 - height / 2);
+        setMinimumSize(new Dimension(minWidth, minHeight));
+        setMaximumSize(new Dimension(width, height));
 
         JLabel lblProjectLocation = new JLabel("Project Location");
         getContentPane().add(lblProjectLocation, BorderLayout.WEST);

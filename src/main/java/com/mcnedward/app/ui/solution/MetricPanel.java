@@ -4,14 +4,11 @@ import com.mcnedward.app.ui.PlaceholderTextField;
 import com.mcnedward.app.ui.cellRenderer.MetricCellRenderer;
 import com.mcnedward.ii.element.JavaSolution;
 import com.mcnedward.ii.exception.GraphBuildException;
-import com.mcnedward.ii.service.graph.GraphService;
 import com.mcnedward.ii.service.graph.IGraphService;
-import com.mcnedward.ii.service.graph.JungGraph;
+import com.mcnedward.ii.service.graph.jung.JungGraph;
 import com.mcnedward.ii.service.metric.element.Metric;
 import com.mcnedward.ii.service.metric.element.MetricInfo;
 import com.mcnedward.ii.utils.IILogger;
-import com.mcnedward.ii.utils.ServiceFactory;
-import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -41,22 +38,29 @@ public class MetricPanel<T extends Metric> {
     private JRadioButton mGenerateAll;
     private JRadioButton mGenerateSelected;
     private JButton mBtnGenerate;
-    private JPanel mInfoPanel;
     private JTextField mTxtFilter;
     private JPanel mGraphPanel;
+    private JCheckBox mUseFullName;
+    private JButton mBtnZoomIn;
+    private JButton mBtnZoomOut;
+    private JPanel mTitlePanel;
 
     private JavaSolution mSolution;
     private IGraphService mGraphService;
     private List<T> mMetrics;
-    private Map<String, JPanel> mGraphMap;
+    private Map<String, JungGraph> mGraphMap;
+    private JungGraph mCurrentGraph;
 
     public void update(JavaSolution solution, IGraphService graphService, MetricInfo metricInfo, List<T> metrics) {
+        IILogger.info("Updating metric panel");
         mSolution = solution;
         mGraphService = graphService;
         updateMetricInfo(metricInfo);
         updateMetrics(metrics);
 
         mBtnGenerate.addActionListener(e -> generateGraphs());
+        mBtnZoomIn.addActionListener(e -> zoomIn());
+        mBtnZoomOut.addActionListener(e -> zoomOut());
         setupRadioButtons();
     }
 
@@ -65,6 +69,8 @@ public class MetricPanel<T extends Metric> {
         mMin.setText(String.valueOf(metricInfo.getMin()));
         mAverage.setText(String.valueOf((int) metricInfo.getAverage()));
         mMax.setText(String.valueOf(metricInfo.getMax()));
+
+        mTitlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
     }
 
     private void updateMetrics(List<T> metrics) {
@@ -79,7 +85,6 @@ public class MetricPanel<T extends Metric> {
 
         mMetricList = new JList<>(mMetricListModel);
         mMetricList.setCellRenderer(new MetricCellRenderer());
-
         mMetricList.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         mMetricList.setVisibleRowCount(10);
         mMetricList.setSelectedIndex(0);
@@ -87,7 +92,13 @@ public class MetricPanel<T extends Metric> {
         mMetricList.addMouseListener(listMouseListener());
         mMetricList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 //        mDitMetricList.addMouseListener();
-        JScrollPane scrollPane = new JScrollPane(mMetricList);
+
+        // Set the size of the list panel
+        Dimension d = mMetricListPanel.getPreferredSize();
+        d.setSize(250, d.getHeight());
+        mMetricListPanel.setPreferredSize(d);
+
+        JScrollPane scrollPane = new JScrollPane(mMetricList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         mMetricListPanel.add(scrollPane);
     }
 
@@ -95,7 +106,8 @@ public class MetricPanel<T extends Metric> {
         ButtonGroup group = new ButtonGroup();
         group.add(mGenerateAll);
         group.add(mGenerateSelected);
-        mGenerateAll.setSelected(true);
+        mGenerateSelected.setSelected(true);
+        mUseFullName.setSelected(true);
     }
 
     private void generateGraphs() {
@@ -122,14 +134,14 @@ public class MetricPanel<T extends Metric> {
             Integer width = mGraphPanel.getWidth();
             Integer height = mGraphPanel.getHeight();
 
-            List<JungGraph> graphs = mGraphService.buildHierarchyGraphs(mSolution, selectedMetrics, width, height);
+            List<JungGraph> graphs = mGraphService.buildHierarchyGraphs(mSolution, selectedMetrics, width, height, mUseFullName.isSelected());
             if (graphs.size() == 0) {
                 throw new GraphBuildException("No graphs were built...");
             }
             for (JungGraph graph : graphs) {
-                mGraphMap.put(graph.getElementName(), graph.getGraphPane());
+                mGraphMap.put(graph.getElementName(), graph);
             }
-            updateGraph(graphs.get(0).getGraphPane());
+            updateGraph(graphs.get(0));
         } catch (GraphBuildException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Graph Build Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -145,9 +157,9 @@ public class MetricPanel<T extends Metric> {
                         // Double-click detected
                         int index = list.locationToIndex(e.getPoint());
                         T metric = list.getModel().getElementAt(index);
-                        JPanel graphPanel = mGraphMap.get(metric.fullyQualifiedName);
-                        if (graphPanel != null) {
-                            updateGraph(graphPanel);
+                        JungGraph graph = mGraphMap.get(metric.fullyQualifiedName);
+                        if (graph != null) {
+                            updateGraph(graph);
                         }
                     }
                 }
@@ -175,17 +187,26 @@ public class MetricPanel<T extends Metric> {
         };
     }
 
-    private void updateGraph(JPanel graph) {
+    private void updateGraph(JungGraph graph) {
+        mCurrentGraph = graph;
         if (mGraphPanel.getComponents().length > 0) {
             mGraphPanel.remove(0);
         }
-        mGraphPanel.add(graph);
+        mGraphPanel.add(graph.getGraphPane(), BorderLayout.CENTER);
         mGraphPanel.revalidate();
         mGraphPanel.repaint();
     }
 
+    private void zoomIn() {
+        mCurrentGraph.setZoom(1);
+    }
+
+    private void zoomOut() {
+        mCurrentGraph.setZoom(-1);
+    }
+
     private void createUIComponents() {
-        mTxtFilter = new PlaceholderTextField("", "Filter metrics");
+        mTxtFilter = new PlaceholderTextField("", "Filter classes");
         mTxtFilter.getDocument().addDocumentListener(new DocumentListener() {
             public void changedUpdate(DocumentEvent e) {
             }
