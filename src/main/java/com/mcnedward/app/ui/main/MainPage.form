@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.mcnedward.app.ui.main.MainPage">
+  <grid id="27dc6" binding="mRoot" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="921" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="25730" binding="mCards" layout-manager="CardLayout" hgap="0" vgap="0">
+        <constraints border-constraint="Center"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="427cd" binding="mHelpCard" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <card name="HelpCard"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="1914a" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="2" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font size="18"/>
+                  <text value="Use the Analyze option or the buttons below to select a local file or remote git repository"/>
+                </properties>
+              </component>
+              <grid id="2d515" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="empty">
+                  <size top="0" left="0" bottom="50" right="0"/>
+                </border>
+                <children>
+                  <component id="65" class="javax.swing.JButton" binding="mBtnFile" custom-create="true">
+                    <constraints/>
+                    <properties>
+                      <font size="18"/>
+                      <text value="From File"/>
+                    </properties>
+                  </component>
+                  <component id="f6233" class="javax.swing.JButton" binding="mBtnGit" custom-create="true">
+                    <constraints/>
+                    <properties>
+                      <font size="18"/>
+                      <text value="From Git"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+            </children>
+          </grid>
+          <nested-form id="89c50" form-file="com/mcnedward/app/ui/main/ProgressCard.form" binding="mProgressCard">
+            <constraints>
+              <card name="ProgressCard"/>
+            </constraints>
+          </nested-form>
+          <nested-form id="9223e" form-file="com/mcnedward/app/ui/solution/SolutionPanel.form" binding="mSolutionCard">
+            <constraints>
+              <card name="SolutionCard"/>
+            </constraints>
+          </nested-form>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

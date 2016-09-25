@@ -1,4 +1,4 @@
-package com.mcnedward.app.ui;
+package com.mcnedward.app.ui.component;
 
 import javax.swing.*;
 import java.awt.*;

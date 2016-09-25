@@ -23,7 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import com.mcnedward.app.ui.MainWindow;
+import com.mcnedward.app.InheritanceInquiry;
 import com.mcnedward.app.ui.utils.PrefUtil;
 import com.mcnedward.ii.listener.GitDownloadListener;
 import com.mcnedward.ii.service.GitService;
@@ -58,11 +58,12 @@ public class GitDialog extends BaseDialog {
 	private String mRepoName;
 
 	public GitDialog(Frame parent) {
-		super(parent, "Git");
+		super(parent, "Git Load");
 	}
 
 	@Override
 	protected void initialize() {
+        Font font = new Font(InheritanceInquiry.FONT_NAME, Font.PLAIN, 18);
 		JPanel authPanel = new JPanel();
 		authPanel.setBorder(new EmptyBorder(10, 20, 20, 20));
 		getContentPane().add(authPanel, BorderLayout.NORTH);
@@ -78,17 +79,17 @@ public class GitDialog extends BaseDialog {
 
 		JLabel lblRemoteUrl = new JLabel("Remote URL:");
 		pnlLabel.add(lblRemoteUrl);
-		lblRemoteUrl.setFont(new Font(MainWindow.FONT_NAME, Font.PLAIN, 12));
+		lblRemoteUrl.setFont(font);
 
 		mLblUsername = new JLabel("Username:");
 		mLblUsername.setHorizontalAlignment(SwingConstants.RIGHT);
 		pnlLabel.add(mLblUsername);
-		mLblUsername.setFont(new Font(MainWindow.FONT_NAME, Font.PLAIN, 12));
+		mLblUsername.setFont(font);
 
 		mLblPassword = new JLabel("Password:");
 		mLblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
 		pnlLabel.add(mLblPassword);
-		mLblPassword.setFont(new Font(MainWindow.FONT_NAME, Font.PLAIN, 12));
+		mLblPassword.setFont(font);
 
 		JPanel pnlText = new JPanel();
 		panel_2.add(pnlText);
@@ -96,33 +97,23 @@ public class GitDialog extends BaseDialog {
 
 		mComboBox = new JComboBox<>();
 		pnlText.add(mComboBox);
-		mComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		mComboBox.setFont(font);
 		mComboBox.setEditable(true);
 
 		mTxtUsername = new JTextField();
 		pnlText.add(mTxtUsername);
-		mTxtUsername.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		mTxtUsername.setFont(font);
 		mTxtUsername.setColumns(10);
-		mTxtUsername.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doLoginAction();
-			}
-		});
+		mTxtUsername.addActionListener(e -> doLoginAction());
 
 		mTxtPassword = new JPasswordField();
 		pnlText.add(mTxtPassword);
-		mTxtPassword.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		mTxtPassword.setFont(font);
 		mTxtPassword.setColumns(10);
 
 		JPanel panel_1 = new JPanel();
 		panel_2.add(panel_1, BorderLayout.NORTH);
-		mTxtPassword.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doLoginAction();
-			}
-		});
+		mTxtPassword.addActionListener(e -> doLoginAction());
 
 		mBottomPanel = new JPanel();
 		authPanel.add(mBottomPanel, BorderLayout.SOUTH);
@@ -134,22 +125,14 @@ public class GitDialog extends BaseDialog {
 		mBottomPanel.add(panel_3, BorderLayout.CENTER);
 
 		JButton btnLogin = new JButton("Download");
+        btnLogin.setFont(font);
 		panel_3.add(btnLogin);
 
 		JButton btnCancel = new JButton("Cancel");
+        btnCancel.setFont(font);
 		panel_3.add(btnCancel);
-		btnCancel.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
-		});
-		btnLogin.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doLoginAction();
-			}
-		});
+		btnCancel.addActionListener(e -> dispose());
+		btnLogin.addActionListener(e -> doLoginAction());
 
 		initializeProgress();
 		checkPreferences();
@@ -164,7 +147,7 @@ public class GitDialog extends BaseDialog {
 
 		mProgressPanel.setLayout(new BorderLayout(0, 0));
 		mLblProgress = new JLabel("LOADING");
-		mLblProgress.setFont(new Font(MainWindow.FONT_NAME, Font.PLAIN, 12));
+		mLblProgress.setFont(new Font(InheritanceInquiry.FONT_NAME, Font.PLAIN, 18));
 		mLblProgress.setHorizontalAlignment(SwingConstants.CENTER);
 		mProgressPanel.add(mLblProgress, BorderLayout.NORTH);
 
@@ -279,6 +262,12 @@ public class GitDialog extends BaseDialog {
 		PrefUtil.<GitDialog> putPreference(USERNAME, mTxtUsername.getText(), GitDialog.class);
 		PrefUtil.<GitDialog> putPreference(PASSWORD, mTxtPassword.getText(), GitDialog.class);
 	}
+
+    public static void clearPreference() {
+        PrefUtil.clearPreference(SEARCHED_REMOTES, GitDialog.class);
+        PrefUtil.clearPreference(USERNAME, GitDialog.class);
+        PrefUtil.clearPreference(PASSWORD, GitDialog.class);
+    }
 
 	public File getGitFile() {
 		return mGitFile;

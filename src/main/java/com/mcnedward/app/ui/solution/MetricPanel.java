@@ -1,6 +1,6 @@
 package com.mcnedward.app.ui.solution;
 
-import com.mcnedward.app.ui.PlaceholderTextField;
+import com.mcnedward.app.ui.component.PlaceholderTextField;
 import com.mcnedward.app.ui.cellRenderer.MetricCellRenderer;
 import com.mcnedward.ii.element.JavaSolution;
 import com.mcnedward.ii.exception.GraphBuildException;

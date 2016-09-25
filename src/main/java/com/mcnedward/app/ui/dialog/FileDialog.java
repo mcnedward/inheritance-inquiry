@@ -1,3 +1,4 @@
+
 package com.mcnedward.app.ui.dialog;
 
 import com.mcnedward.app.ui.utils.PrefUtil;
@@ -15,19 +16,17 @@ import java.util.List;
  */
 public class FileDialog extends BaseDialog {
     private static final long serialVersionUID = 1L;
-
     private static final String SEARCHED_FILES = "searchedFiles";
 
-    private static final int WIDTH = 400;
+    private static final int WIDTH = 600;
     private static final int HEIGHT = 100;
 
     private final JFileChooser mFileChooser;
     private JComboBox<String> mComboBox;
-
     private File mFile;
 
     public FileDialog(Frame parent) {
-        super(parent, "File");
+        super(parent, "File Load");
         mFileChooser = new JFileChooser();
     }
 
@@ -46,7 +45,7 @@ public class FileDialog extends BaseDialog {
 
         JLabel lblFileLocation = new JLabel("Project Location:");
         panel_1.add(lblFileLocation, BorderLayout.WEST);
-        lblFileLocation.setFont(new Font("Segue UI", Font.BOLD, 12));
+        lblFileLocation.setFont(new Font("Segue UI", Font.PLAIN, 18));
         lblFileLocation.setBorder(new EmptyBorder(0, 0, 0, 10));
 
         mComboBox = new JComboBox<>();
@@ -58,7 +57,7 @@ public class FileDialog extends BaseDialog {
                 }
             }
         });
-        mComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        mComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         mComboBox.setEditable(true);
 
         JPanel panel = new JPanel();
@@ -67,12 +66,12 @@ public class FileDialog extends BaseDialog {
 
         JButton btnBrowse = new JButton("Browse");
         panel.add(btnBrowse);
-        btnBrowse.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        btnBrowse.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         btnBrowse.addActionListener(e -> browseAction());
 
         JButton btnLoad = new JButton("Load");
         panel.add(btnLoad);
-        btnLoad.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        btnLoad.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         btnLoad.addActionListener(e -> loadAction());
 
         setDialogSize(WIDTH, HEIGHT);

@@ -2,16 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5731503b-4300-4ce9-8175-2eb093de9473" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/InheritancePanel.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/InterfacePanel.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/MainWindow.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/ResultsPanel.java" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/IIScrollBar.java" afterPath="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/component/IIScrollBar.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/PlaceholderTextField.java" afterPath="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/component/PlaceholderTextField.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/MainWindow.java" afterPath="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/MainWindow.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/solution/MetricPanel.form" afterPath="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/solution/MetricPanel.form" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mcnedward/app/InheritanceInquiry.java" afterPath="$PROJECT_DIR$/src/main/java/com/mcnedward/app/InheritanceInquiry.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/dialog/FileDialog.java" afterPath="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/dialog/FileDialog.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/dialog/GitDialog.java" afterPath="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/dialog/GitDialog.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/solution/MetricPanel.java" afterPath="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/solution/MetricPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/DitGraphService.java" afterPath="$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/DitGraphService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/FullGraphService.java" afterPath="$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/FullGraphService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/NocGraphService.java" afterPath="$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/NocGraphService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/element/Edge.java" afterPath="$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/element/Edge.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/jung/JungGraph.java" afterPath="$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/jung/JungGraph.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/jung/NocJungGraph.java" afterPath="$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/jung/NocJungGraph.java" />
     </list>
     <ignored path="InterfaceInquiry.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,96 +34,35 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="NocJungGraph.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/jung/NocJungGraph.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="428">
-              <caret line="28" column="30" selection-start-line="28" selection-start-column="30" selection-end-line="28" selection-end-column="30" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DitJungGraph.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/jung/DitJungGraph.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Edge.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/element/Edge.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="45" column="17" selection-start-line="45" selection-start-column="17" selection-end-line="45" selection-end-column="17" />
-              <folding>
-                <element signature="e#360#361#0" expanded="true" />
-                <element signature="e#394#395#0" expanded="true" />
-                <element signature="e#747#748#0" expanded="true" />
-                <element signature="e#777#778#0" expanded="true" />
-                <element signature="e#809#810#0" expanded="true" />
-                <element signature="e#838#839#0" expanded="true" />
-                <element signature="e#940#941#0" expanded="true" />
-                <element signature="e#959#960#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="JungGraph.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/jung/JungGraph.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="78" column="41" selection-start-line="78" selection-start-column="41" selection-end-line="78" selection-end-column="41" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="method#createImage#0;class#JungGraph#0" expanded="false" />
-                <element signature="e#4030#4031#0" expanded="true" />
-                <element signature="e#4117#4118#0" expanded="true" />
-                <element signature="method#configure#0;class#JungGraph#0" expanded="false" />
-                <element signature="method#buildGraph#0;class#JungGraph#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MetricPanel.form" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/solution/MetricPanel.form">
+      <file leaf-file-name="MainPage.form" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/main/MainPage.form">
           <provider selected="true" editor-type-id="ui-designer">
             <state />
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MetricPanel.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/solution/MetricPanel.java">
+      <file leaf-file-name="MainPage.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/main/MainPage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="414">
-              <caret line="72" column="85" selection-start-line="72" selection-start-column="85" selection-end-line="72" selection-end-column="85" />
+            <state relative-caret-position="280">
+              <caret line="65" column="47" selection-start-line="65" selection-start-column="47" selection-end-line="65" selection-end-column="47" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#updateMetrics#0;class#MetricPanel#0" expanded="false" />
-                <element signature="method#setupRadioButtons#0;class#MetricPanel#0" expanded="false" />
-                <element signature="method#listMouseListener#0;class#MetricPanel#0" expanded="false" />
-                <element signature="e#7238#7239#0" expanded="true" />
-                <element signature="e#7278#7279#0" expanded="true" />
-                <element signature="e#7308#7309#0" expanded="true" />
-                <element signature="e#7349#7350#0" expanded="true" />
-                <element signature="method#updateFilter#0;class#MetricPanel#0" expanded="false" />
+                <element signature="docComment;method#load#0;class#MainPage#0" expanded="false" />
+                <element signature="method#openFileDialog#0;class#MainPage#0" expanded="false" />
+                <element signature="method#openGitDialog#0;class#MainPage#0" expanded="false" />
+                <element signature="e#3712#3713#0" expanded="true" />
+                <element signature="e#3780#3781#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GraphService.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/GraphService.java">
+      <file leaf-file-name="InheritanceInquiry.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/InheritanceInquiry.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="205">
-              <caret line="48" column="32" selection-start-line="48" selection-start-column="32" selection-end-line="48" selection-end-column="32" />
+            <state relative-caret-position="274">
+              <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -133,8 +73,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -149,23 +89,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/SolutionPanel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/MetricPanel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/TabPanel.form" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/SolutionPanel.form" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/solution/SolutionPanel.form" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/solution/metric/DitPanell.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/solution/metric/NocPanel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/solution/metric/DitPanel.form" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/cellRenderer/DitMetricCellRenderer.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/cellRenderer/MetricCellRenderer.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/solution/GraphPanel.form" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/solution/GraphPanel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/solution/TabPanel.form" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/solution/metric/MetricPanel.form" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/solution/metric/MetricPanel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/PlaceholderTextField.java" />
-        <option value="$PROJECT_DIR$/../InheritanceInquiryLib/src/test/java/com/mcnedward/ii/LoopTest.java" />
         <option value="$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/utils/IILogger.java" />
         <option value="$PROJECT_DIR$/../InheritanceInquiryLib/lib/jung/jung-api-2.0.1.jar!/edu/uci/ics/jung/graph/DirectedGraph.class" />
         <option value="$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/jdt/visitor/CoiTypeArgVisitor.java" />
@@ -189,7 +112,6 @@
         <option value="$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/GraphService.java" />
         <option value="$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/IGraphService.java" />
         <option value="$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/element/Node.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/MainWindow.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/solution/GraphHolderPanel.java" />
         <option value="$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/jung/DitJungGraph.java" />
         <option value="$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/element/Edge.java" />
@@ -200,6 +122,24 @@
         <option value="$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/jung/NocJungGraph.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/solution/MetricPanel.form" />
         <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/solution/MetricPanel.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/ProgressCard.form" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/HelpCard.form" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/dialog/DialogListener.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/utils/DialogUtil.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/MainPage.form" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/HelpCard.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/ProgressCard.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/MainPage.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/MainWindow.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/component/PlaceholderTextField.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/main/HelpCard.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/InheritanceInquiry.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/main/MainPage.form" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/main/ProgressCard.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/main/ProgressCard.form" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/main/MainPage.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/dialog/FileDialog.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/dialog/GitDialog.java" />
       </list>
     </option>
   </component>
@@ -302,184 +242,7 @@
     <panes>
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="InterfaceInquiry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="InterfaceInquiry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="InheritanceInquiry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="InterfaceInquiry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="InheritanceInquiry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="InterfaceInquiry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="InheritanceInquiry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="InterfaceInquiry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="InheritanceInquiry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="InterfaceInquiry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="InheritanceInquiry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ui" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="InterfaceInquiry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="InheritanceInquiry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ui" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="solution" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="InterfaceInquiry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="InheritanceInquiry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ui" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="solution" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="GraphPanel" />
-              <option name="myItemType" value="com.intellij.uiDesigner.projectView.FormNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
+        <subPane />
       </pane>
       <pane id="Scope" />
       <pane id="Scratches" />
@@ -498,6 +261,7 @@
       <recent name="com.mcnedward.app.ui.cellRenderer" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Edward\Dev\Workspace\InheritanceInquiry\src\main\java\com\mcnedward\app\ui\main" />
       <recent name="C:\Users\Edward\Dev\Workspace\InheritanceInquiry\src\main\java\com\mcnedward\app\ui\solution" />
       <recent name="C:\Users\Edward\Dev\Workspace\InheritanceInquiry\src\main\java\com\mcnedward\app\ui\solution\metric" />
     </key>
@@ -521,6 +285,20 @@
       </option>
       <envs />
       <patterns />
+      <method />
+    </configuration>
+    <configuration default="false" name="MainPage" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.mcnedward.app.ui.MainPage" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="InterfaceInquiry" />
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
@@ -718,13 +496,15 @@
       <envs />
       <method />
     </configuration>
-    <list size="2">
+    <list size="3">
       <item index="0" class="java.lang.String" itemvalue="Application.InheritanceInquiry" />
       <item index="1" class="java.lang.String" itemvalue="JUnit.LoopTest.testLoop" />
+      <item index="2" class="java.lang.String" itemvalue="Application.MainPage" />
     </list>
     <recent_temporary>
-      <list size="1">
-        <item index="0" class="java.lang.String" itemvalue="JUnit.LoopTest.testLoop" />
+      <list size="2">
+        <item index="0" class="java.lang.String" itemvalue="Application.MainPage" />
+        <item index="1" class="java.lang.String" itemvalue="JUnit.LoopTest.testLoop" />
       </list>
     </recent_temporary>
     <configuration name="&lt;template&gt;" type="TestNG" default="true" selected="false">
@@ -771,7 +551,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32930845" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14791666" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.14791666" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32821077" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -781,6 +561,7 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" x="91" y="91" width="1738" height="848" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
@@ -832,7 +613,7 @@
           <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="54" />
+      <option name="time" value="57" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
@@ -845,168 +626,11 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/utils/IILogger.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="46" column="50" selection-start-line="46" selection-start-column="50" selection-end-line="46" selection-end-column="50" />
-          <folding>
-            <element signature="e#483#484#0" expanded="false" />
-            <element signature="e#535#536#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/element/IGraphItem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="17" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/metric/MetricService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-614">
-          <caret line="257" column="77" selection-start-line="257" selection-start-column="77" selection-end-line="257" selection-end-column="77" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/element/GType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="4" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/element/FullHierarchy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="530">
-          <caret line="139" column="0" selection-start-line="139" selection-start-column="0" selection-end-line="139" selection-end-column="0" />
-          <folding>
-            <element signature="e#4019#4020#0" expanded="false" />
-            <element signature="e#4046#4047#0" expanded="false" />
-            <element signature="e#4078#4079#0" expanded="false" />
-            <element signature="e#4110#4111#0" expanded="false" />
-            <element signature="e#4146#4147#0" expanded="false" />
-            <element signature="e#4181#4182#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/utils/PrefUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="29">
-          <caret line="37" column="9" selection-start-line="37" selection-start-column="9" selection-end-line="37" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/utils/ServiceFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="671">
-          <caret line="47" column="35" selection-start-line="47" selection-start-column="35" selection-end-line="47" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/element/DitHierarchy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="84" column="4" selection-start-line="84" selection-start-column="4" selection-end-line="84" selection-end-column="4" />
-          <folding>
-            <element signature="e#2282#2283#0" expanded="false" />
-            <element signature="e#2310#2311#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/test/java/com/mcnedward/ii/DitHeirarchyTreeTests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="37" column="60" selection-start-line="37" selection-start-column="60" selection-end-line="37" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/test/java/com/mcnedward/ii/GraphServiceTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/jung/ReverseEdgeRenderer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="40" column="13" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../InheritanceInquiryLib/lib/jung/jung-algorithms-2.0.1.jar!/edu/uci/ics/jung/algorithms/layout/SpringLayout.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="32" column="11" selection-start-line="32" selection-start-column="11" selection-end-line="32" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../InheritanceInquiryLib/lib/jung/collections-generic-4.01.jar!/org/apache/commons/collections15/Transformer.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="8" column="6" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../InheritanceInquiryLib/lib/jung/jung-visualization-2.0.1.jar!/edu/uci/ics/jung/visualization/util/VertexShapeFactory.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="38" column="42" selection-start-line="38" selection-start-column="25" selection-end-line="38" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_60/src.zip!/java/util/concurrent/FutureTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="265" column="0" selection-start-line="265" selection-start-column="0" selection-end-line="265" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/tasks/MonitoringExecutorService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="40" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_60/src.zip!/java/lang/Thread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="744" column="0" selection-start-line="744" selection-start-column="0" selection-end-line="744" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/ProjectService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="153" column="0" selection-start-line="153" selection-start-column="0" selection-end-line="153" selection-end-column="0" />
-          <folding>
-            <element signature="docComment;method#build#1;class#ProjectService#0" expanded="false" />
-            <element signature="method#afterBuild#0;class#ProjectService#0" expanded="false" />
-            <element signature="docComment;method#createASTs#0;class#ProjectService#0" expanded="false" />
-            <element signature="docComment;method#setDeleteAfterBuild#0;class#ProjectService#0" expanded="false" />
-            <element signature="class#CompilationUnitHolder#0;class#ProjectService#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_60/src.zip!/java/awt/event/ActionListener.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
           <caret line="49" column="16" selection-start-line="49" selection-start-column="16" selection-end-line="49" selection-end-column="16" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1059,25 +683,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/IIScrollBar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="29" column="79" selection-start-line="29" selection-start-column="79" selection-end-line="29" selection-end-column="79" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/element/Node.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="354">
           <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
           <folding>
-            <element signature="e#594#595#0" expanded="true" />
-            <element signature="e#639#640#0" expanded="true" />
-            <element signature="e#676#677#0" expanded="true" />
-            <element signature="e#732#733#0" expanded="true" />
+            <element signature="e#594#595#0" expanded="false" />
+            <element signature="e#639#640#0" expanded="false" />
+            <element signature="e#676#677#0" expanded="false" />
+            <element signature="e#732#733#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1152,18 +766,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/MainWindow.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="206">
-          <caret line="70" column="7" selection-start-line="70" selection-start-column="7" selection-end-line="70" selection-end-column="7" />
-          <folding>
-            <element signature="method#MainWindow#0;class#MainWindow#0" expanded="false" />
-            <element signature="method#initMenu#0;class#MainWindow#0" expanded="false" />
-            <element signature="method#openGitDialog#0;class#MainWindow#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/../InheritanceInquiryLib/lib/jung/jung-api-2.0.1.jar!/edu/uci/ics/jung/graph/Hypergraph.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
@@ -1207,39 +809,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/GraphService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="48" column="32" selection-start-line="48" selection-start-column="32" selection-end-line="48" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/element/Edge.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="45" column="17" selection-start-line="45" selection-start-column="17" selection-end-line="45" selection-end-column="17" />
-          <folding>
-            <element signature="e#360#361#0" expanded="true" />
-            <element signature="e#394#395#0" expanded="true" />
-            <element signature="e#747#748#0" expanded="true" />
-            <element signature="e#777#778#0" expanded="true" />
-            <element signature="e#809#810#0" expanded="true" />
-            <element signature="e#838#839#0" expanded="true" />
-            <element signature="e#940#941#0" expanded="true" />
-            <element signature="e#959#960#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/jung/DitJungGraph.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/NocGraphService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="396">
@@ -1264,6 +833,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/GraphService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="205">
+          <caret line="48" column="32" selection-start-line="48" selection-start-column="32" selection-end-line="48" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/jung/JungGraph.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
@@ -1279,6 +856,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/element/Edge.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="45" column="17" selection-start-line="45" selection-start-column="17" selection-end-line="45" selection-end-column="17" />
+          <folding>
+            <element signature="e#360#361#0" expanded="false" />
+            <element signature="e#394#395#0" expanded="false" />
+            <element signature="e#747#748#0" expanded="false" />
+            <element signature="e#777#778#0" expanded="false" />
+            <element signature="e#809#810#0" expanded="false" />
+            <element signature="e#838#839#0" expanded="false" />
+            <element signature="e#940#941#0" expanded="false" />
+            <element signature="e#959#960#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/jung/DitJungGraph.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../InheritanceInquiryLib/src/main/java/com/mcnedward/ii/service/graph/jung/NocJungGraph.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="428">
@@ -1287,6 +889,19 @@
             <element signature="imports" expanded="true" />
           </folding>
         </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_60/src.zip!/java/awt/BorderLayout.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="292">
+          <caret line="243" column="31" selection-start-line="243" selection-start-column="31" selection-end-line="243" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/solution/SolutionPanel.form">
+      <provider selected="true" editor-type-id="ui-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/solution/MetricPanel.form">
@@ -1300,20 +915,163 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_60/src.zip!/java/awt/Window.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="508">
+          <caret line="937" column="6" selection-start-line="937" selection-start-column="6" selection-end-line="937" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/dialog/DialogListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="6" column="21" selection-start-line="6" selection-start-column="21" selection-end-line="6" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/utils/DialogUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="560">
+          <caret line="30" column="16" selection-start-line="30" selection-start-column="16" selection-end-line="30" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/MainWindow.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/InterfacePanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/main/HelpCard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/main/HelpCard.form">
+      <provider selected="true" editor-type-id="ui-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/solution/SolutionPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="394">
+          <caret line="24" column="16" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/component/PlaceholderTextField.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/solution/MetricPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="72" column="85" selection-start-line="72" selection-start-column="85" selection-end-line="72" selection-end-column="85" />
+        <state relative-caret-position="450">
+          <caret line="207" column="4" selection-start-line="207" selection-start-column="4" selection-end-line="219" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#updateMetrics#0;class#MetricPanel#0" expanded="false" />
             <element signature="method#setupRadioButtons#0;class#MetricPanel#0" expanded="false" />
             <element signature="method#listMouseListener#0;class#MetricPanel#0" expanded="false" />
-            <element signature="e#7238#7239#0" expanded="true" />
-            <element signature="e#7278#7279#0" expanded="true" />
-            <element signature="e#7308#7309#0" expanded="true" />
-            <element signature="e#7349#7350#0" expanded="true" />
             <element signature="method#updateFilter#0;class#MetricPanel#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/component/IIScrollBar.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_60/src.zip!/java/awt/CardLayout.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="292">
+          <caret line="58" column="13" selection-start-line="58" selection-start-column="13" selection-end-line="58" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/InheritanceInquiry.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="274">
+          <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/main/ProgressCard.form">
+      <provider selected="true" editor-type-id="ui-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/main/ProgressCard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="8" column="30" selection-start-line="8" selection-start-column="30" selection-end-line="8" selection-end-column="30" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/main/MainPage.form">
+      <provider selected="true" editor-type-id="ui-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/dialog/FileDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="28" column="32" selection-start-line="28" selection-start-column="32" selection-end-line="28" selection-end-column="32" />
+          <folding>
+            <element signature="e#5005#5006#0" expanded="true" />
+            <element signature="e#5079#5080#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/dialog/GitDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="60" column="31" selection-start-line="60" selection-start-column="31" selection-end-line="60" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mcnedward/app/ui/main/MainPage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="65" column="47" selection-start-line="65" selection-start-column="47" selection-end-line="65" selection-end-column="47" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="docComment;method#load#0;class#MainPage#0" expanded="false" />
+            <element signature="method#openFileDialog#0;class#MainPage#0" expanded="false" />
+            <element signature="method#openGitDialog#0;class#MainPage#0" expanded="false" />
+            <element signature="e#3712#3713#0" expanded="true" />
+            <element signature="e#3780#3781#0" expanded="true" />
           </folding>
         </state>
       </provider>
