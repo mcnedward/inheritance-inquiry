@@ -1,9 +1,11 @@
 package com.mcnedward.app.ui.solution;
 
-import com.mcnedward.app.ui.component.PlaceholderTextField;
 import com.mcnedward.app.ui.cellRenderer.MetricCellRenderer;
+import com.mcnedward.app.ui.component.PlaceholderTextField;
+import com.mcnedward.app.ui.main.ProgressCard;
+import com.mcnedward.ii.builder.GraphBuilder;
 import com.mcnedward.ii.element.JavaSolution;
-import com.mcnedward.ii.exception.GraphBuildException;
+import com.mcnedward.ii.listener.GraphLoadListener;
 import com.mcnedward.ii.service.graph.IGraphService;
 import com.mcnedward.ii.service.graph.jung.JungGraph;
 import com.mcnedward.ii.service.metric.element.Metric;
@@ -14,8 +16,6 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +26,9 @@ import java.util.Map;
  */
 public class MetricPanel<T extends Metric> {
 
+    private static final String GRAPH_CARD = "GraphPanel";
+    private static final String GRAPH_PROGRESS_CARD = "GraphProgress";
+
     private JPanel mRoot;
     private JLabel mMetricName;
     private JLabel mMin;
@@ -35,8 +38,6 @@ public class MetricPanel<T extends Metric> {
     private JList<T> mMetricList;
     private DefaultListModel<T> mCachedMetricListModel;
     private DefaultListModel<T> mMetricListModel;
-    private JRadioButton mGenerateAll;
-    private JRadioButton mGenerateSelected;
     private JButton mBtnGenerate;
     private JTextField mTxtFilter;
     private JPanel mGraphPanel;
@@ -44,24 +45,26 @@ public class MetricPanel<T extends Metric> {
     private JButton mBtnZoomIn;
     private JButton mBtnZoomOut;
     private JPanel mTitlePanel;
+    private JPanel mGraphCards;
+    private ProgressCard mGraphProgress;
+    private JPanel mGraphContainer;
 
     private JavaSolution mSolution;
+    private GraphBuilder mGraphBuilder;
     private IGraphService mGraphService;
     private List<T> mMetrics;
     private Map<String, JungGraph> mGraphMap;
     private JungGraph mCurrentGraph;
+    private boolean mMetricListCreated;
 
     public void update(JavaSolution solution, IGraphService graphService, MetricInfo metricInfo, List<T> metrics) {
         IILogger.info("Updating metric panel");
         mSolution = solution;
+        mGraphBuilder = new GraphBuilder(graphLoadListener());
         mGraphService = graphService;
         updateMetricInfo(metricInfo);
         updateMetrics(metrics);
-
-        mBtnGenerate.addActionListener(e -> generateGraphs());
-        mBtnZoomIn.addActionListener(e -> zoomIn());
-        mBtnZoomOut.addActionListener(e -> zoomOut());
-        setupRadioButtons();
+        generateGraphs();
     }
 
     private void updateMetricInfo(MetricInfo metricInfo) {
@@ -69,120 +72,66 @@ public class MetricPanel<T extends Metric> {
         mMin.setText(String.valueOf(metricInfo.getMin()));
         mAverage.setText(String.valueOf((int) metricInfo.getAverage()));
         mMax.setText(String.valueOf(metricInfo.getMax()));
-
         mTitlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
     }
 
     private void updateMetrics(List<T> metrics) {
-        mMetricListModel = new DefaultListModel<>();
-        mCachedMetricListModel = new DefaultListModel<T>();
         mMetrics = metrics;
-
+        checkMetricListCreation();
+        if (mMetricListModel.size() > 0)
+            mMetricListModel.clear();
+        if (mCachedMetricListModel.size() > 0)
+            mCachedMetricListModel.clear();
         for (T metric : metrics) {
             mMetricListModel.addElement(metric);
             mCachedMetricListModel.addElement(metric);
         }
-
-        mMetricList = new JList<>(mMetricListModel);
-        mMetricList.setCellRenderer(new MetricCellRenderer());
-        mMetricList.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        mMetricList.setVisibleRowCount(10);
-        mMetricList.setSelectedIndex(0);
-        mMetricList.setDragEnabled(true);
-        mMetricList.addMouseListener(listMouseListener());
-        mMetricList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-//        mDitMetricList.addMouseListener();
-
-        // Set the size of the list panel
-        Dimension d = mMetricListPanel.getPreferredSize();
-        d.setSize(250, d.getHeight());
-        mMetricListPanel.setPreferredSize(d);
-
-        JScrollPane scrollPane = new JScrollPane(mMetricList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        mMetricListPanel.add(scrollPane);
-    }
-
-    private void setupRadioButtons() {
-        ButtonGroup group = new ButtonGroup();
-        group.add(mGenerateAll);
-        group.add(mGenerateSelected);
-        mGenerateSelected.setSelected(true);
-        mUseFullName.setSelected(true);
     }
 
     private void generateGraphs() {
+        showCard(GRAPH_PROGRESS_CARD);
         if (mGraphService == null) {
-            JOptionPane.showMessageDialog(null, "No graphs for this metric.", "No Graphs", JOptionPane.INFORMATION_MESSAGE);
+            mGraphProgress.error("No graphs for this metric.");
             return;
         }
-        List<String> selectedMetrics = new ArrayList<>();
-        if (mGenerateAll.isSelected()) {
-            for (int i = 0; i < mMetricListModel.size(); i++) {
-                selectedMetrics.add(mMetricListModel.getElementAt(i).fullyQualifiedName);
-            }
-        } else {
-            List<T> metrics = mMetricList.getSelectedValuesList();
-            for (T metric : metrics)
-                selectedMetrics.add(metric.fullyQualifiedName);
-        }
+        List<String> graphMetrics = new ArrayList<>();
+        for (T metric : mMetrics)
+            graphMetrics.add(metric.fullyQualifiedName);
         if (mGraphMap == null)
             mGraphMap = new HashMap<>();
         else
             mGraphMap.clear();
-        try {
-            IILogger.info("Generating graphs for: %s", selectedMetrics);
-            Integer width = mGraphPanel.getWidth();
-            Integer height = mGraphPanel.getHeight();
-
-            List<JungGraph> graphs = mGraphService.buildHierarchyGraphs(mSolution, selectedMetrics, width, height, mUseFullName.isSelected());
-            if (graphs.size() == 0) {
-                throw new GraphBuildException("No graphs were built...");
-            }
-            for (JungGraph graph : graphs) {
-                mGraphMap.put(graph.getElementName(), graph);
-            }
-            updateGraph(graphs.get(0));
-        } catch (GraphBuildException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Graph Build Error", JOptionPane.ERROR_MESSAGE);
-        }
+        IILogger.info("Generating graphs for: %s", graphMetrics);
+        Integer width = mGraphPanel.getWidth();
+        Integer height = mGraphPanel.getHeight();
+        mGraphBuilder.setup(mGraphService, mSolution, graphMetrics, width, height, mUseFullName.isSelected()).build();
     }
 
-    private MouseListener listMouseListener() {
-        return new MouseListener() {
+    private GraphLoadListener graphLoadListener() {
+        return new GraphLoadListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                if (mGraphMap != null && mGraphMap.size() > 0) {
-                    JList<T> list = (JList<T>) e.getSource();
-                    if (e.getClickCount() == 2) {
-                        // Double-click detected
-                        int index = list.locationToIndex(e.getPoint());
-                        T metric = list.getModel().getElementAt(index);
-                        JungGraph graph = mGraphMap.get(metric.fullyQualifiedName);
-                        if (graph != null) {
-                            updateGraph(graph);
-                        }
-                    }
+            public void onGraphsLoaded(List<JungGraph> graphs) {
+                if (graphs.size() == 0) {
+                    mGraphProgress.error("No graphs were built.");
+                    return;
                 }
+                for (JungGraph graph : graphs) {
+                    mGraphMap.put(graph.getElementName(), graph);
+                }
+                mMetricList.setSelectedIndex(0);
+                updateGraph(graphs.get(0));
+                showCard(GRAPH_CARD);
             }
 
             @Override
-            public void mousePressed(MouseEvent e) {
-
+            public void onProgressChange(String message, int progress) {
+                mGraphProgress.update(message, progress);
             }
 
             @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
+            public void onBuildError(String message, Exception exception) {
+                JOptionPane.showMessageDialog(mRoot, message, "Graph Build Error", JOptionPane.ERROR_MESSAGE);
+                IILogger.error(exception);
             }
         };
     }
@@ -195,6 +144,7 @@ public class MetricPanel<T extends Metric> {
         mGraphPanel.add(graph.getGraphPane(), BorderLayout.CENTER);
         mGraphPanel.revalidate();
         mGraphPanel.repaint();
+        IILogger.debug("Loading graph: " + graph.getElementName());
     }
 
     private void zoomIn() {
@@ -203,20 +153,6 @@ public class MetricPanel<T extends Metric> {
 
     private void zoomOut() {
         mCurrentGraph.setZoom(-1);
-    }
-
-    private void createUIComponents() {
-        mTxtFilter = new PlaceholderTextField("", "Filter classes");
-        mTxtFilter.getDocument().addDocumentListener(new DocumentListener() {
-            public void changedUpdate(DocumentEvent e) {
-            }
-            public void removeUpdate(DocumentEvent e) {
-                updateFilter(mTxtFilter.getText());
-            }
-            public void insertUpdate(DocumentEvent e) {
-                updateFilter(mTxtFilter.getText());
-            }
-        });
     }
 
     private void updateFilter(String text) {
@@ -230,6 +166,66 @@ public class MetricPanel<T extends Metric> {
                 }
             }
             mMetricList.setModel(mMetricListModel);
+        }
+    }
+
+    private void showCard(String card) {
+        ((CardLayout) mGraphCards.getLayout()).show(mGraphCards, card);
+    }
+
+    private void createUIComponents() {
+        mTxtFilter = new PlaceholderTextField("", "Filter classes");
+        mTxtFilter.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                updateFilter(mTxtFilter.getText());
+            }
+
+            public void insertUpdate(DocumentEvent e) {
+                updateFilter(mTxtFilter.getText());
+            }
+        });
+
+        mBtnGenerate = new JButton("Generate");
+        mBtnZoomIn = new JButton("Zoom In");
+        mBtnZoomOut = new JButton("Zoom Out");
+        mBtnGenerate.addActionListener(e -> generateGraphs());
+        mBtnZoomIn.addActionListener(e -> zoomIn());
+        mBtnZoomOut.addActionListener(e -> zoomOut());
+
+        mUseFullName = new JCheckBox("Use full name");
+        mUseFullName.setSelected(true);
+    }
+
+    private void checkMetricListCreation() {
+        if (!mMetricListCreated) {
+            mMetricListCreated = true;
+            mMetricListModel = new DefaultListModel<>();
+            mCachedMetricListModel = new DefaultListModel<>();
+            mMetricList = new JList<>(mMetricListModel);
+            mMetricList.setCellRenderer(new MetricCellRenderer());
+            mMetricList.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+            mMetricList.setVisibleRowCount(10);
+            mMetricList.setSelectedIndex(0);
+            mMetricList.setDragEnabled(true);
+            mMetricList.addListSelectionListener(e -> {
+                // Double-click detected
+                int index = mMetricList.getSelectedIndex();
+                T metric = mMetricList.getModel().getElementAt(index);
+                JungGraph graph = mGraphMap.get(metric.fullyQualifiedName);
+                if (graph != null) {
+                    updateGraph(graph);
+                }
+            });
+            mMetricList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+//        mDitMetricList.addMouseListener();
+            Dimension d = mMetricListPanel.getPreferredSize();
+            d.setSize(250, d.getHeight());
+            mMetricListPanel.setPreferredSize(d);
+            JScrollPane scrollPane = new JScrollPane(mMetricList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            mMetricListPanel.add(scrollPane);
         }
     }
 }

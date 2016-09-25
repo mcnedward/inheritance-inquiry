@@ -17,38 +17,26 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="345e3" class="javax.swing.JButton" binding="mBtnZoomIn">
+              <component id="345e3" class="javax.swing.JButton" binding="mBtnZoomIn" custom-create="true">
                 <constraints/>
                 <properties>
                   <text value="Zoom In"/>
                 </properties>
               </component>
-              <component id="8cc61" class="javax.swing.JButton" binding="mBtnZoomOut">
+              <component id="8cc61" class="javax.swing.JButton" binding="mBtnZoomOut" custom-create="true">
                 <constraints/>
                 <properties>
                   <text value="Zoom Out"/>
                 </properties>
               </component>
-              <component id="7779b" class="javax.swing.JCheckBox" binding="mUseFullName">
+              <component id="7779b" class="javax.swing.JCheckBox" binding="mUseFullName" custom-create="true">
                 <constraints/>
                 <properties>
                   <text value="Use full name"/>
                   <toolTipText value="Should the graphs use the element's fully qualified name (with the package)?"/>
                 </properties>
               </component>
-              <component id="76c1e" class="javax.swing.JRadioButton" binding="mGenerateAll">
-                <constraints/>
-                <properties>
-                  <text value="Generate all"/>
-                </properties>
-              </component>
-              <component id="72df8" class="javax.swing.JRadioButton" binding="mGenerateSelected">
-                <constraints/>
-                <properties>
-                  <text value="Select metrics"/>
-                </properties>
-              </component>
-              <component id="312b" class="javax.swing.JButton" binding="mBtnGenerate">
+              <component id="312b" class="javax.swing.JButton" binding="mBtnGenerate" custom-create="true">
                 <constraints/>
                 <properties>
                   <text value="Generate"/>
@@ -170,7 +158,7 @@
           </grid>
         </children>
       </grid>
-      <grid id="9576d" layout-manager="BorderLayout" hgap="0" vgap="0">
+      <grid id="9576d" binding="mGraphContainer" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints border-constraint="Center"/>
         <properties/>
         <border type="none"/>
@@ -204,15 +192,22 @@
               </grid>
             </children>
           </grid>
-          <grid id="77f86" layout-manager="BorderLayout" hgap="0" vgap="0">
+          <grid id="77f86" binding="mGraphCards" layout-manager="CardLayout" hgap="0" vgap="0">
             <constraints border-constraint="Center"/>
             <properties/>
             <border type="empty">
               <size top="5" left="10" bottom="0" right="10"/>
             </border>
             <children>
+              <nested-form id="990fd" form-file="com/mcnedward/app/ui/main/ProgressCard.form" binding="mGraphProgress">
+                <constraints>
+                  <card name="GraphProgress"/>
+                </constraints>
+              </nested-form>
               <grid id="1b048" binding="mGraphPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-                <constraints border-constraint="Center"/>
+                <constraints>
+                  <card name="GraphPanel"/>
+                </constraints>
                 <properties/>
                 <border type="line">
                   <color color="-8215621"/>

@@ -14,8 +14,14 @@ public class ProgressCard {
     private JPanel mRoot;
 
     public void update(String message, int progress) {
+        mProgressBar.setVisible(true);
         mLblProgress.setText(message);
         mProgressBar.setValue(progress);
+    }
+
+    public void error(String error) {
+        mLblProgress.setText(error);
+        mProgressBar.setVisible(false);
     }
 
     private void createUIComponents() {

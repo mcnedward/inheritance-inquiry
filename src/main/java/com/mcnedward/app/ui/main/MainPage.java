@@ -8,7 +8,6 @@ import com.mcnedward.ii.element.JavaSolution;
 import com.mcnedward.ii.listener.SolutionBuildListener;
 import com.mcnedward.ii.utils.IILogger;
 
-import javax.smartcardio.Card;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -74,7 +73,7 @@ public class MainPage {
      */
     private void load(File file, boolean deleteAfterBuild) {
         showCard(PROGRESS_CARD);
-        mProjectBuilder.build(file);
+        mProjectBuilder.setup(file).build();
     }
 
     public void openFileDialog() {
@@ -106,7 +105,7 @@ public class MainPage {
 
             @Override
             public void onBuildError(String message, Exception exception) {
-                JOptionPane.showMessageDialog(mRoot, message, "BuildError", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(mRoot, message, "Build Error", JOptionPane.ERROR_MESSAGE);
                 IILogger.error(exception);
                 showCard(HELP_CARD);
             }
