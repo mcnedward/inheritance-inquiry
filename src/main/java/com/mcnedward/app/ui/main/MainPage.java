@@ -1,7 +1,7 @@
 package com.mcnedward.app.ui.main;
 
-import com.mcnedward.app.ui.dialog.FileDialog;
 import com.mcnedward.app.ui.dialog.GitDialog;
+import com.mcnedward.app.ui.dialog.ProjectFileDialog;
 import com.mcnedward.app.ui.solution.SolutionPanel;
 import com.mcnedward.ii.builder.ProjectBuilder;
 import com.mcnedward.ii.element.JavaSolution;
@@ -31,7 +31,7 @@ public class MainPage {
 
     private static ProjectBuilder mProjectBuilder;
     // Dialogs
-    private static FileDialog mFileDialog;
+    private static ProjectFileDialog mFileDialog;
     private static GitDialog mGitDialog;
 
     public MainPage(JFrame parent) {
@@ -46,7 +46,7 @@ public class MainPage {
         JMenu mnAnalyze = new JMenu("Analyze");
         menuBar.add(mnAnalyze);
 
-        mFileDialog = new FileDialog(parent);
+        mFileDialog = new ProjectFileDialog(parent);
         JMenuItem mntmFromFile = new JMenuItem("From file");
         mntmFromFile.addActionListener(e -> openFileDialog());
         mnAnalyze.add(mntmFromFile);
@@ -59,7 +59,7 @@ public class MainPage {
         JMenu settingMenu = new JMenu("Settings");
         menuBar.add(settingMenu);
         JMenuItem fileSettings = new JMenuItem("Clear File Settings");
-        fileSettings.addActionListener(e -> FileDialog.clearPreference());
+        fileSettings.addActionListener(e -> mFileDialog.clearPreference());
         settingMenu.add(fileSettings);
         JMenuItem gitSettings = new JMenuItem("Clear Git Settings");
         gitSettings.addActionListener(e -> GitDialog.clearPreference());

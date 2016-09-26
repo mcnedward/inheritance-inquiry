@@ -16,6 +16,8 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,6 +58,7 @@ public class MetricPanel<T extends Metric> {
     private Map<String, JungGraph> mGraphMap;
     private JungGraph mCurrentGraph;
     private boolean mMetricListCreated;
+    private boolean mFilterFocused;
 
     public void update(JavaSolution solution, IGraphService graphService, MetricInfo metricInfo, List<T> metrics) {
         IILogger.info("Updating metric panel");
@@ -187,6 +190,17 @@ public class MetricPanel<T extends Metric> {
                 updateFilter(mTxtFilter.getText());
             }
         });
+        mTxtFilter.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                mFilterFocused = true;
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                mFilterFocused = false;
+            }
+        });
 
         mBtnGenerate = new JButton("Generate");
         mBtnZoomIn = new JButton("Zoom In");
@@ -211,8 +225,9 @@ public class MetricPanel<T extends Metric> {
             mMetricList.setSelectedIndex(0);
             mMetricList.setDragEnabled(true);
             mMetricList.addListSelectionListener(e -> {
-                // Double-click detected
                 int index = mMetricList.getSelectedIndex();
+                // Don't update here if the Filter text field is focused
+                if (mFilterFocused || index == -1) return;
                 T metric = mMetricList.getModel().getElementAt(index);
                 JungGraph graph = mGraphMap.get(metric.fullyQualifiedName);
                 if (graph != null) {
