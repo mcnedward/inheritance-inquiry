@@ -21,15 +21,16 @@ public abstract class IIFileDialog extends JDialog implements ActionListener {
     private JButton mBtnAction;
     private JButton mBtnCancel;
     private JPanel mRoot;
+    private JPanel mOptionsPanel;
 
     private JFileChooser mFileChooser;
-    private File mFile;
+    private File mDirectory;
     private boolean mSucceeded;
 
     IIFileDialog(Frame parent, String name) {
         super(parent, name, true);
         setContentPane(mRoot);
-        initialize();
+        initialize(mOptionsPanel);
         mLblInfo.setText(getInfoText());
         mLblForTxtField.setText(getTextFieldText());
         mBtnAction.setText(getActionButtonText());
@@ -39,9 +40,13 @@ public abstract class IIFileDialog extends JDialog implements ActionListener {
         getRootPane().registerKeyboardAction(this, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
     }
 
-    protected abstract void initialize();
-
-    protected abstract void mainAction(String fileLocation);
+    /**
+     * Does any additional initialization necessary for this {link IIFileDialog}. If the {@link JPanel} optionsPanel is
+     * used, you MUST call setVisible(true), since it is defaulting to false.
+     *
+     * @param optionsPanel The optionsPanel
+     */
+    protected abstract void initialize(JPanel optionsPanel);
 
     protected abstract String getInfoText();
 
@@ -51,8 +56,33 @@ public abstract class IIFileDialog extends JDialog implements ActionListener {
 
     protected abstract String getPreferenceKey();
 
+    /**
+     * Performs the main action for this IIFileDialog. If you need to provide additional functionality, override this
+     * method, implement the extract functions, and then call super.mainAction(String) at the end.
+     *
+     * @param directoryLocation The location of the directory.
+     */
+    protected void mainAction(String directoryLocation) {
+        if (directoryLocation == null || directoryLocation.equals("")) {
+            JOptionPane.showMessageDialog(null, "You need to select a directory.", "No Directory", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        File directory = new File(directoryLocation);
+        if (!directory.exists()) {
+            JOptionPane.showMessageDialog(null, "That file does not exist!", "File Not Found", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (directory.isFile()) {
+            JOptionPane.showMessageDialog(null, "You need to choose a directory, not a file.", "Must Be Directory", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        setDirectory(directory);
+        updatePreferences(directoryLocation);
+        closeWithSuccess();
+    }
+
     private void browseAction() {
-        mFileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        mFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
         File file;
         Object selectedItem = mCmbFileLocation.getSelectedItem();
@@ -64,8 +94,6 @@ public abstract class IIFileDialog extends JDialog implements ActionListener {
         int result = mFileChooser.showOpenDialog(mRoot);
         if (result == JFileChooser.APPROVE_OPTION) {
             String selectedFile = mFileChooser.getSelectedFile().getAbsolutePath();
-
-            updatePreferences(selectedFile);
             mCmbFileLocation.setSelectedItem(selectedFile);
         }
     }
@@ -93,12 +121,12 @@ public abstract class IIFileDialog extends JDialog implements ActionListener {
         PrefUtil.clearPreference(getPreferenceKey(), IIFileDialog.class);
     }
 
-    protected void setFile(File file) {
-        mFile = file;
+    protected void setDirectory(File directory) {
+        mDirectory = directory;
     }
 
-    public File getFile() {
-        return mFile;
+    public File getDirectory() {
+        return mDirectory;
     }
 
     private void createUIComponents() {
@@ -112,7 +140,7 @@ public abstract class IIFileDialog extends JDialog implements ActionListener {
         mCmbFileLocation.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent evt) {
                 if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-                    mainAction((String)mCmbFileLocation.getSelectedItem());
+                    mainAction((String) mCmbFileLocation.getSelectedItem());
                 }
             }
         });
@@ -143,6 +171,8 @@ public abstract class IIFileDialog extends JDialog implements ActionListener {
     void setDialogSize(int width, int height) {
         setMinimumSize(new Dimension(width, height));
         setMaximumSize(new Dimension(width, height));
+        setPreferredSize(new Dimension(width, height));
+        setSize(new Dimension(width, height));
     }
 
     public void closeWithSuccess() {

@@ -17,6 +17,8 @@ import java.io.File;
  */
 public class MainPage {
 
+    public static JFrame PARENT_FRAME;
+
     private static final String HELP_CARD = "HelpCard";
     private static final String PROGRESS_CARD = "ProgressCard";
     private static final String SOLUTION_CARD = "SolutionCard";
@@ -35,6 +37,7 @@ public class MainPage {
     private static GitDialog mGitDialog;
 
     public MainPage(JFrame parent) {
+        PARENT_FRAME = parent;
         mProjectBuilder = new ProjectBuilder(listener());
         initMenu(parent);
     }
@@ -79,7 +82,7 @@ public class MainPage {
     public void openFileDialog() {
         mFileDialog.setVisible(true);
         if (mFileDialog.isSuccessful()) {
-            load(mFileDialog.getFile(), false);
+            load(mFileDialog.getDirectory(), false);
         }
     }
 

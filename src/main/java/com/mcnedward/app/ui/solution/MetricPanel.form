@@ -19,16 +19,23 @@
               <size top="10" left="0" bottom="0" right="0"/>
             </border>
             <children>
-              <component id="345e3" class="javax.swing.JButton" binding="mBtnZoomIn" custom-create="true">
+              <component id="c636" class="javax.swing.JRadioButton" binding="mRdDownloadAll" custom-create="true">
                 <constraints/>
                 <properties>
-                  <text value="Zoom In"/>
+                  <selected value="true"/>
+                  <text value="Download all"/>
                 </properties>
               </component>
-              <component id="8cc61" class="javax.swing.JButton" binding="mBtnZoomOut" custom-create="true">
+              <component id="ae35a" class="javax.swing.JRadioButton" binding="mRdDownloadSelected" custom-create="true">
                 <constraints/>
                 <properties>
-                  <text value="Zoom Out"/>
+                  <text value="Download selected"/>
+                </properties>
+              </component>
+              <component id="13c26" class="javax.swing.JButton" binding="mBtnExport" custom-create="true">
+                <constraints/>
+                <properties>
+                  <text value="Download"/>
                 </properties>
               </component>
               <component id="7779b" class="javax.swing.JCheckBox" binding="mUseFullName" custom-create="true">
@@ -51,7 +58,7 @@
             <constraints border-constraint="West"/>
             <properties/>
             <border type="empty">
-              <size top="0" left="50" bottom="0" right="0"/>
+              <size top="0" left="60" bottom="0" right="0"/>
             </border>
             <children>
               <grid id="3bea1" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">

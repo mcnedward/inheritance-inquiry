@@ -2,9 +2,12 @@ package com.mcnedward.app.ui.solution;
 
 import com.mcnedward.app.ui.cellRenderer.MetricCellRenderer;
 import com.mcnedward.app.ui.component.PlaceholderTextField;
+import com.mcnedward.app.ui.dialog.ExportFileDialog;
+import com.mcnedward.app.ui.main.MainPage;
 import com.mcnedward.app.ui.main.ProgressCard;
 import com.mcnedward.ii.builder.GraphBuilder;
 import com.mcnedward.ii.element.JavaSolution;
+import com.mcnedward.ii.listener.GraphExportListener;
 import com.mcnedward.ii.listener.GraphLoadListener;
 import com.mcnedward.ii.service.graph.IGraphService;
 import com.mcnedward.ii.service.graph.jung.JungGraph;
@@ -18,10 +21,9 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.File;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Edward on 9/23/2016.
@@ -44,12 +46,13 @@ public class MetricPanel<T extends Metric> {
     private JTextField mTxtFilter;
     private JPanel mGraphPanel;
     private JCheckBox mUseFullName;
-    private JButton mBtnZoomIn;
-    private JButton mBtnZoomOut;
     private JPanel mTitlePanel;
     private JPanel mGraphCards;
     private ProgressCard mGraphProgress;
     private JPanel mGraphContainer;
+    private JButton mBtnExport;
+    private JRadioButton mRdDownloadAll;
+    private JRadioButton mRdDownloadSelected;
 
     private JavaSolution mSolution;
     private GraphBuilder mGraphBuilder;
@@ -57,13 +60,14 @@ public class MetricPanel<T extends Metric> {
     private List<T> mMetrics;
     private Map<String, JungGraph> mGraphMap;
     private JungGraph mCurrentGraph;
+    private ExportFileDialog mExportDialog;
     private boolean mMetricListCreated;
     private boolean mFilterFocused;
 
     public void update(JavaSolution solution, IGraphService graphService, MetricInfo metricInfo, List<T> metrics) {
         IILogger.info("Updating metric panel");
         mSolution = solution;
-        mGraphBuilder = new GraphBuilder(graphLoadListener());
+        mGraphBuilder = new GraphBuilder(graphLoadListener(), graphExportListener());
         mGraphService = graphService;
         updateMetricInfo(metricInfo);
         updateMetrics(metrics);
@@ -99,7 +103,7 @@ public class MetricPanel<T extends Metric> {
         }
         List<String> graphMetrics = new ArrayList<>();
         for (T metric : mMetrics)
-            graphMetrics.add(metric.fullyQualifiedName);
+            graphMetrics.add(metric.getFullyQualifiedName());
         if (mGraphMap == null)
             mGraphMap = new HashMap<>();
         else
@@ -107,38 +111,8 @@ public class MetricPanel<T extends Metric> {
         IILogger.info("Generating graphs for: %s", graphMetrics);
         Integer width = mGraphPanel.getWidth();
         Integer height = mGraphPanel.getHeight();
-        mGraphBuilder.setup(mGraphService, mSolution, graphMetrics, width, height, mUseFullName.isSelected()).build();
+        mGraphBuilder.setupForBuild(mGraphService, mSolution, graphMetrics, width, height, mUseFullName.isSelected()).build();
     }
-
-    private GraphLoadListener graphLoadListener() {
-        return new GraphLoadListener() {
-            @Override
-            public void onGraphsLoaded(List<JungGraph> graphs) {
-                if (graphs.size() == 0) {
-                    mGraphProgress.error("No graphs were built.");
-                    return;
-                }
-                for (JungGraph graph : graphs) {
-                    mGraphMap.put(graph.getElementName(), graph);
-                }
-                mMetricList.setSelectedIndex(0);
-                updateGraph(graphs.get(0));
-                showCard(GRAPH_CARD);
-            }
-
-            @Override
-            public void onProgressChange(String message, int progress) {
-                mGraphProgress.update(message, progress);
-            }
-
-            @Override
-            public void onBuildError(String message, Exception exception) {
-                JOptionPane.showMessageDialog(mRoot, message, "Graph Build Error", JOptionPane.ERROR_MESSAGE);
-                IILogger.error(exception);
-            }
-        };
-    }
-
     private void updateGraph(JungGraph graph) {
         mCurrentGraph = graph;
         if (mGraphPanel.getComponents().length > 0) {
@@ -147,15 +121,31 @@ public class MetricPanel<T extends Metric> {
         mGraphPanel.add(graph.getGraphPane(), BorderLayout.CENTER);
         mGraphPanel.revalidate();
         mGraphPanel.repaint();
-        IILogger.debug("Loading graph: " + graph.getElementName());
+        IILogger.debug("Loading graph: " + graph.getFullyQualifiedElementName());
     }
 
-    private void zoomIn() {
-        mCurrentGraph.setZoom(1);
-    }
+    private void exportGraphs() {
+        boolean downloadAll = mRdDownloadAll.isSelected();
+        mExportDialog.setVisible(true);
+        if (mExportDialog.isSuccessful()) {
+            boolean usePackages = mExportDialog.usePackages();
+            boolean useProjectName = mExportDialog.useProjectName();
+            File directory = mExportDialog.getDirectory();
 
-    private void zoomOut() {
-        mCurrentGraph.setZoom(-1);
+            Collection<JungGraph> graphs;
+            if (downloadAll) {
+                graphs = mGraphMap.values();
+            } else {
+                List<T> graphKeys = mMetricList.getSelectedValuesList();
+                graphs = new ArrayList<>();
+                for (T key : graphKeys)
+                    graphs.add(mGraphMap.get(key.getFullyQualifiedName()));
+            }
+            showCard(GRAPH_PROGRESS_CARD);
+            String projectName = useProjectName ? mSolution.getProjectName() : null;
+            mGraphBuilder.setupForExport(mGraphService, graphs, directory, usePackages, projectName).build();
+            IILogger.debug("Downloading %s %s graphs to %s. Use packages? %s", downloadAll ? "all" : "selected", graphs.size(), directory, usePackages);
+        }
     }
 
     private void updateFilter(String text) {
@@ -164,7 +154,7 @@ public class MetricPanel<T extends Metric> {
         } else {
             mMetricListModel.clear();
             for (T metric : mMetrics) {
-                if (metric.elementName.toLowerCase().startsWith(text.toLowerCase())) {
+                if (metric.getElementName().toLowerCase().startsWith(text.toLowerCase())) {
                     mMetricListModel.addElement(metric);
                 }
             }
@@ -203,14 +193,23 @@ public class MetricPanel<T extends Metric> {
         });
 
         mBtnGenerate = new JButton("Generate");
-        mBtnZoomIn = new JButton("Zoom In");
-        mBtnZoomOut = new JButton("Zoom Out");
         mBtnGenerate.addActionListener(e -> generateGraphs());
-        mBtnZoomIn.addActionListener(e -> zoomIn());
-        mBtnZoomOut.addActionListener(e -> zoomOut());
 
         mUseFullName = new JCheckBox("Use full name");
         mUseFullName.setSelected(true);
+
+        ButtonGroup group = new ButtonGroup();
+        mRdDownloadAll = new JRadioButton("Export all");
+        mRdDownloadAll.setToolTipText("Export graphs for all classes.");
+        mRdDownloadAll.setSelected(true);
+        group.add(mRdDownloadAll);
+        mRdDownloadSelected = new JRadioButton("Export selected");
+        mRdDownloadSelected.setToolTipText("Export graphs for only those classes that are selected in the list.");
+        group.add(mRdDownloadSelected);
+
+        mBtnExport = new JButton("Export");
+        mBtnExport.addActionListener(e -> exportGraphs());
+        mExportDialog = new ExportFileDialog(MainPage.PARENT_FRAME);
     }
 
     private void checkMetricListCreation() {
@@ -229,7 +228,7 @@ public class MetricPanel<T extends Metric> {
                 // Don't update here if the Filter text field is focused
                 if (mFilterFocused || index == -1) return;
                 T metric = mMetricList.getModel().getElementAt(index);
-                JungGraph graph = mGraphMap.get(metric.fullyQualifiedName);
+                JungGraph graph = mGraphMap.get(metric.getFullyQualifiedName());
                 if (graph != null) {
                     updateGraph(graph);
                 }
@@ -243,4 +242,54 @@ public class MetricPanel<T extends Metric> {
             mMetricListPanel.add(scrollPane);
         }
     }
+
+    private GraphLoadListener graphLoadListener() {
+        return new GraphLoadListener() {
+            @Override
+            public void onGraphsLoaded(List<JungGraph> graphs) {
+                if (graphs.size() == 0) {
+                    mGraphProgress.error("No graphs were built.");
+                    return;
+                }
+                for (JungGraph graph : graphs) {
+                    mGraphMap.put(graph.getFullyQualifiedElementName(), graph);
+                }
+                mMetricList.setSelectedIndex(0);
+                updateGraph(graphs.get(0));
+                showCard(GRAPH_CARD);
+            }
+
+            @Override
+            public void onProgressChange(String message, int progress) {
+                mGraphProgress.update(message, progress);
+            }
+
+            @Override
+            public void onBuildError(String message, Exception exception) {
+                JOptionPane.showMessageDialog(mRoot, message, "Graph Build Error", JOptionPane.ERROR_MESSAGE);
+                IILogger.error(exception);
+            }
+        };
+    }
+
+    private GraphExportListener graphExportListener() {
+        return new GraphExportListener() {
+            @Override
+            public void onGraphsExport() {
+                showCard(GRAPH_CARD);
+            }
+
+            @Override
+            public void onProgressChange(String message, int progress) {
+                mGraphProgress.update(message, progress);
+            }
+
+            @Override
+            public void onBuildError(String message, Exception exception) {
+                JOptionPane.showMessageDialog(mRoot, message, "Graph Export Error", JOptionPane.ERROR_MESSAGE);
+                IILogger.error(exception);
+            }
+        };
+    }
+
 }

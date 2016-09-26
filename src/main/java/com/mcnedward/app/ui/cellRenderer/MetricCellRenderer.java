@@ -29,8 +29,8 @@ public class MetricCellRenderer extends DefaultListCellRenderer {
         }
         if (value instanceof Metric) {
             Metric item = (Metric) value;
-            setText(String.format("%s %s: %s", item.elementName, metricType, item.metric));
-            setToolTipText(item.fullyQualifiedName);
+            setText(String.format("%s %s: %s", item.getElementName(), metricType, item.getMetric()));
+            setToolTipText(item.getFullyQualifiedName());
         }
         return this;
 	}
