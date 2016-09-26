@@ -18,13 +18,13 @@ public class TabPanel {
     private MetricPanel<DitMetric> mDitPanel;
     private MetricPanel<NocMetric> mNocPanel;
     private MetricPanel<WmcMetric> mWmcPanel;
-    private GraphPanel mGraphPanel;
+    private FullHierarchyPanel mFullHierarchyPanel;
 
     public void update(JavaSolution solution) {
         IILogger.debug("Updating TabPanel");
         mDitPanel.update(solution, ServiceFactory.ditGraphService(), solution.getDitMetricInfo(), solution.getDitMetrics());
         mNocPanel.update(solution, ServiceFactory.nocGraphService(), solution.getNocMetricInfo(), solution.getNocMetrics());
         mWmcPanel.update(solution, null, solution.getWmcMetricInfo(), solution.getWmcMetrics());
-        mGraphPanel.update(solution);
+        mFullHierarchyPanel.update(solution, ServiceFactory.fullGraphService());
     }
 }

@@ -2,13 +2,8 @@ package com.mcnedward.app.ui.solution;
 
 import com.mcnedward.app.ui.cellRenderer.MetricCellRenderer;
 import com.mcnedward.app.ui.component.PlaceholderTextField;
-import com.mcnedward.app.ui.dialog.ExportFileDialog;
-import com.mcnedward.app.ui.main.MainPage;
-import com.mcnedward.app.ui.main.ProgressCard;
-import com.mcnedward.ii.builder.GraphBuilder;
+import com.mcnedward.app.ui.listener.GraphPanelListener;
 import com.mcnedward.ii.element.JavaSolution;
-import com.mcnedward.ii.listener.GraphExportListener;
-import com.mcnedward.ii.listener.GraphLoadListener;
 import com.mcnedward.ii.service.graph.IGraphService;
 import com.mcnedward.ii.service.graph.jung.JungGraph;
 import com.mcnedward.ii.service.metric.element.Metric;
@@ -21,17 +16,15 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Edward on 9/23/2016.
  */
-public class MetricPanel<T extends Metric> {
-
-    private static final String GRAPH_CARD = "GraphPanel";
-    private static final String GRAPH_PROGRESS_CARD = "GraphProgress";
+public class MetricPanel<T extends Metric> implements GraphPanelListener {
 
     private JPanel mRoot;
     private JLabel mMetricName;
@@ -42,36 +35,22 @@ public class MetricPanel<T extends Metric> {
     private JList<T> mMetricList;
     private DefaultListModel<T> mCachedMetricListModel;
     private DefaultListModel<T> mMetricListModel;
-    private JButton mBtnGenerate;
     private JTextField mTxtFilter;
-    private JPanel mGraphPanel;
-    private JCheckBox mUseFullName;
+    private GraphPanel<T> mGraphPanel;
     private JPanel mTitlePanel;
-    private JPanel mGraphCards;
-    private ProgressCard mGraphProgress;
-    private JPanel mGraphContainer;
-    private JButton mBtnExport;
-    private JRadioButton mRdDownloadAll;
-    private JRadioButton mRdDownloadSelected;
 
-    private JavaSolution mSolution;
-    private GraphBuilder mGraphBuilder;
-    private IGraphService mGraphService;
     private List<T> mMetrics;
-    private Map<String, JungGraph> mGraphMap;
-    private JungGraph mCurrentGraph;
-    private ExportFileDialog mExportDialog;
     private boolean mMetricListCreated;
     private boolean mFilterFocused;
 
-    public void update(JavaSolution solution, IGraphService graphService, MetricInfo metricInfo, List<T> metrics) {
+    void update(JavaSolution solution, IGraphService graphService, MetricInfo metricInfo, List<T> metrics) {
         IILogger.info("Updating metric panel");
-        mSolution = solution;
-        mGraphBuilder = new GraphBuilder(graphLoadListener(), graphExportListener());
-        mGraphService = graphService;
         updateMetricInfo(metricInfo);
         updateMetrics(metrics);
-        generateGraphs();
+        List<String> fullyQualifiedNames = new ArrayList<>();
+        for (T metric : mMetrics)
+            fullyQualifiedNames.add(metric.getFullyQualifiedName());
+        mGraphPanel.update(solution, graphService, fullyQualifiedNames, this);
     }
 
     private void updateMetricInfo(MetricInfo metricInfo) {
@@ -95,59 +74,6 @@ public class MetricPanel<T extends Metric> {
         }
     }
 
-    private void generateGraphs() {
-        showCard(GRAPH_PROGRESS_CARD);
-        if (mGraphService == null) {
-            mGraphProgress.error("No graphs for this metric.");
-            return;
-        }
-        List<String> graphMetrics = new ArrayList<>();
-        for (T metric : mMetrics)
-            graphMetrics.add(metric.getFullyQualifiedName());
-        if (mGraphMap == null)
-            mGraphMap = new HashMap<>();
-        else
-            mGraphMap.clear();
-        IILogger.info("Generating graphs for: %s", graphMetrics);
-        Integer width = mGraphPanel.getWidth();
-        Integer height = mGraphPanel.getHeight();
-        mGraphBuilder.setupForBuild(mGraphService, mSolution, graphMetrics, width, height, mUseFullName.isSelected()).build();
-    }
-    private void updateGraph(JungGraph graph) {
-        mCurrentGraph = graph;
-        if (mGraphPanel.getComponents().length > 0) {
-            mGraphPanel.remove(0);
-        }
-        mGraphPanel.add(graph.getGraphPane(), BorderLayout.CENTER);
-        mGraphPanel.revalidate();
-        mGraphPanel.repaint();
-        IILogger.debug("Loading graph: " + graph.getFullyQualifiedElementName());
-    }
-
-    private void exportGraphs() {
-        boolean downloadAll = mRdDownloadAll.isSelected();
-        mExportDialog.setVisible(true);
-        if (mExportDialog.isSuccessful()) {
-            boolean usePackages = mExportDialog.usePackages();
-            boolean useProjectName = mExportDialog.useProjectName();
-            File directory = mExportDialog.getDirectory();
-
-            Collection<JungGraph> graphs;
-            if (downloadAll) {
-                graphs = mGraphMap.values();
-            } else {
-                List<T> graphKeys = mMetricList.getSelectedValuesList();
-                graphs = new ArrayList<>();
-                for (T key : graphKeys)
-                    graphs.add(mGraphMap.get(key.getFullyQualifiedName()));
-            }
-            showCard(GRAPH_PROGRESS_CARD);
-            String projectName = useProjectName ? mSolution.getProjectName() : null;
-            mGraphBuilder.setupForExport(mGraphService, graphs, directory, usePackages, projectName).build();
-            IILogger.debug("Downloading %s %s graphs to %s. Use packages? %s", downloadAll ? "all" : "selected", graphs.size(), directory, usePackages);
-        }
-    }
-
     private void updateFilter(String text) {
         if (text.length() == 0) {
             mMetricList.setModel(mCachedMetricListModel);
@@ -160,10 +86,6 @@ public class MetricPanel<T extends Metric> {
             }
             mMetricList.setModel(mMetricListModel);
         }
-    }
-
-    private void showCard(String card) {
-        ((CardLayout) mGraphCards.getLayout()).show(mGraphCards, card);
     }
 
     private void createUIComponents() {
@@ -191,25 +113,6 @@ public class MetricPanel<T extends Metric> {
                 mFilterFocused = false;
             }
         });
-
-        mBtnGenerate = new JButton("Generate");
-        mBtnGenerate.addActionListener(e -> generateGraphs());
-
-        mUseFullName = new JCheckBox("Use full name");
-        mUseFullName.setSelected(true);
-
-        ButtonGroup group = new ButtonGroup();
-        mRdDownloadAll = new JRadioButton("Export all");
-        mRdDownloadAll.setToolTipText("Export graphs for all classes.");
-        mRdDownloadAll.setSelected(true);
-        group.add(mRdDownloadAll);
-        mRdDownloadSelected = new JRadioButton("Export selected");
-        mRdDownloadSelected.setToolTipText("Export graphs for only those classes that are selected in the list.");
-        group.add(mRdDownloadSelected);
-
-        mBtnExport = new JButton("Export");
-        mBtnExport.addActionListener(e -> exportGraphs());
-        mExportDialog = new ExportFileDialog(MainPage.PARENT_FRAME);
     }
 
     private void checkMetricListCreation() {
@@ -228,10 +131,7 @@ public class MetricPanel<T extends Metric> {
                 // Don't update here if the Filter text field is focused
                 if (mFilterFocused || index == -1) return;
                 T metric = mMetricList.getModel().getElementAt(index);
-                JungGraph graph = mGraphMap.get(metric.getFullyQualifiedName());
-                if (graph != null) {
-                    updateGraph(graph);
-                }
+                mGraphPanel.updateGraph(metric.getFullyQualifiedName());
             });
             mMetricList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 //        mDitMetricList.addMouseListener();
@@ -243,53 +143,26 @@ public class MetricPanel<T extends Metric> {
         }
     }
 
-    private GraphLoadListener graphLoadListener() {
-        return new GraphLoadListener() {
-            @Override
-            public void onGraphsLoaded(List<JungGraph> graphs) {
-                if (graphs.size() == 0) {
-                    mGraphProgress.error("No graphs were built.");
-                    return;
-                }
-                for (JungGraph graph : graphs) {
-                    mGraphMap.put(graph.getFullyQualifiedElementName(), graph);
-                }
-                mMetricList.setSelectedIndex(0);
-                updateGraph(graphs.get(0));
-                showCard(GRAPH_CARD);
-            }
-
-            @Override
-            public void onProgressChange(String message, int progress) {
-                mGraphProgress.update(message, progress);
-            }
-
-            @Override
-            public void onBuildError(String message, Exception exception) {
-                JOptionPane.showMessageDialog(mRoot, message, "Graph Build Error", JOptionPane.ERROR_MESSAGE);
-                IILogger.error(exception);
-            }
-        };
+    @Override
+    public void onGraphsLoaded(JungGraph firstGraph) {
+        mMetricList.setSelectedIndex(0);
     }
 
-    private GraphExportListener graphExportListener() {
-        return new GraphExportListener() {
-            @Override
-            public void onGraphsExport() {
-                showCard(GRAPH_CARD);
+    @Override
+    public Collection<JungGraph> requestGraphs(Map<String, JungGraph> graphMap, boolean downloadAll) {
+        Collection<JungGraph> graphs;
+        if (downloadAll) {
+            graphs = graphMap.values();
+        } else {
+            List<T> graphKeys = mMetricList.getSelectedValuesList();
+            graphs = new ArrayList<>();
+            for (T key : graphKeys) {
+                JungGraph graph = graphMap.get(key.getFullyQualifiedName());
+                if (graph != null) {
+                    graphs.add(graph);
+                }
             }
-
-            @Override
-            public void onProgressChange(String message, int progress) {
-                mGraphProgress.update(message, progress);
-            }
-
-            @Override
-            public void onBuildError(String message, Exception exception) {
-                JOptionPane.showMessageDialog(mRoot, message, "Graph Export Error", JOptionPane.ERROR_MESSAGE);
-                IILogger.error(exception);
-            }
-        };
+        }
+        return graphs;
     }
-
 }

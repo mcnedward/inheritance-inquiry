@@ -18,13 +18,14 @@ public class InheritanceInquiry {
     public static int HEIGHT;
 
 	public static void main(String[] args) {
-		EventQueue.invokeLater(() -> {
+        EventQueue.invokeLater(() -> {
             try {
                 JFrame frame = new JFrame("Interface Inquiry");
                 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                    fixupIcons();
                 } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
                     IILogger.error("Something went wrong when trying to use the System Look and Feel...", e);
                 }
@@ -43,8 +44,6 @@ public class InheritanceInquiry {
 
                 MainPage mainPage = new MainPage(frame);
                 frame.setContentPane(mainPage.getRoot());
-
-                fixupIcons();
 
                 frame.setVisible(true);
             } catch (Exception e) {
