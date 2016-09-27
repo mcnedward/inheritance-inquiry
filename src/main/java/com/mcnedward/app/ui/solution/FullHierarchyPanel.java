@@ -12,14 +12,11 @@ import com.mcnedward.ii.utils.IILogger;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.*;
-import java.util.List;
 
 /**
  * Created by Edward on 9/24/2016.

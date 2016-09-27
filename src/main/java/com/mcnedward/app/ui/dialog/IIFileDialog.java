@@ -1,6 +1,6 @@
 package com.mcnedward.app.ui.dialog;
 
-import com.mcnedward.app.ui.utils.PrefUtil;
+import com.mcnedward.app.ui.utils.PrefUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -103,22 +103,22 @@ public abstract class IIFileDialog extends JDialog implements ActionListener {
     }
 
     void updatePreferences(String fileLocation) {
-        List<String> searchedLocations = PrefUtil.getListPreference(getPreferenceKey(), IIFileDialog.class);
+        List<String> searchedLocations = PrefUtils.getListPreference(getPreferenceKey(), IIFileDialog.class);
         if (!searchedLocations.contains(fileLocation)) {
-            PrefUtil.putInListPreference(getPreferenceKey(), fileLocation, IIFileDialog.class);
+            PrefUtils.putInListPreference(getPreferenceKey(), fileLocation, IIFileDialog.class);
             mCmbFileLocation.addItem(fileLocation);
         }
     }
 
     private void checkPreferences() {
-        List<String> fileLocations = PrefUtil.getListPreference(getPreferenceKey(), IIFileDialog.class);
+        List<String> fileLocations = PrefUtils.getListPreference(getPreferenceKey(), IIFileDialog.class);
         if (fileLocations == null) return;
         for (String location : fileLocations)
             mCmbFileLocation.addItem(location);
     }
 
     public void clearPreference() {
-        PrefUtil.clearPreference(getPreferenceKey(), IIFileDialog.class);
+        PrefUtils.clearPreference(getPreferenceKey(), IIFileDialog.class);
     }
 
     protected void setDirectory(File directory) {

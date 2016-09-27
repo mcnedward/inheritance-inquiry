@@ -145,7 +145,7 @@
                   <card name="GraphProgress"/>
                 </constraints>
               </nested-form>
-              <grid id="ab3e3" binding="mGraphPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+              <grid id="ab3e3" binding="mGraphContainer" layout-manager="BorderLayout" hgap="0" vgap="0">
                 <constraints>
                   <card name="GraphPanel"/>
                 </constraints>

@@ -12,7 +12,7 @@ import java.util.prefs.Preferences;
  * @author Edward - Jun 30, 2016
  *
  */
-public class PrefUtil {
+public class PrefUtils {
 	private static final String PREF_REGEX = "\\s*,\\s*";
 	private static final String PREF_LIST_SEPARATOR = " , ";
 	

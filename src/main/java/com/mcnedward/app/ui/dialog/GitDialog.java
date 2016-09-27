@@ -6,8 +6,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 
@@ -24,7 +22,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import com.mcnedward.app.InheritanceInquiry;
-import com.mcnedward.app.ui.utils.PrefUtil;
+import com.mcnedward.app.ui.utils.PrefUtils;
 import com.mcnedward.ii.listener.GitDownloadListener;
 import com.mcnedward.ii.service.GitService;
 
@@ -246,27 +244,27 @@ public class GitDialog extends BaseDialog {
 	}
 
 	private void checkPreferences() {
-		List<String> searchedRemotes = PrefUtil.<GitDialog> getListPreference(SEARCHED_REMOTES, GitDialog.class);
+		List<String> searchedRemotes = PrefUtils.<GitDialog> getListPreference(SEARCHED_REMOTES, GitDialog.class);
 		for (String remote : searchedRemotes)
 			mComboBox.addItem(remote);
-		mTxtUsername.setText(PrefUtil.<GitDialog> getPreference(USERNAME, GitDialog.class));
-		mTxtPassword.setText(PrefUtil.<GitDialog> getPreference(PASSWORD, GitDialog.class));
+		mTxtUsername.setText(PrefUtils.<GitDialog> getPreference(USERNAME, GitDialog.class));
+		mTxtPassword.setText(PrefUtils.<GitDialog> getPreference(PASSWORD, GitDialog.class));
 	}
 
 	private void updatePreferences(String remoteUrl) {
-		List<String> searchedRemotes = PrefUtil.<GitDialog> getListPreference(SEARCHED_REMOTES, GitDialog.class);
+		List<String> searchedRemotes = PrefUtils.<GitDialog> getListPreference(SEARCHED_REMOTES, GitDialog.class);
 		if (!searchedRemotes.contains(remoteUrl)) {
-			PrefUtil.<GitDialog> putInListPreference(SEARCHED_REMOTES, remoteUrl, GitDialog.class);
+			PrefUtils.<GitDialog> putInListPreference(SEARCHED_REMOTES, remoteUrl, GitDialog.class);
 			mComboBox.addItem(remoteUrl);
 		}
-		PrefUtil.<GitDialog> putPreference(USERNAME, mTxtUsername.getText(), GitDialog.class);
-		PrefUtil.<GitDialog> putPreference(PASSWORD, mTxtPassword.getText(), GitDialog.class);
+		PrefUtils.<GitDialog> putPreference(USERNAME, mTxtUsername.getText(), GitDialog.class);
+		PrefUtils.<GitDialog> putPreference(PASSWORD, mTxtPassword.getText(), GitDialog.class);
 	}
 
     public static void clearPreference() {
-        PrefUtil.clearPreference(SEARCHED_REMOTES, GitDialog.class);
-        PrefUtil.clearPreference(USERNAME, GitDialog.class);
-        PrefUtil.clearPreference(PASSWORD, GitDialog.class);
+        PrefUtils.clearPreference(SEARCHED_REMOTES, GitDialog.class);
+        PrefUtils.clearPreference(USERNAME, GitDialog.class);
+        PrefUtils.clearPreference(PASSWORD, GitDialog.class);
     }
 
 	public File getGitFile() {

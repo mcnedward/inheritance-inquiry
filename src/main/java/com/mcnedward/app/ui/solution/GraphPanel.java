@@ -1,12 +1,11 @@
 package com.mcnedward.app.ui.solution;
 
-import com.mcnedward.app.InheritanceInquiry;
 import com.mcnedward.app.ui.component.IIColorPicker;
 import com.mcnedward.app.ui.dialog.ExportFileDialog;
 import com.mcnedward.app.ui.listener.GraphPanelListener;
 import com.mcnedward.app.ui.main.MainPage;
 import com.mcnedward.app.ui.main.ProgressCard;
-import com.mcnedward.app.ui.utils.FontUtil;
+import com.mcnedward.app.ui.utils.FontUtils;
 import com.mcnedward.ii.builder.GraphBuilder;
 import com.mcnedward.ii.element.JavaSolution;
 import com.mcnedward.ii.exception.GraphBuildException;
@@ -35,7 +34,7 @@ public class GraphPanel<T extends Metric> {
     private JPanel mRoot;
     private JPanel mGraphCards;
     private ProgressCard mGraphProgress;
-    private JPanel mGraphPanel;
+    private JPanel mGraphContainer;
     private JRadioButton mRdExportAll;
     private JRadioButton mRdExportSelected;
     private JButton mBtnExport;
@@ -129,12 +128,12 @@ public class GraphPanel<T extends Metric> {
             return;
         }
         mCurrentGraph = graph;
-        if (mGraphPanel.getComponents().length > 0) {
-            mGraphPanel.remove(0);
+        if (mGraphContainer.getComponents().length > 0) {
+            mGraphContainer.remove(0);
         }
-        mGraphPanel.add(graph.getGraphPane(), BorderLayout.CENTER);
-        mGraphPanel.revalidate();
-        mGraphPanel.repaint();
+        mGraphContainer.add(graph.getGraphPane(), BorderLayout.CENTER);
+        mGraphContainer.revalidate();
+        mGraphContainer.repaint();
         IILogger.debug("Loading graph: " + graph.getFullyQualifiedElementName());
     }
 
@@ -242,7 +241,7 @@ public class GraphPanel<T extends Metric> {
     }
 
     private void checkResize() {
-        FontUtil.changeFont(mExportOptions, new Font(InheritanceInquiry.FONT_NAME, Font.PLAIN, 12));
-        FontUtil.changeFont(mUpdateOptions, new Font(InheritanceInquiry.FONT_NAME, Font.PLAIN, 12));
+        FontUtils.changeFont(mExportOptions, new Font(InheritanceInquiry.FONT_NAME, Font.PLAIN, 12));
+        FontUtils.changeFont(mUpdateOptions, new Font(InheritanceInquiry.FONT_NAME, Font.PLAIN, 12));
     }
 }

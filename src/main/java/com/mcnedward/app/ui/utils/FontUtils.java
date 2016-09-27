@@ -8,7 +8,7 @@ import java.awt.Font;
  * @author Edward - Jun 25, 2016
  *
  */
-public class FontUtil {
+public class FontUtils {
 	public static void changeFont(Component component, Font font) {
 		component.setFont(font);
 		if (component instanceof Container) {

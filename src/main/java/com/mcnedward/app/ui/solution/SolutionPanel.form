@@ -66,11 +66,7 @@
         <border type="empty">
           <size top="5" left="0" bottom="0" right="0"/>
         </border>
-        <children>
-          <nested-form id="402ff" form-file="com/mcnedward/app/ui/solution/TabPanel.form" binding="mTabPanel">
-            <constraints border-constraint="Center"/>
-          </nested-form>
-        </children>
+        <children/>
       </grid>
     </children>
   </grid>
