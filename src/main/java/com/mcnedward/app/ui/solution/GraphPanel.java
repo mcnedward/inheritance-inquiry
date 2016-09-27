@@ -1,14 +1,18 @@
 package com.mcnedward.app.ui.solution;
 
+import com.mcnedward.app.InheritanceInquiry;
 import com.mcnedward.app.ui.dialog.ExportFileDialog;
 import com.mcnedward.app.ui.listener.GraphPanelListener;
 import com.mcnedward.app.ui.main.MainPage;
 import com.mcnedward.app.ui.main.ProgressCard;
+import com.mcnedward.app.ui.utils.FontUtil;
 import com.mcnedward.ii.builder.GraphBuilder;
 import com.mcnedward.ii.element.JavaSolution;
+import com.mcnedward.ii.exception.GraphBuildException;
 import com.mcnedward.ii.listener.GraphExportListener;
 import com.mcnedward.ii.listener.GraphLoadListener;
 import com.mcnedward.ii.service.graph.IGraphService;
+import com.mcnedward.ii.service.graph.element.GraphOptions;
 import com.mcnedward.ii.service.graph.jung.JungGraph;
 import com.mcnedward.ii.service.metric.element.Metric;
 import com.mcnedward.ii.utils.IILogger;
@@ -35,7 +39,11 @@ public class GraphPanel<T extends Metric> {
     private JRadioButton mRdExportSelected;
     private JButton mBtnExport;
     private JCheckBox mUseFullName;
-    private JButton mBtnGenerate;
+    private JButton mBtnUpdate;
+    private JSpinner mSpnHDistance;
+    private JSpinner mSpnVDistance;
+    private JPanel mOptionPanel;
+    private JSpinner mSpnFontSize;
 
     private JavaSolution mSolution;
     private IGraphService mGraphService;
@@ -53,7 +61,8 @@ public class GraphPanel<T extends Metric> {
         mListener = listener;
         mGraphBuilder = new GraphBuilder(graphLoadListener(), graphExportListener());
         mGraphService = graphService;
-        generateGraphs();
+        updateGraphs();
+        checkResize();
     }
 
     private void updateHasGraphs(boolean hasGraphs) {
@@ -63,28 +72,46 @@ public class GraphPanel<T extends Metric> {
             showCard(GRAPH_CARD);
         }
         mBtnExport.setEnabled(hasGraphs);
-        mBtnGenerate.setEnabled(hasGraphs);
+        mBtnUpdate.setEnabled(hasGraphs);
         mRdExportAll.setEnabled(hasGraphs);
         mRdExportSelected.setEnabled(hasGraphs);
         mUseFullName.setEnabled(hasGraphs);
     }
 
-    private void generateGraphs() {
+    private void updateGraphs() {
         showCard(GRAPH_PROGRESS_CARD);
         if (mGraphService == null) {
             updateHasGraphs(false);
             return;
         }
-        if (mGraphMap == null)
+        Integer xDistance = (Integer) mSpnHDistance.getValue();
+        Integer yDistance = (Integer) mSpnVDistance.getValue();
+        Integer fontSize = (Integer) mSpnFontSize.getValue();
+        if (mGraphMap == null) {
+            IILogger.info("Generating graphs for: %s", mFullyQualifiedNames);
             mGraphMap = new HashMap<>();
-        else
-            mGraphMap.clear();
-        IILogger.info("Generating graphs for: %s", mFullyQualifiedNames);
-        Integer width = mGraphPanel.getWidth();
-        Integer height = mGraphPanel.getHeight();
-        mGraphBuilder.setupForBuild(mGraphService, mSolution, mFullyQualifiedNames, width, height, mUseFullName.isSelected()).build();
+            mGraphBuilder.setupForBuild(mGraphService, new GraphOptions(mSolution, mFullyQualifiedNames, xDistance, yDistance, fontSize, mUseFullName.isSelected())).build();
+        }
+        else {
+            IILogger.info("Updating graphs for: %s", mFullyQualifiedNames);
+            int i = 1;
+            for (JungGraph graph : mGraphMap.values()) {
+                int progress = (int) (((double) i / mGraphMap.size()) * 100);
+                String message = String.format("Generating graphs [%s / %s]...", i, mGraphMap.size());
+                mGraphProgress.update(message, progress);
+                try {
+                    GraphOptions options = new GraphOptions(xDistance, yDistance, fontSize);
+                    options.setVertexFillPaint(Color.RED);
+                    graph.update(options);
+                    updateGraph(graph);
+                } catch (GraphBuildException e) {
+                    IILogger.error(e);
+                }
+                i++;
+            }
+            showCard(GRAPH_CARD);
+        }
     }
-
 
     void updateGraph(String fullyQualifiedName) {
         updateGraph(mGraphMap.get(fullyQualifiedName));
@@ -175,8 +202,8 @@ public class GraphPanel<T extends Metric> {
     }
 
     private void createUIComponents() {
-        mBtnGenerate = new JButton("Generate");
-        mBtnGenerate.addActionListener(e -> generateGraphs());
+        mBtnUpdate = new JButton("Generate");
+        mBtnUpdate.addActionListener(e -> updateGraphs());
 
         mUseFullName = new JCheckBox("Use full name");
         mUseFullName.setSelected(true);
@@ -193,5 +220,13 @@ public class GraphPanel<T extends Metric> {
         mBtnExport = new JButton("Export");
         mBtnExport.addActionListener(e -> exportGraphs());
         mExportDialog = new ExportFileDialog(MainPage.PARENT_FRAME);
+
+        mSpnHDistance = new JSpinner(new SpinnerNumberModel(GraphOptions.DEFAULT_X_DIST, 0, 500, 10));
+        mSpnVDistance = new JSpinner(new SpinnerNumberModel(GraphOptions.DEFAULT_Y_DIST, 0, 500, 10));
+        mSpnFontSize = new JSpinner(new SpinnerNumberModel(GraphOptions.DEFAULT_FONT_SIZE, 6, 72, 2));
+    }
+
+    private void checkResize() {
+        FontUtil.changeFont(mOptionPanel, new Font(InheritanceInquiry.FONT_NAME, Font.PLAIN, 16));
     }
 }

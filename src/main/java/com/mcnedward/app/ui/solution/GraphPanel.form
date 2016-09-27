@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="mRoot" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="681" height="400"/>
+      <xy x="20" y="20" width="1101" height="400"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -15,45 +15,89 @@
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="6c674" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="2">
+          <grid id="6c674" binding="mOptionPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints border-constraint="North"/>
             <properties/>
             <border type="empty">
               <size top="10" left="0" bottom="0" right="4"/>
             </border>
             <children>
-              <component id="fd423" class="javax.swing.JRadioButton" binding="mRdExportAll" custom-create="true">
-                <constraints/>
-                <properties>
-                  <selected value="true"/>
-                  <text value="Download all"/>
-                </properties>
-              </component>
-              <component id="628f5" class="javax.swing.JRadioButton" binding="mRdExportSelected" custom-create="true">
-                <constraints/>
-                <properties>
-                  <text value="Download selected"/>
-                </properties>
-              </component>
-              <component id="14fdf" class="javax.swing.JButton" binding="mBtnExport" custom-create="true">
-                <constraints/>
-                <properties>
-                  <text value="Download"/>
-                </properties>
-              </component>
-              <component id="481e3" class="javax.swing.JCheckBox" binding="mUseFullName" custom-create="true">
-                <constraints/>
-                <properties>
-                  <text value="Use full name"/>
-                  <toolTipText value="Should the graphs use the element's fully qualified name (with the package)?"/>
-                </properties>
-              </component>
-              <component id="d1b56" class="javax.swing.JButton" binding="mBtnGenerate" custom-create="true">
-                <constraints/>
-                <properties>
-                  <text value="Generate"/>
-                </properties>
-              </component>
+              <grid id="229e0" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                <constraints border-constraint="West"/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="fd423" class="javax.swing.JRadioButton" binding="mRdExportAll" custom-create="true">
+                    <constraints/>
+                    <properties>
+                      <selected value="true"/>
+                      <text value="Export all"/>
+                    </properties>
+                  </component>
+                  <component id="628f5" class="javax.swing.JRadioButton" binding="mRdExportSelected" custom-create="true">
+                    <constraints/>
+                    <properties>
+                      <text value="Export selected"/>
+                    </properties>
+                  </component>
+                  <component id="14fdf" class="javax.swing.JButton" binding="mBtnExport" custom-create="true">
+                    <constraints/>
+                    <properties>
+                      <text value="Export"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="fea7d" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                <constraints border-constraint="East"/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="cf1ea" class="javax.swing.JLabel">
+                    <constraints/>
+                    <properties>
+                      <text value="Font size"/>
+                    </properties>
+                  </component>
+                  <component id="fa964" class="javax.swing.JSpinner" binding="mSpnFontSize" custom-create="true">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                  <component id="f1388" class="javax.swing.JLabel">
+                    <constraints/>
+                    <properties>
+                      <text value="Horizontal distance"/>
+                    </properties>
+                  </component>
+                  <component id="2b96e" class="javax.swing.JSpinner" binding="mSpnHDistance" custom-create="true">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                  <component id="8dd05" class="javax.swing.JLabel">
+                    <constraints/>
+                    <properties>
+                      <text value="Vertical distance"/>
+                    </properties>
+                  </component>
+                  <component id="692ec" class="javax.swing.JSpinner" binding="mSpnVDistance" custom-create="true">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                  <component id="481e3" class="javax.swing.JCheckBox" binding="mUseFullName" custom-create="true">
+                    <constraints/>
+                    <properties>
+                      <text value="Use full name"/>
+                      <toolTipText value="Should the graphs use the element's fully qualified name (with the package)?"/>
+                    </properties>
+                  </component>
+                  <component id="d1b56" class="javax.swing.JButton" binding="mBtnUpdate" custom-create="true">
+                    <constraints/>
+                    <properties>
+                      <text value="Generate"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
             </children>
           </grid>
           <grid id="57454" binding="mGraphCards" layout-manager="CardLayout" hgap="0" vgap="0">
