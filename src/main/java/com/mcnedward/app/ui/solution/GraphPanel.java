@@ -1,6 +1,7 @@
 package com.mcnedward.app.ui.solution;
 
 import com.mcnedward.app.InheritanceInquiry;
+import com.mcnedward.app.ui.component.IIColorPicker;
 import com.mcnedward.app.ui.dialog.ExportFileDialog;
 import com.mcnedward.app.ui.listener.GraphPanelListener;
 import com.mcnedward.app.ui.main.MainPage;
@@ -42,8 +43,13 @@ public class GraphPanel<T extends Metric> {
     private JButton mBtnUpdate;
     private JSpinner mSpnHDistance;
     private JSpinner mSpnVDistance;
-    private JPanel mOptionPanel;
     private JSpinner mSpnFontSize;
+    private JButton mBtnLabelColor;
+    private JButton mBtnFontColor;
+    private JButton mBtnArrowColor;
+    private JButton mBtnEdgeColor;
+    private JPanel mExportOptions;
+    private JPanel mUpdateOptions;
 
     private JavaSolution mSolution;
     private IGraphService mGraphService;
@@ -53,6 +59,7 @@ public class GraphPanel<T extends Metric> {
     private Map<String, JungGraph> mGraphMap;
     private JungGraph mCurrentGraph;
     private ExportFileDialog mExportDialog;
+    private Color mLabelColor, mFontColor, mArrowColor, mEdgeColor;
 
     void update(JavaSolution solution, IGraphService graphService, Collection<String> fullyQualifiedNames, GraphPanelListener listener) {
         mSolution = solution;
@@ -100,8 +107,7 @@ public class GraphPanel<T extends Metric> {
                 String message = String.format("Generating graphs [%s / %s]...", i, mGraphMap.size());
                 mGraphProgress.update(message, progress);
                 try {
-                    GraphOptions options = new GraphOptions(xDistance, yDistance, fontSize);
-                    options.setVertexFillPaint(Color.RED);
+                    GraphOptions options = new GraphOptions(xDistance, yDistance, fontSize, mLabelColor, mFontColor, mArrowColor, mEdgeColor);
                     graph.update(options);
                     updateGraph(graph);
                 } catch (GraphBuildException e) {
@@ -224,9 +230,19 @@ public class GraphPanel<T extends Metric> {
         mSpnHDistance = new JSpinner(new SpinnerNumberModel(GraphOptions.DEFAULT_X_DIST, 0, 500, 10));
         mSpnVDistance = new JSpinner(new SpinnerNumberModel(GraphOptions.DEFAULT_Y_DIST, 0, 500, 10));
         mSpnFontSize = new JSpinner(new SpinnerNumberModel(GraphOptions.DEFAULT_FONT_SIZE, 6, 72, 2));
+
+        mBtnLabelColor = new IIColorPicker(GraphOptions.DEFAULT_LABEL_COLOR);
+        ((IIColorPicker) mBtnLabelColor).addColorChangedListener(newColor -> mLabelColor = newColor);
+        mBtnFontColor = new IIColorPicker(GraphOptions.DEFAULT_FONT_COLOR);
+        ((IIColorPicker) mBtnFontColor).addColorChangedListener(newColor -> mFontColor = newColor);
+        mBtnArrowColor = new IIColorPicker(GraphOptions.DEFAULT_ARROW_COLOR);
+        ((IIColorPicker) mBtnArrowColor).addColorChangedListener(newColor -> mArrowColor = newColor);
+        mBtnEdgeColor = new IIColorPicker(GraphOptions.DEFAULT_EDGE_COLOR);
+        ((IIColorPicker) mBtnEdgeColor).addColorChangedListener(newColor -> mEdgeColor = newColor);
     }
 
     private void checkResize() {
-        FontUtil.changeFont(mOptionPanel, new Font(InheritanceInquiry.FONT_NAME, Font.PLAIN, 16));
+        FontUtil.changeFont(mExportOptions, new Font(InheritanceInquiry.FONT_NAME, Font.PLAIN, 12));
+        FontUtil.changeFont(mUpdateOptions, new Font(InheritanceInquiry.FONT_NAME, Font.PLAIN, 12));
     }
 }
