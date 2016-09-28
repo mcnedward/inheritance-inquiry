@@ -3,9 +3,12 @@ package com.mcnedward.app;
 import com.mcnedward.app.ui.main.MainPage;
 import com.mcnedward.ii.utils.IILogger;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author Edward - Aug 28, 2016
@@ -22,6 +25,7 @@ public class InheritanceInquiry {
             try {
                 JFrame frame = new JFrame("Interface Inquiry");
                 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                loadIcon(frame);
 
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -51,6 +55,17 @@ public class InheritanceInquiry {
             }
         });
 	}
+
+	private static void loadIcon(JFrame frame) {
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        try {
+            InputStream stream = classloader.getResourceAsStream("IILogo.png");
+            BufferedImage logo = ImageIO.read(stream);
+            frame.setIconImage(logo);
+        } catch (Exception e) {
+            IILogger.error(e);
+        }
+    }
 
     private static void fixupIcons() {
         // TODO This is probably not the best way to handle this, but it works for now.
