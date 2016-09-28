@@ -1,4 +1,4 @@
-package com.mcnedward.app.ui.main;
+package com.mcnedward.app.ui.form;
 
 import com.mcnedward.app.InheritanceInquiry;
 

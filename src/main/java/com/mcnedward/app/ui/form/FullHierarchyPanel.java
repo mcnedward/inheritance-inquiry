@@ -1,4 +1,4 @@
-package com.mcnedward.app.ui.solution;
+package com.mcnedward.app.ui.form;
 
 import com.mcnedward.app.ui.component.IITreeNode;
 import com.mcnedward.app.ui.component.PlaceholderTextField;
@@ -36,7 +36,7 @@ public class FullHierarchyPanel implements GraphPanelListener {
     private boolean mTreeCreated;
     private boolean mFilterFocused;
 
-    void update(JavaSolution solution, IGraphService graphService) {
+    public void update(JavaSolution solution, IGraphService graphService) {
         if (mPackageMap == null)
             mPackageMap = new HashMap<>();
         checkTreeCreated();

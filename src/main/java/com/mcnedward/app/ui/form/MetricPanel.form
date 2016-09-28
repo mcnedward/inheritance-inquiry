@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.mcnedward.app.ui.solution.MetricPanel">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.mcnedward.app.ui.form.MetricPanel">
   <grid id="27dc6" binding="mRoot" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
       <xy x="20" y="20" width="978" height="400"/>
@@ -165,7 +165,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <nested-form id="a7e18" form-file="com/mcnedward/app/ui/solution/GraphPanel.form" binding="mGraphPanel">
+              <nested-form id="a7e18" form-file="com/mcnedward/app/ui/form/GraphPanel.form" binding="mGraphPanel">
                 <constraints border-constraint="Center"/>
               </nested-form>
             </children>

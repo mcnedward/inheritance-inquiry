@@ -1,12 +1,10 @@
 
-package com.mcnedward.app.ui.solution;
+package com.mcnedward.app.ui.form;
 
 import com.mcnedward.app.InheritanceInquiry;
 import com.mcnedward.app.ui.component.IIColorPicker;
 import com.mcnedward.app.ui.dialog.ExportFileDialog;
 import com.mcnedward.app.ui.listener.GraphPanelListener;
-import com.mcnedward.app.ui.main.MainPage;
-import com.mcnedward.app.ui.main.ProgressCard;
 import com.mcnedward.app.ui.utils.ComponentUtils;
 import com.mcnedward.ii.builder.GraphBuilder;
 import com.mcnedward.ii.element.JavaSolution;
@@ -230,7 +228,7 @@ public class GraphPanel<T extends Metric> {
 
         mBtnExport = new JButton("Export");
         mBtnExport.addActionListener(e -> exportGraphs());
-        mExportDialog = new ExportFileDialog(MainPage.PARENT_FRAME);
+        mExportDialog = new ExportFileDialog(InheritanceInquiry.PARENT_FRAME);
 
         mSpnHDistance = new JSpinner(new SpinnerNumberModel(GraphOptions.DEFAULT_X_DIST, 0, 600, 10));
         mSpnVDistance = new JSpinner(new SpinnerNumberModel(GraphOptions.DEFAULT_Y_DIST, 0, 600, 10));

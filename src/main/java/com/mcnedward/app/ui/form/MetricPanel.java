@@ -1,4 +1,4 @@
-package com.mcnedward.app.ui.solution;
+package com.mcnedward.app.ui.form;
 
 import com.mcnedward.app.ui.cellRenderer.MetricCellRenderer;
 import com.mcnedward.app.ui.component.PlaceholderTextField;
@@ -43,7 +43,7 @@ public class MetricPanel<T extends Metric> implements GraphPanelListener {
     private boolean mMetricListCreated;
     private boolean mFilterFocused;
 
-    void update(JavaSolution solution, IGraphService graphService, MetricInfo metricInfo, List<T> metrics) {
+    public void update(JavaSolution solution, IGraphService graphService, MetricInfo metricInfo, List<T> metrics) {
         IILogger.info("Updating metric panel");
         updateMetricInfo(metricInfo);
         updateMetrics(metrics);
