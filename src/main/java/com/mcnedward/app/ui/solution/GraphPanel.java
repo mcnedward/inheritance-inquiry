@@ -1,5 +1,6 @@
 package com.mcnedward.app.ui.solution;
 
+import com.mcnedward.app.InheritanceInquiry;
 import com.mcnedward.app.ui.component.IIColorPicker;
 import com.mcnedward.app.ui.dialog.ExportFileDialog;
 import com.mcnedward.app.ui.listener.GraphPanelListener;

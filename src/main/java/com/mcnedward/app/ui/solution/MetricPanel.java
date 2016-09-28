@@ -37,7 +37,7 @@ public class MetricPanel<T extends Metric> implements GraphPanelListener {
     private DefaultListModel<T> mMetricListModel;
     private JTextField mTxtFilter;
     private GraphPanel<T> mGraphPanel;
-    private JPanel mTitlePanel;
+    private JPanel mMetricTitlePanel;
 
     private List<T> mMetrics;
     private boolean mMetricListCreated;
@@ -58,7 +58,7 @@ public class MetricPanel<T extends Metric> implements GraphPanelListener {
         mMin.setText(String.valueOf(metricInfo.getMin()));
         mAverage.setText(String.valueOf((int) metricInfo.getAverage()));
         mMax.setText(String.valueOf(metricInfo.getMax()));
-        mTitlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
+        mMetricTitlePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
     }
 
     private void updateMetrics(List<T> metrics) {
