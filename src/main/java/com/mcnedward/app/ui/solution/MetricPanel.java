@@ -127,11 +127,7 @@ public class MetricPanel<T extends Metric> implements GraphPanelListener {
             mMetricList.setSelectedIndex(0);
             mMetricList.setDragEnabled(true);
             mMetricList.addListSelectionListener(e -> {
-                int index = mMetricList.getSelectedIndex();
-                // Don't update here if the Filter text field is focused
-                if (mFilterFocused || index == -1) return;
-                T metric = mMetricList.getModel().getElementAt(index);
-                mGraphPanel.updateGraph(metric.getFullyQualifiedName());
+                moveToSelected();
             });
             mMetricList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 //        mDitMetricList.addMouseListener();
@@ -143,15 +139,23 @@ public class MetricPanel<T extends Metric> implements GraphPanelListener {
         }
     }
 
-    @Override
-    public void onGraphsLoaded(JungGraph firstGraph) {
-        mMetricList.setSelectedIndex(0);
+    private void moveToSelected() {
+        int index = mMetricList.getSelectedIndex();
+        // Don't update here if the Filter text field is focused
+        if (mFilterFocused || index == -1) return;
+        T metric = mMetricList.getModel().getElementAt(index);
+        mGraphPanel.updateGraph(metric.getFullyQualifiedName());
     }
 
     @Override
-    public Collection<JungGraph> requestGraphs(Map<String, JungGraph> graphMap, boolean downloadAll) {
+    public void onGraphsLoaded(JungGraph firstGraph) {
+        moveToSelected();
+    }
+
+    @Override
+    public Collection<JungGraph> requestGraphs(Map<String, JungGraph> graphMap, boolean exportAll) {
         Collection<JungGraph> graphs;
-        if (downloadAll) {
+        if (exportAll) {
             graphs = graphMap.values();
         } else {
             List<T> graphKeys = mMetricList.getSelectedValuesList();

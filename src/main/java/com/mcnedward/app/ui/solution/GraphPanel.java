@@ -1,3 +1,4 @@
+
 package com.mcnedward.app.ui.solution;
 
 import com.mcnedward.app.InheritanceInquiry;
@@ -6,7 +7,7 @@ import com.mcnedward.app.ui.dialog.ExportFileDialog;
 import com.mcnedward.app.ui.listener.GraphPanelListener;
 import com.mcnedward.app.ui.main.MainPage;
 import com.mcnedward.app.ui.main.ProgressCard;
-import com.mcnedward.app.ui.utils.FontUtils;
+import com.mcnedward.app.ui.utils.ComponentUtils;
 import com.mcnedward.ii.builder.GraphBuilder;
 import com.mcnedward.ii.element.JavaSolution;
 import com.mcnedward.ii.exception.GraphBuildException;
@@ -14,6 +15,7 @@ import com.mcnedward.ii.listener.GraphExportListener;
 import com.mcnedward.ii.listener.GraphLoadListener;
 import com.mcnedward.ii.service.graph.IGraphService;
 import com.mcnedward.ii.service.graph.element.GraphOptions;
+import com.mcnedward.ii.service.graph.element.GraphShape;
 import com.mcnedward.ii.service.graph.jung.JungGraph;
 import com.mcnedward.ii.service.metric.element.Metric;
 import com.mcnedward.ii.utils.IILogger;
@@ -36,11 +38,8 @@ public class GraphPanel<T extends Metric> {
     private JPanel mGraphCards;
     private ProgressCard mGraphProgress;
     private JPanel mGraphContainer;
-    private JRadioButton mRdExportAll;
-    private JRadioButton mRdExportSelected;
     private JButton mBtnExport;
-    private JCheckBox mUseFullName;
-    private JButton mBtnUpdate;
+    private JCheckBox mChkUseFullName;
     private JSpinner mSpnHDistance;
     private JSpinner mSpnVDistance;
     private JSpinner mSpnFontSize;
@@ -48,8 +47,11 @@ public class GraphPanel<T extends Metric> {
     private JButton mBtnFontColor;
     private JButton mBtnArrowColor;
     private JButton mBtnEdgeColor;
-    private JPanel mExportOptions;
-    private JPanel mUpdateOptions;
+    private JPanel mOptions;
+    private JComboBox<GraphShape> mCmbGraphShape;
+    private JCheckBox mChkShowEdgeLabel;
+    private JCheckBox mChkUpdateAll;
+    private JPanel mGraphOptions;
 
     private JavaSolution mSolution;
     private IGraphService mGraphService;
@@ -59,7 +61,7 @@ public class GraphPanel<T extends Metric> {
     private Map<String, JungGraph> mGraphMap;
     private JungGraph mCurrentGraph;
     private ExportFileDialog mExportDialog;
-    private Color mLabelColor, mFontColor, mArrowColor, mEdgeColor;
+    private Color mFontColor, mLabelColor, mArrowColor, mEdgeColor;
 
     void update(JavaSolution solution, IGraphService graphService, Collection<String> fullyQualifiedNames, GraphPanelListener listener) {
         mSolution = solution;
@@ -68,6 +70,7 @@ public class GraphPanel<T extends Metric> {
         mListener = listener;
         mGraphBuilder = new GraphBuilder(graphLoadListener(), graphExportListener());
         mGraphService = graphService;
+        mGraphMap = null;   // Need to reset the graphs
         updateGraphs();
         checkResize();
     }
@@ -78,11 +81,7 @@ public class GraphPanel<T extends Metric> {
         } else {
             showCard(GRAPH_CARD);
         }
-        mBtnExport.setEnabled(hasGraphs);
-        mBtnUpdate.setEnabled(hasGraphs);
-        mRdExportAll.setEnabled(hasGraphs);
-        mRdExportSelected.setEnabled(hasGraphs);
-        mUseFullName.setEnabled(hasGraphs);
+        ComponentUtils.setEnabled(mGraphOptions, hasGraphs);
     }
 
     private void updateGraphs() {
@@ -94,28 +93,42 @@ public class GraphPanel<T extends Metric> {
         Integer xDistance = (Integer) mSpnHDistance.getValue();
         Integer yDistance = (Integer) mSpnVDistance.getValue();
         Integer fontSize = (Integer) mSpnFontSize.getValue();
+        boolean useFullNames = mChkUseFullName.isSelected();
         if (mGraphMap == null) {
+            // Called only when a new solution is loaded
             IILogger.info("Generating graphs for: %s", mFullyQualifiedNames);
             mGraphMap = new HashMap<>();
-            mGraphBuilder.setupForBuild(mGraphService, new GraphOptions(mSolution, mFullyQualifiedNames, xDistance, yDistance, fontSize, mUseFullName.isSelected())).build();
+            mGraphBuilder.setupForBuild(mGraphService, new GraphOptions(mSolution, mFullyQualifiedNames, xDistance, yDistance, fontSize, useFullNames)).build();
         }
         else {
-            IILogger.info("Updating graphs for: %s", mFullyQualifiedNames);
-            int i = 1;
-            for (JungGraph graph : mGraphMap.values()) {
-                int progress = (int) (((double) i / mGraphMap.size()) * 100);
-                String message = String.format("Generating graphs [%s / %s]...", i, mGraphMap.size());
-                mGraphProgress.update(message, progress);
-                try {
-                    GraphOptions options = new GraphOptions(xDistance, yDistance, fontSize, mLabelColor, mFontColor, mArrowColor, mEdgeColor);
-                    graph.update(options);
-                    updateGraph(graph);
-                } catch (GraphBuildException e) {
-                    IILogger.error(e);
+            GraphOptions options = new GraphOptions(xDistance, yDistance, fontSize, mFontColor, mLabelColor, mArrowColor, mEdgeColor, (GraphShape) mCmbGraphShape.getSelectedItem());
+            options.setUseFullName(useFullNames);
+            options.setShowEdgeLabel(mChkShowEdgeLabel.isSelected());
+
+            if (!mChkUpdateAll.isSelected()) {
+                IILogger.info("Updating single graph for: %s", mCurrentGraph.getFullyQualifiedElementName());
+                updateGraph(mCurrentGraph, options);
+            } else {
+                IILogger.info("Updating all graphs");
+                int i = 1;
+                for (JungGraph graph : mGraphMap.values()) {
+                    int progress = (int) (((double) i / mGraphMap.size()) * 100);
+                    String message = String.format("Generating graphs [%s / %s]...", i, mGraphMap.size());
+                    mGraphProgress.update(message, progress);
+                    updateGraph(graph, options);
+                    i++;
                 }
-                i++;
             }
-            showCard(GRAPH_CARD);
+        }
+        showCard(GRAPH_CARD);
+    }
+
+    private void updateGraph(JungGraph graph, GraphOptions options) {
+        try {
+            graph.update(options);
+            updateGraph(graph);
+        } catch (GraphBuildException e) {
+            IILogger.error(e);
         }
     }
 
@@ -139,18 +152,18 @@ public class GraphPanel<T extends Metric> {
     }
 
     private void exportGraphs() {
-        boolean downloadAll = mRdExportAll.isSelected();
         mExportDialog.setVisible(true);
         if (mExportDialog.isSuccessful()) {
+            boolean exportAll = mExportDialog.exportAll();
             boolean usePackages = mExportDialog.usePackages();
             boolean useProjectName = mExportDialog.useProjectName();
             File directory = mExportDialog.getDirectory();
 
-            Collection<JungGraph> graphs = mListener.requestGraphs(mGraphMap, downloadAll);
+            Collection<JungGraph> graphs = mListener.requestGraphs(mGraphMap, exportAll);
             showCard(GRAPH_PROGRESS_CARD);
             String projectName = useProjectName ? mSolution.getProjectName() : null;
             mGraphBuilder.setupForExport(mGraphService, graphs, directory, usePackages, projectName).build();
-            IILogger.debug("Downloading %s %s graphs to %s. Use packages? %s", downloadAll ? "all" : "selected", graphs.size(), directory, usePackages);
+            IILogger.debug("Downloading %s %s graphs to %s. Use packages? %s", exportAll ? "all" : "selected", graphs.size(), directory, usePackages);
         }
     }
 
@@ -208,41 +221,39 @@ public class GraphPanel<T extends Metric> {
     }
 
     private void createUIComponents() {
-        mBtnUpdate = new JButton("Generate");
-        mBtnUpdate.addActionListener(e -> updateGraphs());
+        mChkUseFullName = new JCheckBox("Use full name");
+        mChkUseFullName.setSelected(true);
+        mChkUseFullName.addActionListener(e -> updateGraphs());
 
-        mUseFullName = new JCheckBox("Use full name");
-        mUseFullName.setSelected(true);
-
-        ButtonGroup group = new ButtonGroup();
-        mRdExportAll = new JRadioButton("Export all");
-        mRdExportAll.setToolTipText("Export graphs for all classes.");
-        mRdExportAll.setSelected(true);
-        group.add(mRdExportAll);
-        mRdExportSelected = new JRadioButton("Export selected");
-        mRdExportSelected.setToolTipText("Export graphs for only those classes that are selected in the list.");
-        group.add(mRdExportSelected);
+        mChkShowEdgeLabel = new JCheckBox("Edge label");
+        mChkShowEdgeLabel.addActionListener(e -> updateGraphs());
 
         mBtnExport = new JButton("Export");
         mBtnExport.addActionListener(e -> exportGraphs());
         mExportDialog = new ExportFileDialog(MainPage.PARENT_FRAME);
 
-        mSpnHDistance = new JSpinner(new SpinnerNumberModel(GraphOptions.DEFAULT_X_DIST, 0, 500, 10));
-        mSpnVDistance = new JSpinner(new SpinnerNumberModel(GraphOptions.DEFAULT_Y_DIST, 0, 500, 10));
+        mSpnHDistance = new JSpinner(new SpinnerNumberModel(GraphOptions.DEFAULT_X_DIST, 0, 600, 10));
+        mSpnVDistance = new JSpinner(new SpinnerNumberModel(GraphOptions.DEFAULT_Y_DIST, 0, 600, 10));
         mSpnFontSize = new JSpinner(new SpinnerNumberModel(GraphOptions.DEFAULT_FONT_SIZE, 6, 72, 2));
+        mSpnHDistance.addChangeListener(e -> updateGraphs());
+        mSpnVDistance.addChangeListener(e -> updateGraphs());
+        mSpnFontSize.addChangeListener(e -> updateGraphs());
 
-        mBtnLabelColor = new IIColorPicker(GraphOptions.DEFAULT_LABEL_COLOR);
-        ((IIColorPicker) mBtnLabelColor).addColorChangedListener(newColor -> mLabelColor = newColor);
         mBtnFontColor = new IIColorPicker(GraphOptions.DEFAULT_FONT_COLOR);
-        ((IIColorPicker) mBtnFontColor).addColorChangedListener(newColor -> mFontColor = newColor);
+        ((IIColorPicker) mBtnFontColor).addColorChangedListener(newColor -> {mFontColor = newColor; updateGraphs();});
+        mBtnLabelColor = new IIColorPicker(GraphOptions.DEFAULT_LABEL_COLOR);
+        ((IIColorPicker) mBtnLabelColor).addColorChangedListener(newColor -> {mLabelColor = newColor; updateGraphs();});
         mBtnArrowColor = new IIColorPicker(GraphOptions.DEFAULT_ARROW_COLOR);
-        ((IIColorPicker) mBtnArrowColor).addColorChangedListener(newColor -> mArrowColor = newColor);
+        ((IIColorPicker) mBtnArrowColor).addColorChangedListener(newColor -> {mArrowColor = newColor; updateGraphs();});
         mBtnEdgeColor = new IIColorPicker(GraphOptions.DEFAULT_EDGE_COLOR);
-        ((IIColorPicker) mBtnEdgeColor).addColorChangedListener(newColor -> mEdgeColor = newColor);
+        ((IIColorPicker) mBtnEdgeColor).addColorChangedListener(newColor -> {mEdgeColor = newColor; updateGraphs();});
+
+        ComboBoxModel<GraphShape> comboBoxModel = new DefaultComboBoxModel<>(GraphShape.values());
+        mCmbGraphShape = new JComboBox<>(comboBoxModel);
+        mCmbGraphShape.addActionListener(e -> updateGraphs());
     }
 
     private void checkResize() {
-        FontUtils.changeFont(mExportOptions, new Font(InheritanceInquiry.FONT_NAME, Font.PLAIN, 12));
-        FontUtils.changeFont(mUpdateOptions, new Font(InheritanceInquiry.FONT_NAME, Font.PLAIN, 12));
+        ComponentUtils.changeFont(mOptions, new Font(InheritanceInquiry.FONT_NAME, Font.PLAIN, 12));
     }
 }

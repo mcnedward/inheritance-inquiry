@@ -146,6 +146,9 @@ public abstract class IIFileDialog extends JDialog implements ActionListener {
         });
         mCmbFileLocation.setFont(font);
         mCmbFileLocation.setEditable(true);
+        mCmbFileLocation.setBorder(BorderFactory.createCompoundBorder(
+                mCmbFileLocation.getBorder(),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
         mBtnBrowse = new JButton("Browse");
         mBtnBrowse.setFont(font);

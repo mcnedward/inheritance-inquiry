@@ -31,6 +31,7 @@ public class FullHierarchyPanel implements GraphPanelListener {
 
     private TreeModel mTreeModel;
     private IITreeNode mTreeRoot;
+    private TreePath mNewTreePath;
     private Map<String, IITreeNode> mPackageMap;
     private boolean mTreeCreated;
     private boolean mFilterFocused;
@@ -98,8 +99,8 @@ public class FullHierarchyPanel implements GraphPanelListener {
             mProjectTree.setRowHeight(18);
             mProjectTree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
             mProjectTree.addTreeSelectionListener(e -> {
-                TreePath newTreePath = e.getNewLeadSelectionPath();
-                moveTreeTo(newTreePath);
+                mNewTreePath = e.getNewLeadSelectionPath();
+                moveTreeTo(mNewTreePath);
             });
 
             Dimension d = mTreePanel.getPreferredSize();
@@ -163,13 +164,13 @@ public class FullHierarchyPanel implements GraphPanelListener {
 
     @Override
     public void onGraphsLoaded(JungGraph firstGraph) {
-        updateFilter(firstGraph.getElementName());
+        moveTreeTo(mNewTreePath);
     }
 
     @Override
-    public Collection<JungGraph> requestGraphs(Map<String, JungGraph> graphMap, boolean downloadAll) {
+    public Collection<JungGraph> requestGraphs(Map<String, JungGraph> graphMap, boolean exportAll) {
         Collection<JungGraph> graphs;
-        if (downloadAll) {
+        if (exportAll) {
             graphs = graphMap.values();
         } else {
             graphs = new ArrayList<>();

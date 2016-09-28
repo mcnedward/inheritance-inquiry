@@ -8,7 +8,7 @@ import java.awt.Font;
  * @author Edward - Jun 25, 2016
  *
  */
-public class FontUtils {
+public class ComponentUtils {
 	public static void changeFont(Component component, Font font) {
 		component.setFont(font);
 		if (component instanceof Container) {
@@ -17,4 +17,13 @@ public class FontUtils {
 			}
 		}
 	}
+
+	public static void setEnabled(Component component, boolean enabled) {
+        component.setEnabled(enabled);
+        if (component instanceof Container) {
+            for (Component child : ((Container) component).getComponents()) {
+                setEnabled(child, enabled);
+            }
+        }
+    }
 }

@@ -14,8 +14,8 @@ public interface GraphPanelListener {
     /**
      * Requests the JungGraphs. The key for the Map is the element's fully qualified name.
      * @param graphMap
-     * @param downloadAll
+     * @param exportAll
      * @return
      */
-    Collection<JungGraph> requestGraphs(Map<String, JungGraph> graphMap, boolean downloadAll);
+    Collection<JungGraph> requestGraphs(Map<String, JungGraph> graphMap, boolean exportAll);
 }
