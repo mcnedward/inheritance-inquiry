@@ -27,6 +27,7 @@ public class InheritanceInquiry {
                 IIUtils.loadIcon(frame);
 
                 try {
+                    UIManager.put("ScrollBarUI", "com.mcnedward.app.ui.component.IIScrollBar");
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                     IIUtils.fixupIcons();
                 } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
