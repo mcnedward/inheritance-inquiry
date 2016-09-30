@@ -169,4 +169,5 @@ public class MetricPanel<T extends Metric> implements GraphPanelListener {
         }
         return graphs;
     }
+
 }

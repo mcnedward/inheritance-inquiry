@@ -9,6 +9,7 @@ import java.util.Map;
  * Created by Edward on 9/26/2016.
  */
 public interface GraphPanelListener {
+
     void onGraphsLoaded(JungGraph firstGraph);
 
     /**
