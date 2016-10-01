@@ -97,16 +97,16 @@ public class PrefUtils {
         if (!graphDefaultsSet) {
             // Need to load the Graph defaults for the first app run time.
             preferences.putBoolean(GRAPH_DEFAULTS_SET, true);
-            preferences.putInt(SettingConst.H_DISTANCE, GraphOptions.DEFAULT_X_DIST);
-            preferences.putInt(SettingConst.V_DISTANCE, GraphOptions.DEFAULT_Y_DIST);
-            preferences.putInt(SettingConst.FONT_SIZE, GraphOptions.DEFAULT_FONT_SIZE);
-            preferences.putInt(SettingConst.LABEL_COLOR, GraphOptions.DEFAULT_LABEL_COLOR.getRGB());
-            preferences.putInt(SettingConst.FONT_COLOR, GraphOptions.DEFAULT_FONT_COLOR.getRGB());
-            preferences.putInt(SettingConst.ARROW_COLOR, GraphOptions.DEFAULT_ARROW_COLOR.getRGB());
-            preferences.putInt(SettingConst.INTERFACE_LABEL_COLOR, GraphOptions.DEFAULT_INTERFACE_LABEL_COLOR.getRGB());
-            preferences.putInt(SettingConst.INTERFACE_EDGE_COLOR, GraphOptions.DEFAULT_INTERFACE_EDGE_COLOR.getRGB());
-            preferences.putInt(SettingConst.INTERFACE_ARROW_COLOR, GraphOptions.DEFAULT_INTERFACE_ARROW_COLOR.getRGB());
-            preferences.putInt(SettingConst.GRAPH_SHAPE, GraphOptions.DEFAULT_GRAPH_SHAPE.graphShapeValue);
+            preferences.putInt(SettingsConst.H_DISTANCE, GraphOptions.DEFAULT_X_DIST);
+            preferences.putInt(SettingsConst.V_DISTANCE, GraphOptions.DEFAULT_Y_DIST);
+            preferences.putInt(SettingsConst.FONT_SIZE, GraphOptions.DEFAULT_FONT_SIZE);
+            preferences.putInt(SettingsConst.LABEL_COLOR, GraphOptions.DEFAULT_LABEL_COLOR.getRGB());
+            preferences.putInt(SettingsConst.FONT_COLOR, GraphOptions.DEFAULT_FONT_COLOR.getRGB());
+            preferences.putInt(SettingsConst.ARROW_COLOR, GraphOptions.DEFAULT_ARROW_COLOR.getRGB());
+            preferences.putInt(SettingsConst.INTERFACE_LABEL_COLOR, GraphOptions.DEFAULT_INTERFACE_LABEL_COLOR.getRGB());
+            preferences.putInt(SettingsConst.INTERFACE_EDGE_COLOR, GraphOptions.DEFAULT_INTERFACE_EDGE_COLOR.getRGB());
+            preferences.putInt(SettingsConst.INTERFACE_ARROW_COLOR, GraphOptions.DEFAULT_INTERFACE_ARROW_COLOR.getRGB());
+            preferences.putInt(SettingsConst.GRAPH_SHAPE, GraphOptions.DEFAULT_GRAPH_SHAPE.graphShapeValue);
             save(preferences);
         }
     }

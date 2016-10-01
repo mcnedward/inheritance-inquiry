@@ -9,37 +9,32 @@ public class GraphOptionsPanel {
 
     private JCheckBox mChkExportDit;
     private JCheckBox mChkExportNoc;
-    private JCheckBox mChkExportWmc;
     private JCheckBox mChkExportFull;
     private JCheckBox mChkUsePackages;
     private JCheckBox mChkUseProjectName;
     private JPanel mRoot;
 
-    public boolean exportDit() {
+    boolean exportDit() {
         return mChkExportDit.isSelected();
     }
 
-    public boolean exportNoc() {
+    boolean exportNoc() {
         return mChkExportNoc.isSelected();
     }
 
-    public boolean exportWmc() {
-        return mChkExportWmc.isSelected();
-    }
-
-    public boolean exportFull() {
+    boolean exportFull() {
         return mChkExportFull.isSelected();
     }
 
-    public boolean exportUsePackages() {
+    boolean exportUsePackages() {
         return mChkUsePackages.isSelected();
     }
 
-    public boolean exportUseProjectName() {
+    boolean exportUseProjectName() {
         return mChkUseProjectName.isSelected();
     }
 
-    public JPanel getRoot() {
+    JPanel getRoot() {
         return mRoot;
     }
 }

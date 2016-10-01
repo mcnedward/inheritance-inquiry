@@ -1,16 +1,18 @@
 package com.mcnedward.app.ui.dialog;
 
+import com.mcnedward.app.ui.utils.SettingsConst;
+
 import javax.swing.*;
 import java.awt.*;
 
 /**
+ * A dialog from the Export menu options that allows for exporting Excel sheets for a project.
  * Created by Edward on 9/26/2016.
  */
 public class ExportMetricFileDialog extends IIFileDialog {
 
     private static final int WIDTH = 650;
     private static final int HEIGHT = 300;
-    private static final String PREFERENCE_KEY = "ExportMetricFileDialogKey";
 
     private MetricOptionsPanel mMetricOptionsPanel;
 
@@ -43,7 +45,7 @@ public class ExportMetricFileDialog extends IIFileDialog {
 
     @Override
     protected String getPreferenceKey() {
-        return PREFERENCE_KEY;
+        return SettingsConst.EXPORT_METRIC_FILE_DIALOG_KEY;
     }
 
     public boolean exportDit() {

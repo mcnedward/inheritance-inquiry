@@ -2,7 +2,6 @@ package com.mcnedward.app.ui.form;
 
 import com.mcnedward.app.InheritanceInquiry;
 import com.mcnedward.app.ui.dialog.*;
-import com.mcnedward.app.ui.listener.GraphRequestListener;
 import com.mcnedward.ii.builder.GraphBuilder;
 import com.mcnedward.ii.builder.MetricBuilder;
 import com.mcnedward.ii.builder.ProjectBuilder;
@@ -24,7 +23,6 @@ import com.mcnedward.ii.utils.ServiceFactory;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -62,9 +60,8 @@ public class MainPage {
     private static ProjectFileDialog mFileDialog;
     private static GitDialog mGitDialog;
     private ExportMetricFileDialog mExportMetricFileDialog;
-    private ExportGraphDialog mExportGraphMetricDialog;
+    private ExportAllGraphsDialog mExportGraphMetricDialog;
     private PreferencesDialog mPreferencesDialog;
-    private java.util.List<GraphRequestListener> mGraphListeners;
 
     public MainPage() {
         mProjectBuilder = new ProjectBuilder(solutionBuildListener());
@@ -89,11 +86,11 @@ public class MainPage {
 
         JMenu exportMenu = new JMenu("Export");
         menuBar.add(exportMenu);
-        mGraphSettings = new JMenuItem("Export Metric Graphs");
+        mGraphSettings = new JMenuItem("Metric Graphs");
         mGraphSettings.addActionListener(e -> openExportGraphDialog());
         mGraphSettings.setEnabled(false);
         exportMenu.add(mGraphSettings);
-        mSheetSettings = new JMenuItem("Export Metric Sheets");
+        mSheetSettings = new JMenuItem("Metric Sheets");
         mSheetSettings.addActionListener(e -> openExportMetricFileDialog());
         mSheetSettings.setEnabled(false);
         exportMenu.add(mSheetSettings);
@@ -110,7 +107,7 @@ public class MainPage {
 
     private void initDialogs(JFrame parent) {
         mExportMetricFileDialog = new ExportMetricFileDialog(parent);
-        mExportGraphMetricDialog = new ExportGraphDialog(parent);
+        mExportGraphMetricDialog = new ExportAllGraphsDialog(parent);
         mPreferencesDialog = new PreferencesDialog(parent);
     }
 
@@ -150,6 +147,7 @@ public class MainPage {
         }
     }
 
+    private int mGraphExportRequests;
     private void openExportGraphDialog() {
         mExportGraphMetricDialog.open();
         if (mExportGraphMetricDialog.isSuccessful()) {
@@ -158,9 +156,21 @@ public class MainPage {
             GraphBuilder builder = new GraphBuilder(graphExportListener());
             // The graph service type doesn't matter here, since we're just doing an export
             IGraphService service = ServiceFactory.ditGraphService();
-            for (GraphRequestListener listener : mGraphListeners) {
-                Collection<JungGraph> graphs = listener.requestGraphs();
+
+            if (mExportGraphMetricDialog.exportDit()) {
+                Collection<JungGraph> graphs = mDitPanel.requestGraphs();
                 builder.setupForExport(service, graphs, options).build();
+                mGraphExportRequests++;
+            }
+            if (mExportGraphMetricDialog.exportNoc()) {
+                Collection<JungGraph> graphs = mNocPanel.requestGraphs();
+                builder.setupForExport(service, graphs, options).build();
+
+            }
+            if (mExportGraphMetricDialog.exportFull()) {
+                Collection<JungGraph> graphs = mFullHierarchyPanel.requestGraphs();
+                builder.setupForExport(service, graphs, options).build();
+                mGraphExportRequests++;
             }
         }
     }
@@ -183,12 +193,6 @@ public class MainPage {
         mNocPanel = new MetricPanel<>();
         mWmcPanel = new MetricPanel<>();
         mFullHierarchyPanel = new FullHierarchyPanel();
-
-        // Register the panels as listeners
-        mGraphListeners = new ArrayList<>();
-        mGraphListeners.add(mDitPanel);
-        mGraphListeners.add(mNocPanel);
-        mGraphListeners.add(mFullHierarchyPanel);
     }
 
     private SolutionBuildListener solutionBuildListener() {
@@ -219,8 +223,9 @@ public class MainPage {
             @Override
             public void onGraphsExport() {
                 mGraphExportCount++;
-                if (mGraphExportCount == mGraphListeners.size()) {
+                if (mGraphExportCount == mGraphExportRequests) {
                     mGraphExportCount = 0;
+                    mGraphExportRequests = 0;
                     JOptionPane.showMessageDialog(null, "Metric graphs exported!", "Metric Graph Export Completed", JOptionPane.INFORMATION_MESSAGE);
                 }
             }

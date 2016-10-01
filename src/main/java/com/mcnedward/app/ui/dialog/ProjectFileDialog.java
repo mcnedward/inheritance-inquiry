@@ -1,11 +1,12 @@
 package com.mcnedward.app.ui.dialog;
 
-import com.mcnedward.app.ui.utils.SettingConst;
+import com.mcnedward.app.ui.utils.SettingsConst;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
+ * A dialog that allows for loading a project from a local file.
  * Created by Edward on 9/26/2016.
  */
 public class ProjectFileDialog extends IIFileDialog {
@@ -39,6 +40,6 @@ public class ProjectFileDialog extends IIFileDialog {
 
     @Override
     protected String getPreferenceKey() {
-        return SettingConst.PROJECT_FILE_DIALOG_KEY;
+        return SettingsConst.PROJECT_FILE_DIALOG_KEY;
     }
 }

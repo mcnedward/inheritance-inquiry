@@ -1,7 +1,7 @@
 package com.mcnedward.app.ui.dialog;
 
 import com.mcnedward.app.ui.utils.PrefUtils;
-import com.mcnedward.app.ui.utils.SettingConst;
+import com.mcnedward.app.ui.utils.SettingsConst;
 import com.mcnedward.ii.builder.GitBuilder;
 import com.mcnedward.ii.listener.GitDownloadListener;
 import com.mcnedward.ii.utils.ServiceFactory;
@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 /**
+ * A dialog that allows for loading a project from a remote Git repository.
  * Created by Edward on 10/1/2016.
  */
 public class GitDialog extends JDialog implements ActionListener {
@@ -81,22 +82,22 @@ public class GitDialog extends JDialog implements ActionListener {
     }
 
     private void checkPreferences() {
-        java.util.List<String> searchedRemotes = PrefUtils.getPreferenceList(SettingConst.GIT_SEARCHED_REMOTES, GitDialog.class);
+        java.util.List<String> searchedRemotes = PrefUtils.getPreferenceList(SettingsConst.GIT_SEARCHED_REMOTES, GitDialog.class);
+        mCmbRemoteUrl.removeAllItems();
         for (String remote : searchedRemotes)
             mCmbRemoteUrl.addItem(remote);
-        mTxtUsername.setText(PrefUtils.getPreference(SettingConst.GIT_USERNAME, GitDialog.class));
-        mTxtPassword.setText(PrefUtils.getPreference(SettingConst.GIT_PASSWORD, GitDialog.class));
+        mTxtUsername.setText(PrefUtils.getPreference(SettingsConst.GIT_USERNAME, GitDialog.class));
+        mTxtPassword.setText(PrefUtils.getPreference(SettingsConst.GIT_PASSWORD, GitDialog.class));
     }
 
     private void updatePreferences(String remoteUrl) {
-        java.util.List<String> searchedRemotes = PrefUtils.getPreferenceList(SettingConst.GIT_SEARCHED_REMOTES, GitDialog.class);
-        mCmbRemoteUrl.removeAllItems();
+        java.util.List<String> searchedRemotes = PrefUtils.getPreferenceList(SettingsConst.GIT_SEARCHED_REMOTES, GitDialog.class);
         if (!searchedRemotes.contains(remoteUrl)) {
-            PrefUtils.putInListPreference(SettingConst.GIT_SEARCHED_REMOTES, remoteUrl, GitDialog.class);
+            PrefUtils.putInListPreference(SettingsConst.GIT_SEARCHED_REMOTES, remoteUrl, GitDialog.class);
             mCmbRemoteUrl.addItem(remoteUrl);
         }
-        PrefUtils.putPreference(SettingConst.GIT_USERNAME, mTxtUsername.getText(), GitDialog.class);
-        PrefUtils.putPreference(SettingConst.GIT_USERNAME, mTxtPassword.getText(), GitDialog.class);
+        PrefUtils.putPreference(SettingsConst.GIT_USERNAME, mTxtUsername.getText(), GitDialog.class);
+        PrefUtils.putPreference(SettingsConst.GIT_USERNAME, mTxtPassword.getText(), GitDialog.class);
     }
 
     private void setDialogSize(int width, int height) {
