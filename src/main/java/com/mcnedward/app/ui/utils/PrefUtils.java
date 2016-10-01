@@ -64,7 +64,7 @@ public class PrefUtils {
         return preferences.getBoolean(key, false);
     }
 	
-	public static <T> List<String> getListPreference(String key, Class<T> clazz) {
+	public static <T> List<String> getPreferenceList(String key, Class<T> clazz) {
 		Preferences preferences = Preferences.userNodeForPackage(clazz);
 		String pref = preferences.get(key, "");
 		if (pref == null || pref.equals("")) {
@@ -78,6 +78,17 @@ public class PrefUtils {
         Preferences preferences = Preferences.userNodeForPackage(clazz);
         preferences.put(key, "");
         save(preferences);
+    }
+
+    public static <T> void clearPreferences(Class<T> clazz) {
+        IILogger.info("Clearing preferences for %s.", clazz);
+        Preferences preferences = Preferences.userNodeForPackage(clazz);
+        try {
+            preferences.clear();
+            save(preferences);
+        } catch (BackingStoreException e) {
+            IILogger.error(e);
+        }
     }
 
     public static void loadGraphDefaults() {

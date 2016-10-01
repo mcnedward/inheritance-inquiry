@@ -80,7 +80,7 @@ public abstract class IIFileDialog extends JDialog implements ActionListener {
         }
         setDirectory(directory);
         updatePreferences(directoryLocation);
-        closeWithSuccess();
+        close(true);
     }
 
     private void browseAction() {
@@ -100,13 +100,8 @@ public abstract class IIFileDialog extends JDialog implements ActionListener {
         }
     }
 
-    private void cancelAction() {
-        mSucceeded = false;
-        dispose();
-    }
-
     private void updatePreferences(String fileLocation) {
-        List<String> searchedLocations = PrefUtils.getListPreference(getPreferenceKey(), IIFileDialog.class);
+        List<String> searchedLocations = PrefUtils.getPreferenceList(getPreferenceKey(), IIFileDialog.class);
         if (!searchedLocations.contains(fileLocation)) {
             PrefUtils.putInListPreference(getPreferenceKey(), fileLocation, IIFileDialog.class);
             mCmbFileLocation.addItem(fileLocation);
@@ -114,19 +109,16 @@ public abstract class IIFileDialog extends JDialog implements ActionListener {
     }
 
     private void checkPreferences() {
-        List<String> fileLocations = PrefUtils.getListPreference(getPreferenceKey(), IIFileDialog.class);
+        List<String> fileLocations = PrefUtils.getPreferenceList(getPreferenceKey(), IIFileDialog.class);
         if (fileLocations == null) return;
+        mCmbFileLocation.removeAllItems();
         for (String location : fileLocations)
             mCmbFileLocation.addItem(location);
     }
 
-    public void clearPreference() {
-        PrefUtils.clearPreference(getPreferenceKey(), IIFileDialog.class);
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
-        cancelAction();
+        close(false);
     }
 
     void setDialogSize(int width, int height) {
@@ -136,8 +128,14 @@ public abstract class IIFileDialog extends JDialog implements ActionListener {
         setSize(new Dimension(width, height));
     }
 
-    private void closeWithSuccess() {
-        mSucceeded = true;
+    public void open() {
+        checkPreferences();
+        mSucceeded = false;
+        setVisible(true);
+    }
+
+    private void close(boolean succeeded) {
+        mSucceeded = succeeded;
         dispose();
     }
 
@@ -184,9 +182,10 @@ public abstract class IIFileDialog extends JDialog implements ActionListener {
 
         mBtnCancel = new JButton("Cancel");
         mBtnCancel.setFont(font);
-        mBtnCancel.addActionListener(e -> cancelAction());
+        mBtnCancel.addActionListener(e -> close(false));
 
         mFileChooser = new JFileChooser();
         checkPreferences();
     }
+
 }

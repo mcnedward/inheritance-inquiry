@@ -1,5 +1,7 @@
 package com.mcnedward.app.ui.dialog;
 
+import com.mcnedward.app.ui.utils.SettingConst;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,7 +12,6 @@ public class ProjectFileDialog extends IIFileDialog {
 
     private static final int WIDTH = 650;
     private static final int HEIGHT = 200;
-    private static final String PREFERENCE_KEY = "ProjectFileDialogKey";
 
     public ProjectFileDialog(Frame parent) {
         super(parent, "Project File Load");
@@ -38,6 +39,6 @@ public class ProjectFileDialog extends IIFileDialog {
 
     @Override
     protected String getPreferenceKey() {
-        return PREFERENCE_KEY;
+        return SettingConst.PROJECT_FILE_DIALOG_KEY;
     }
 }

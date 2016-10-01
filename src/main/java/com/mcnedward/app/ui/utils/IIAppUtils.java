@@ -11,7 +11,7 @@ import java.io.InputStream;
 /**
  * Created by Edward on 9/28/2016.
  */
-public class IIUtils {
+public class IIAppUtils {
 
     public static void loadIcon(JFrame frame) {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();

@@ -49,8 +49,9 @@ public class MetricPanel<T extends Metric> implements GraphPanelListener, GraphR
     private boolean mMetricListCreated;
     private boolean mFilterFocused;
 
-    public void update(JavaSolution solution, IGraphService graphService, MetricInfo metricInfo, List<T> metrics) {
+    void update(JavaSolution solution, IGraphService graphService, MetricInfo metricInfo, List<T> metrics) {
         IILogger.info("Updating metric panel");
+        checkMetricListCreation();
         updateMetricInfo(metricInfo);
         updateMetrics(metrics);
         List<String> fullyQualifiedNames = new ArrayList<>();
@@ -70,7 +71,6 @@ public class MetricPanel<T extends Metric> implements GraphPanelListener, GraphR
 
     private void updateMetrics(List<T> metrics) {
         mMetrics = metrics;
-        checkMetricListCreation();
         if (mMetricListModel.size() > 0)
             mMetricListModel.clear();
         if (mCachedMetricListModel.size() > 0)

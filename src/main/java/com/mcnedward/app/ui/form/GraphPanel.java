@@ -253,9 +253,12 @@ public class GraphPanel {
         mExportDialog = new ExportFileDialog(InheritanceInquiry.PARENT_FRAME);
 
         mChkUseFullName = new JCheckBox("Use full name");
-        mChkUseFullName.setSelected(true);
         mChkUseFullName.addActionListener(e -> { updateGraphs(); saveBool(SettingConst.USE_FULL_NAME, mChkUseFullName.isSelected()); });
         mChkUseFullName.setSelected(getPreferenceBool(SettingConst.USE_FULL_NAME));
+
+        mChkUpdateAll = new JCheckBox("Update all");
+        mChkUpdateAll.addActionListener(e -> { updateGraphs(); saveBool(SettingConst.UPDATE_ALL, mChkUpdateAll.isSelected()); });
+        mChkUpdateAll.setSelected(getPreferenceBool(SettingConst.UPDATE_ALL));
 
         mChkShowEdgeLabel = new JCheckBox("Edge label");
         mChkShowEdgeLabel.addActionListener(e -> { updateGraphs(); saveBool(SettingConst.EDGE_LABEL, mChkShowEdgeLabel.isSelected()); });

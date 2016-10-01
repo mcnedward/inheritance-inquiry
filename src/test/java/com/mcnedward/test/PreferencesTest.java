@@ -20,7 +20,7 @@ public class PreferencesTest {
 		PrefUtils.<PreferencesTest>putInListPreference("list", "there", PreferencesTest.class);
 		PrefUtils.<PreferencesTest>putInListPreference("list", "ed", PreferencesTest.class);
 		
-		List<String> list = PrefUtils.<PreferencesTest>getListPreference("list", PreferencesTest.class);
+		List<String> list = PrefUtils.<PreferencesTest>getPreferenceList("list", PreferencesTest.class);
 		
 		assertThat(list.get(0), is("hey"));
 		assertThat(list.get(1), is("there"));

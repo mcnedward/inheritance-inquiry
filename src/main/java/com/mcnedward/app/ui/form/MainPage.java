@@ -1,16 +1,13 @@
 package com.mcnedward.app.ui.form;
 
 import com.mcnedward.app.InheritanceInquiry;
-import com.mcnedward.app.ui.dialog.ExportGraphDialog;
-import com.mcnedward.app.ui.dialog.ExportMetricFileDialog;
-import com.mcnedward.app.ui.dialog.GitDialog;
-import com.mcnedward.app.ui.dialog.ProjectFileDialog;
-import com.mcnedward.app.ui.listener.GraphPanelListener;
+import com.mcnedward.app.ui.dialog.*;
 import com.mcnedward.app.ui.listener.GraphRequestListener;
 import com.mcnedward.ii.builder.GraphBuilder;
 import com.mcnedward.ii.builder.MetricBuilder;
 import com.mcnedward.ii.builder.ProjectBuilder;
 import com.mcnedward.ii.element.JavaSolution;
+import com.mcnedward.ii.listener.GitDownloadListener;
 import com.mcnedward.ii.listener.GraphExportListener;
 import com.mcnedward.ii.listener.MetricExportListener;
 import com.mcnedward.ii.listener.SolutionBuildListener;
@@ -33,7 +30,7 @@ import java.util.Collection;
 /**
  * Created by Edward on 9/25/2016.
  */
-public class MainPage implements MetricExportListener, GraphExportListener {
+public class MainPage {
 
     private static final String HELP_CARD = "HelpCard";
 
@@ -66,28 +63,11 @@ public class MainPage implements MetricExportListener, GraphExportListener {
     private static GitDialog mGitDialog;
     private ExportMetricFileDialog mExportMetricFileDialog;
     private ExportGraphDialog mExportGraphMetricDialog;
+    private PreferencesDialog mPreferencesDialog;
     private java.util.List<GraphRequestListener> mGraphListeners;
 
     public MainPage() {
-        mProjectBuilder = new ProjectBuilder(new SolutionBuildListener() {
-            public void finished(JavaSolution solution) {
-                IILogger.info("Build complete!");
-                loadSolution(solution);
-                showCard(SOLUTION_CARD);
-            }
-
-            @Override
-            public void onProgressChange(String message, int progress) {
-                mMainProgressCard.update(message, progress);
-            }
-
-            @Override
-            public void onBuildError(String message, Exception exception) {
-                JOptionPane.showMessageDialog(null, message, "Build Error", JOptionPane.ERROR_MESSAGE);
-                IILogger.error(exception);
-                showCard(HELP_CARD);
-            }
-        });
+        mProjectBuilder = new ProjectBuilder(solutionBuildListener());
         initMenu(InheritanceInquiry.PARENT_FRAME);
         initDialogs(InheritanceInquiry.PARENT_FRAME);
     }
@@ -98,16 +78,14 @@ public class MainPage implements MetricExportListener, GraphExportListener {
 
         JMenu mnAnalyze = new JMenu("Analyze");
         menuBar.add(mnAnalyze);
-
         mFileDialog = new ProjectFileDialog(parent);
         JMenuItem mntmFromFile = new JMenuItem("From file");
         mntmFromFile.addActionListener(e -> openFileDialog());
         mnAnalyze.add(mntmFromFile);
-
-        mGitDialog = new GitDialog(parent);
+        mGitDialog = new GitDialog(parent, gitDownloadListener());
         JMenuItem mntmFromGit = new JMenuItem("From git");
         mnAnalyze.add(mntmFromGit);
-        mntmFromGit.addActionListener(e -> openGitDialog());
+        mntmFromGit.addActionListener(e -> mGitDialog.open());
 
         JMenu exportMenu = new JMenu("Export");
         menuBar.add(exportMenu);
@@ -122,17 +100,18 @@ public class MainPage implements MetricExportListener, GraphExportListener {
 
         JMenu settingMenu = new JMenu("Settings");
         menuBar.add(settingMenu);
-        JMenuItem fileSettings = new JMenuItem("Clear File Settings");
-        fileSettings.addActionListener(e -> mFileDialog.clearPreference());
-        settingMenu.add(fileSettings);
-        JMenuItem gitSettings = new JMenuItem("Clear Git Settings");
-        gitSettings.addActionListener(e -> GitDialog.clearPreference());
-        settingMenu.add(gitSettings);
+        JMenuItem preferenceItem = new JMenuItem("Preferences");
+        preferenceItem.addActionListener(e -> mPreferencesDialog.open());
+        settingMenu.add(preferenceItem);
+        JMenuItem aboutItem = new JMenuItem("About");
+//        aboutItem.addActionListener(e -> GitDialog.clearPreference());
+        settingMenu.add(aboutItem);
     }
 
     private void initDialogs(JFrame parent) {
         mExportMetricFileDialog = new ExportMetricFileDialog(parent);
         mExportGraphMetricDialog = new ExportGraphDialog(parent);
+        mPreferencesDialog = new PreferencesDialog(parent);
     }
 
     private void loadSolution(JavaSolution solution) {
@@ -154,45 +133,29 @@ public class MainPage implements MetricExportListener, GraphExportListener {
         mSheetSettings.setEnabled(true);
     }
 
-    /**
-     * Loads a file or directory.
-     *
-     * @param file The File to loadFile
-     */
-    private void loadFile(File file) {
-        showCard(PROGRESS_CARD);
-        mProjectBuilder.setup(file).build();
-    }
-
     private void openFileDialog() {
-        mFileDialog.setVisible(true);
+        mFileDialog.open();
         if (mFileDialog.isSuccessful()) {
-            loadFile(mFileDialog.getDirectory());
-        }
-    }
-
-    private void openGitDialog() {
-        mGitDialog.setVisible(true);
-        if (mGitDialog.isSuccessful()) {
-            loadFile(mGitDialog.getGitFile());
+            showCard(PROGRESS_CARD);
+            mProjectBuilder.setup(mFileDialog.getDirectory()).build();
         }
     }
 
     private void openExportMetricFileDialog() {
-        mExportMetricFileDialog.setVisible(true);
+        mExportMetricFileDialog.open();
         if (mExportMetricFileDialog.isSuccessful()) {
             MetricOptions options = new MetricOptions(mSolution, mExportMetricFileDialog.getDirectory(), mExportMetricFileDialog.exportDit(), mExportMetricFileDialog.exportNoc(), mExportMetricFileDialog.exportWmc(), mExportMetricFileDialog.exportFull());
             options.setUseCsvFormat(mExportMetricFileDialog.useCsvFormat());
-            new MetricBuilder(this).setup(ServiceFactory.metricService(), options).build();
+            new MetricBuilder(metricExportListener()).setup(ServiceFactory.metricService(), options).build();
         }
     }
 
     private void openExportGraphDialog() {
-        mExportGraphMetricDialog.setVisible(true);
+        mExportGraphMetricDialog.open();
         if (mExportGraphMetricDialog.isSuccessful()) {
             String projectName = mExportGraphMetricDialog.useProjectName() ? mSolution.getProjectName() : null;
             GraphOptions options = new GraphOptions(mExportGraphMetricDialog.getDirectory(), projectName, mExportGraphMetricDialog.usePackages());
-            GraphBuilder builder = new GraphBuilder(this);
+            GraphBuilder builder = new GraphBuilder(graphExportListener());
             // The graph service type doesn't matter here, since we're just doing an export
             IGraphService service = ServiceFactory.ditGraphService();
             for (GraphRequestListener listener : mGraphListeners) {
@@ -214,7 +177,7 @@ public class MainPage implements MetricExportListener, GraphExportListener {
         mBtnFile = new JButton("From File");
         mBtnFile.addActionListener(e -> openFileDialog());
         mBtnGit = new JButton("From Git");
-        mBtnGit.addActionListener(e -> openGitDialog());
+        mBtnGit.addActionListener(e -> mGitDialog.open());
 
         mDitPanel = new MetricPanel<>();
         mNocPanel = new MetricPanel<>();
@@ -228,28 +191,93 @@ public class MainPage implements MetricExportListener, GraphExportListener {
         mGraphListeners.add(mFullHierarchyPanel);
     }
 
-    @Override
-    public void onProgressChange(String message, int progress) {
-        IILogger.debug(message + " - " + progress);
+    private SolutionBuildListener solutionBuildListener() {
+        return new SolutionBuildListener() {
+            public void finished(JavaSolution solution) {
+                IILogger.info("Build complete!");
+                loadSolution(solution);
+                showCard(SOLUTION_CARD);
+            }
+
+            @Override
+            public void onProgressChange(String message, int progress) {
+                mMainProgressCard.update(message, progress);
+            }
+
+            @Override
+            public void onBuildError(String message, Exception exception) {
+                JOptionPane.showMessageDialog(null, message, "Build Error", JOptionPane.ERROR_MESSAGE);
+                IILogger.error(exception);
+                showCard(HELP_CARD);
+            }
+        };
     }
 
-    @Override
-    public void onBuildError(String message, Exception exception) {
-        JOptionPane.showMessageDialog(null, message, "Metric Export Error", JOptionPane.ERROR_MESSAGE);
+    private GraphExportListener graphExportListener() {
+        return new GraphExportListener() {
+            private int mGraphExportCount;
+            @Override
+            public void onGraphsExport() {
+                mGraphExportCount++;
+                if (mGraphExportCount == mGraphListeners.size()) {
+                    mGraphExportCount = 0;
+                    JOptionPane.showMessageDialog(null, "Metric graphs exported!", "Metric Graph Export Completed", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+
+            @Override
+            public void onProgressChange(String message, int progress) {
+
+            }
+
+            @Override
+            public void onBuildError(String message, Exception exception) {
+                JOptionPane.showMessageDialog(null, message, "Graph Export Error", JOptionPane.ERROR_MESSAGE);
+            }
+        };
     }
 
-    @Override
-    public void onMetricsExported() {
-        JOptionPane.showMessageDialog(null, "Metric details exported!", "Metric Export Completed", JOptionPane.INFORMATION_MESSAGE);
+    private MetricExportListener metricExportListener() {
+        return new MetricExportListener() {
+            @Override
+            public void onMetricsExported() {
+                JOptionPane.showMessageDialog(null, "Metric details exported!", "Metric Export Completed", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+            @Override
+            public void onProgressChange(String message, int progress) {
+
+            }
+
+            @Override
+            public void onBuildError(String message, Exception exception) {
+                JOptionPane.showMessageDialog(null, message, "Metric Export Error", JOptionPane.ERROR_MESSAGE);
+            }
+        };
     }
 
-    private int mGraphExportCount;
-    @Override
-    public void onGraphsExport() {
-        mGraphExportCount++;
-        if (mGraphExportCount == mGraphListeners.size()) {
-            mGraphExportCount = 0;
-            JOptionPane.showMessageDialog(null, "Metric graphs exported!", "Metric Graph Export Completed", JOptionPane.INFORMATION_MESSAGE);
-        }
+    private GitDownloadListener gitDownloadListener() {
+        return new GitDownloadListener() {
+            private boolean mProgressSwitched;
+            @Override
+            public void onProgressChange(String message, int progress) {
+                if (!mProgressSwitched) {
+                    showCard(PROGRESS_CARD);
+                    mProgressSwitched = true;
+                }
+                mMainProgressCard.update(message, progress);
+            }
+
+            @Override
+            public void onBuildError(String message, Exception exception) {
+                JOptionPane.showMessageDialog(null, message, "Git Download Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+            @Override
+            public void finished(File gitFile, String repoName) {
+                mProjectBuilder.setup(gitFile).build();
+            }
+        };
     }
+
 }

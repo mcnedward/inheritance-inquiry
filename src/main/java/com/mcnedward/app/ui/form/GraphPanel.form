@@ -114,7 +114,7 @@
                               <toolTipText value="Show additional information about the metric at the edge"/>
                             </properties>
                           </component>
-                          <component id="3ac74" class="javax.swing.JCheckBox" binding="mChkUpdateAll">
+                          <component id="3ac74" class="javax.swing.JCheckBox" binding="mChkUpdateAll" custom-create="true">
                             <constraints/>
                             <properties>
                               <text value="Update all"/>
