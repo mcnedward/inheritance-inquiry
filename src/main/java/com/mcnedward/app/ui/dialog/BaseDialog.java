@@ -1,14 +1,10 @@
 package com.mcnedward.app.ui.dialog;
 
-import java.awt.Dimension;
-import java.awt.Frame;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.KeyStroke;
 
 /**
  * @author Edward - Jun 26, 2016
@@ -19,7 +15,7 @@ public abstract class BaseDialog extends JDialog implements ActionListener {
 
 	private boolean mSucceeded;
 
-	public BaseDialog(Frame parent, String name) {
+	BaseDialog(Frame parent, String name) {
 		super(parent, name, true);
 		
 		initialize();
@@ -36,12 +32,12 @@ public abstract class BaseDialog extends JDialog implements ActionListener {
 		setVisible(false);
 	}
 	
-	protected void setDialogSize(int width, int height) {
+	void setDialogSize(int width, int height) {
 		setMinimumSize(new Dimension(width, height));
 		setMaximumSize(new Dimension(width, height));
 	}
 	
-	public void closeWithSuccess() {
+	void closeWithSuccess() {
 		mSucceeded = true;
 		dispose();
 	}

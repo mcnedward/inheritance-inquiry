@@ -95,7 +95,6 @@ public class IIListModel<T extends Metric> extends AbstractListModel<T> {
     }
 }
 
-
 class MetricAlphaAToZComparator implements Comparator<Metric> {
     @Override
     public int compare(Metric o1, Metric o2) {

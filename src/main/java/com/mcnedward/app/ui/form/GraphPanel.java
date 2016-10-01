@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Created by Edward on 9/26/2016.
  */
-public class GraphPanel<T extends Metric> {
+public class GraphPanel {
 
     private static final String GRAPH_CARD = "GraphPanel";
     private static final String GRAPH_PROGRESS_CARD = "GraphProgress";
@@ -160,9 +160,13 @@ public class GraphPanel<T extends Metric> {
             Collection<JungGraph> graphs = mListener.requestGraphs(mGraphMap, exportAll);
             showCard(GRAPH_PROGRESS_CARD);
             String projectName = useProjectName ? mSolution.getProjectName() : null;
-            mGraphBuilder.setupForExport(mGraphService, graphs, directory, usePackages, projectName).build();
+            mGraphBuilder.setupForExport(mGraphService, graphs, new GraphOptions(directory, projectName, usePackages)).build();
             IILogger.debug("Downloading %s %s graphs to %s. Use packages? %s", exportAll ? "all" : "selected", graphs.size(), directory, usePackages);
         }
+    }
+
+    protected Collection<JungGraph> getGraphs() {
+        return mGraphMap.values();
     }
 
     private void showCard(String card) {

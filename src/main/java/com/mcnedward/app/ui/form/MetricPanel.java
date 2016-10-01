@@ -4,6 +4,7 @@ import com.mcnedward.app.ui.cellRenderer.MetricCellRenderer;
 import com.mcnedward.app.ui.component.IIListModel;
 import com.mcnedward.app.ui.component.PlaceholderTextField;
 import com.mcnedward.app.ui.listener.GraphPanelListener;
+import com.mcnedward.app.ui.listener.GraphRequestListener;
 import com.mcnedward.app.ui.utils.DialogUtils;
 import com.mcnedward.ii.element.JavaSolution;
 import com.mcnedward.ii.service.graph.IGraphService;
@@ -25,7 +26,7 @@ import java.util.List;
 /**
  * Created by Edward on 9/23/2016.
  */
-public class MetricPanel<T extends Metric> implements GraphPanelListener {
+public class MetricPanel<T extends Metric> implements GraphPanelListener, GraphRequestListener {
 
     private JPanel mRoot;
     private JLabel mMetricName;
@@ -37,10 +38,10 @@ public class MetricPanel<T extends Metric> implements GraphPanelListener {
     private IIListModel<T> mCachedMetricListModel;
     private IIListModel<T> mMetricListModel;
     private JTextField mTxtFilter;
-    private GraphPanel<T> mGraphPanel;
+    private GraphPanel mGraphPanel;
     private JPanel mMetricTitlePanel;
     private JButton mInfoButton;
-    private JButton mBtnSortAlpa;
+    private JButton mBtnSortAlpha;
     private JButton mBtnSortMetric;
 
     private List<T> mMetrics;
@@ -90,7 +91,6 @@ public class MetricPanel<T extends Metric> implements GraphPanelListener {
                     mMetricListModel.addElement(metric);
                 }
             }
-            mMetricList.setModel(mMetricListModel);
         }
     }
 
@@ -105,9 +105,7 @@ public class MetricPanel<T extends Metric> implements GraphPanelListener {
             mMetricList.setVisibleRowCount(10);
             mMetricList.setSelectedIndex(0);
             mMetricList.setDragEnabled(true);
-            mMetricList.addListSelectionListener(e -> {
-                moveToSelected();
-            });
+            mMetricList.addListSelectionListener(e -> moveToSelected());
             mMetricList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 //        mDitMetricList.addMouseListener();
             Dimension d = mMetricListPanel.getPreferredSize();
@@ -158,6 +156,11 @@ public class MetricPanel<T extends Metric> implements GraphPanelListener {
         return graphs;
     }
 
+    @Override
+    public Collection<JungGraph> requestGraphs() {
+        return mGraphPanel.getGraphs();
+    }
+
     private void createUIComponents() {
         mTxtFilter = new PlaceholderTextField("", "Filter classes");
         mTxtFilter.getDocument().addDocumentListener(new DocumentListener() {
@@ -187,12 +190,11 @@ public class MetricPanel<T extends Metric> implements GraphPanelListener {
         mInfoButton.setMargin(new Insets(2, 5, 0, 5));
         mInfoButton.addActionListener(e -> openInfoDialog());
 
-        mBtnSortAlpa = new JButton();
-        mBtnSortAlpa.setMargin(new Insets(4, 4, 4, 4));
-        mBtnSortAlpa.addActionListener(e -> sortList(IIListModel.ALPHA));
+        mBtnSortAlpha = new JButton();
+        mBtnSortAlpha.setMargin(new Insets(4, 4, 4, 4));
+        mBtnSortAlpha.addActionListener(e -> sortList(IIListModel.ALPHA));
         mBtnSortMetric = new JButton();
         mBtnSortMetric.setMargin(new Insets(4, 4, 4, 4));
         mBtnSortMetric.addActionListener(e -> sortList(IIListModel.VALUE));
     }
-
 }

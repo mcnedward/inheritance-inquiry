@@ -3,6 +3,7 @@ package com.mcnedward.app.ui.form;
 import com.mcnedward.app.ui.component.IITreeNode;
 import com.mcnedward.app.ui.component.PlaceholderTextField;
 import com.mcnedward.app.ui.listener.GraphPanelListener;
+import com.mcnedward.app.ui.listener.GraphRequestListener;
 import com.mcnedward.ii.element.JavaSolution;
 import com.mcnedward.ii.service.graph.IGraphService;
 import com.mcnedward.ii.service.graph.element.FullHierarchy;
@@ -21,7 +22,7 @@ import java.util.*;
 /**
  * Created by Edward on 9/24/2016.
  */
-public class FullHierarchyPanel implements GraphPanelListener {
+public class FullHierarchyPanel implements GraphPanelListener, GraphRequestListener {
 
     private JPanel mRoot;
     private JTree mProjectTree;
@@ -187,5 +188,10 @@ public class FullHierarchyPanel implements GraphPanelListener {
             }
         }
         return graphs;
+    }
+
+    @Override
+    public Collection<JungGraph> requestGraphs() {
+        return mGraphPanel.getGraphs();
     }
 }

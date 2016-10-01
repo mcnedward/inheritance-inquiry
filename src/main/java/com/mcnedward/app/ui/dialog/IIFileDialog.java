@@ -62,15 +62,17 @@ public abstract class IIFileDialog extends JDialog implements ActionListener {
      *
      * @param directoryLocation The location of the directory.
      */
-    protected void mainAction(String directoryLocation) {
+    private void mainAction(String directoryLocation) {
         if (directoryLocation == null || directoryLocation.equals("")) {
             JOptionPane.showMessageDialog(null, "You need to select a directory.", "No Directory", JOptionPane.ERROR_MESSAGE);
             return;
         }
         File directory = new File(directoryLocation);
         if (!directory.exists()) {
-            JOptionPane.showMessageDialog(null, "That file does not exist!", "File Not Found", JOptionPane.ERROR_MESSAGE);
-            return;
+            if (!directory.mkdirs()) {
+                JOptionPane.showMessageDialog(null, "Could not create your directory [" + directory.getPath() + "!", "Directory Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
         }
         if (directory.isFile()) {
             JOptionPane.showMessageDialog(null, "You need to choose a directory, not a file.", "Must Be Directory", JOptionPane.ERROR_MESSAGE);
@@ -99,10 +101,11 @@ public abstract class IIFileDialog extends JDialog implements ActionListener {
     }
 
     private void cancelAction() {
+        mSucceeded = false;
         dispose();
     }
 
-    void updatePreferences(String fileLocation) {
+    private void updatePreferences(String fileLocation) {
         List<String> searchedLocations = PrefUtils.getListPreference(getPreferenceKey(), IIFileDialog.class);
         if (!searchedLocations.contains(fileLocation)) {
             PrefUtils.putInListPreference(getPreferenceKey(), fileLocation, IIFileDialog.class);
@@ -121,7 +124,28 @@ public abstract class IIFileDialog extends JDialog implements ActionListener {
         PrefUtils.clearPreference(getPreferenceKey(), IIFileDialog.class);
     }
 
-    protected void setDirectory(File directory) {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        cancelAction();
+    }
+
+    void setDialogSize(int width, int height) {
+        setMinimumSize(new Dimension(width, height));
+        setMaximumSize(new Dimension(width, height));
+        setPreferredSize(new Dimension(width, height));
+        setSize(new Dimension(width, height));
+    }
+
+    private void closeWithSuccess() {
+        mSucceeded = true;
+        dispose();
+    }
+
+    public boolean isSuccessful() {
+        return mSucceeded;
+    }
+
+    private void setDirectory(File directory) {
         mDirectory = directory;
     }
 
@@ -164,26 +188,5 @@ public abstract class IIFileDialog extends JDialog implements ActionListener {
 
         mFileChooser = new JFileChooser();
         checkPreferences();
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        setVisible(false);
-    }
-
-    void setDialogSize(int width, int height) {
-        setMinimumSize(new Dimension(width, height));
-        setMaximumSize(new Dimension(width, height));
-        setPreferredSize(new Dimension(width, height));
-        setSize(new Dimension(width, height));
-    }
-
-    public void closeWithSuccess() {
-        mSucceeded = true;
-        dispose();
-    }
-
-    public boolean isSuccessful() {
-        return mSucceeded;
     }
 }

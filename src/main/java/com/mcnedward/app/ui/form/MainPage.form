@@ -85,7 +85,7 @@
                       <component id="513cb" class="javax.swing.JLabel" binding="mProjectName">
                         <constraints/>
                         <properties>
-                          <font name="Segoe UI" size="18"/>
+                          <font name="Segoe UI" size="20" style="1"/>
                           <text value="Project"/>
                         </properties>
                       </component>
@@ -135,7 +135,7 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <nested-form id="a7281" form-file="com/mcnedward/app/ui/form/MetricPanel.form" binding="mDitPanel">
+                      <nested-form id="a7281" form-file="com/mcnedward/app/ui/form/MetricPanel.form" binding="mDitPanel" custom-create="true">
                         <constraints border-constraint="Center"/>
                       </nested-form>
                     </children>
@@ -149,7 +149,7 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <nested-form id="aa958" form-file="com/mcnedward/app/ui/form/MetricPanel.form" binding="mNocPanel">
+                      <nested-form id="aa958" form-file="com/mcnedward/app/ui/form/MetricPanel.form" binding="mNocPanel" custom-create="true">
                         <constraints border-constraint="Center"/>
                       </nested-form>
                     </children>
@@ -163,7 +163,7 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <nested-form id="ac253" form-file="com/mcnedward/app/ui/form/MetricPanel.form" binding="mWmcPanel">
+                      <nested-form id="ac253" form-file="com/mcnedward/app/ui/form/MetricPanel.form" binding="mWmcPanel" custom-create="true">
                         <constraints border-constraint="Center"/>
                       </nested-form>
                     </children>
@@ -177,7 +177,7 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <nested-form id="3ea29" form-file="com/mcnedward/app/ui/form/FullHierarchyPanel.form" binding="mFullHierarchyPanel">
+                      <nested-form id="3ea29" form-file="com/mcnedward/app/ui/form/FullHierarchyPanel.form" binding="mFullHierarchyPanel" custom-create="true">
                         <constraints border-constraint="Center"/>
                       </nested-form>
                     </children>
