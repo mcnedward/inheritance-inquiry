@@ -1,6 +1,7 @@
 package com.mcnedward.app;
 
 import com.mcnedward.app.ui.form.MainPage;
+import com.mcnedward.app.ui.utils.DialogUtils;
 import com.mcnedward.app.ui.utils.IIUtils;
 import com.mcnedward.ii.utils.IILogger;
 
@@ -45,6 +46,9 @@ public class InheritanceInquiry {
                 frame.setLocation(screenWidth / 2 - WIDTH / 2, screenHeight / 2 - HEIGHT / 2);
                 frame.setMinimumSize(new Dimension(minWidth, minHeight));
                 frame.setMaximumSize(new Dimension(WIDTH, HEIGHT));
+
+                // Load the dialogs at the start
+                DialogUtils.loadDialogs();
 
                 MainPage mainPage = new MainPage();
                 frame.setContentPane(mainPage.getRoot());

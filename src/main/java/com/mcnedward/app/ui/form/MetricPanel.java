@@ -3,9 +3,11 @@ package com.mcnedward.app.ui.form;
 import com.mcnedward.app.ui.cellRenderer.MetricCellRenderer;
 import com.mcnedward.app.ui.component.PlaceholderTextField;
 import com.mcnedward.app.ui.listener.GraphPanelListener;
+import com.mcnedward.app.ui.utils.DialogUtils;
 import com.mcnedward.ii.element.JavaSolution;
 import com.mcnedward.ii.service.graph.IGraphService;
 import com.mcnedward.ii.service.graph.jung.JungGraph;
+import com.mcnedward.ii.service.metric.MetricType;
 import com.mcnedward.ii.service.metric.element.Metric;
 import com.mcnedward.ii.service.metric.element.MetricInfo;
 import com.mcnedward.ii.utils.IILogger;
@@ -38,8 +40,10 @@ public class MetricPanel<T extends Metric> implements GraphPanelListener {
     private JTextField mTxtFilter;
     private GraphPanel<T> mGraphPanel;
     private JPanel mMetricTitlePanel;
+    private JButton mInfoButton;
 
     private List<T> mMetrics;
+    private MetricType mMetricType;
     private boolean mMetricListCreated;
     private boolean mFilterFocused;
 
@@ -51,6 +55,7 @@ public class MetricPanel<T extends Metric> implements GraphPanelListener {
         for (T metric : mMetrics)
             fullyQualifiedNames.add(metric.getFullyQualifiedName());
         mGraphPanel.update(solution, graphService, fullyQualifiedNames, this);
+        mMetricType = metricInfo.getMetricType();
     }
 
     private void updateMetricInfo(MetricInfo metricInfo) {
@@ -88,33 +93,6 @@ public class MetricPanel<T extends Metric> implements GraphPanelListener {
         }
     }
 
-    private void createUIComponents() {
-        mTxtFilter = new PlaceholderTextField("", "Filter classes");
-        mTxtFilter.getDocument().addDocumentListener(new DocumentListener() {
-            public void changedUpdate(DocumentEvent e) {
-            }
-
-            public void removeUpdate(DocumentEvent e) {
-                updateFilter(mTxtFilter.getText());
-            }
-
-            public void insertUpdate(DocumentEvent e) {
-                updateFilter(mTxtFilter.getText());
-            }
-        });
-        mTxtFilter.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                mFilterFocused = true;
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                mFilterFocused = false;
-            }
-        });
-    }
-
     private void checkMetricListCreation() {
         if (!mMetricListCreated) {
             mMetricListCreated = true;
@@ -147,6 +125,10 @@ public class MetricPanel<T extends Metric> implements GraphPanelListener {
         mGraphPanel.updateGraph(metric.getFullyQualifiedName());
     }
 
+    private void openInfoDialog() {
+        DialogUtils.openMetricInfoDialog(mMetricType);
+    }
+
     @Override
     public void onGraphsLoaded(JungGraph firstGraph) {
         moveToSelected();
@@ -168,6 +150,36 @@ public class MetricPanel<T extends Metric> implements GraphPanelListener {
             }
         }
         return graphs;
+    }
+
+    private void createUIComponents() {
+        mTxtFilter = new PlaceholderTextField("", "Filter classes");
+        mTxtFilter.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                updateFilter(mTxtFilter.getText());
+            }
+
+            public void insertUpdate(DocumentEvent e) {
+                updateFilter(mTxtFilter.getText());
+            }
+        });
+        mTxtFilter.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                mFilterFocused = true;
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                mFilterFocused = false;
+            }
+        });
+        mInfoButton = new JButton("?");
+        mInfoButton.setMargin(new Insets(0, 5, 0, 5));
+        mInfoButton.addActionListener(e -> openInfoDialog());
     }
 
 }
