@@ -6,6 +6,8 @@ import com.mcnedward.app.ui.component.IIColorPicker;
 import com.mcnedward.app.ui.dialog.ExportFileDialog;
 import com.mcnedward.app.ui.listener.GraphPanelListener;
 import com.mcnedward.app.ui.utils.ComponentUtils;
+import com.mcnedward.app.ui.utils.PrefUtils;
+import com.mcnedward.app.ui.utils.SettingConst;
 import com.mcnedward.ii.builder.GraphBuilder;
 import com.mcnedward.ii.element.JavaSolution;
 import com.mcnedward.ii.exception.GraphBuildException;
@@ -15,14 +17,15 @@ import com.mcnedward.ii.service.graph.IGraphService;
 import com.mcnedward.ii.service.graph.element.GraphOptions;
 import com.mcnedward.ii.service.graph.element.GraphShape;
 import com.mcnedward.ii.service.graph.jung.JungGraph;
-import com.mcnedward.ii.service.metric.element.Metric;
 import com.mcnedward.ii.utils.IILogger;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Edward on 9/26/2016.
@@ -31,6 +34,7 @@ public class GraphPanel {
 
     private static final String GRAPH_CARD = "GraphPanel";
     private static final String GRAPH_PROGRESS_CARD = "GraphProgress";
+    private static final String PREFERENCE_KEY = "GraphPanel";
 
     private JPanel mRoot;
     private JPanel mGraphCards;
@@ -44,7 +48,6 @@ public class GraphPanel {
     private JButton mBtnLabelColor;
     private JButton mBtnFontColor;
     private JButton mBtnArrowColor;
-    private JButton mBtnEdgeColor;
     private JPanel mOptions;
     private JComboBox<GraphShape> mCmbGraphShape;
     private JCheckBox mChkShowEdgeLabel;
@@ -92,17 +95,18 @@ public class GraphPanel {
         Integer yDistance = (Integer) mSpnVDistance.getValue();
         Integer fontSize = (Integer) mSpnFontSize.getValue();
         boolean useFullNames = mChkUseFullName.isSelected();
+        GraphOptions options = new GraphOptions(xDistance, yDistance, fontSize, mFontColor, mLabelColor, mArrowColor, mEdgeColor, (GraphShape) mCmbGraphShape.getSelectedItem());
+        options.setUseFullName(useFullNames);
+        options.setShowEdgeLabel(mChkShowEdgeLabel.isSelected());
         if (mGraphMap == null) {
             // Called only when a new solution is loaded
             IILogger.info("Generating graphs for: %s", mFullyQualifiedNames);
             mGraphMap = new HashMap<>();
-            mGraphBuilder.setupForBuild(mGraphService, new GraphOptions(mSolution, mFullyQualifiedNames, xDistance, yDistance, fontSize, useFullNames)).build();
+            options.setSolution(mSolution);
+            options.setFullyQualifiedNames(mFullyQualifiedNames);
+            mGraphBuilder.setupForBuild(mGraphService, options).build();
         }
         else {
-            GraphOptions options = new GraphOptions(xDistance, yDistance, fontSize, mFontColor, mLabelColor, mArrowColor, mEdgeColor, (GraphShape) mCmbGraphShape.getSelectedItem());
-            options.setUseFullName(useFullNames);
-            options.setShowEdgeLabel(mChkShowEdgeLabel.isSelected());
-
             if (!mChkUpdateAll.isSelected()) {
                 IILogger.info("Updating single graph for: %s", mCurrentGraph.getFullyQualifiedElementName());
                 updateGraph(mCurrentGraph, options);
@@ -222,37 +226,68 @@ public class GraphPanel {
         };
     }
 
+    private void saveInt(String name, int value) {
+        PrefUtils.putPreference(name, value, GraphPanel.class);
+    }
+
+    private void saveBool(String checkName, boolean value) {
+        PrefUtils.putPreference(checkName, value, GraphPanel.class);
+    }
+
+    private int getPreferenceInt(String name) {
+        return PrefUtils.getPreferenceInt(name, GraphPanel.class);
+    }
+
+    private boolean getPreferenceBool(String name) {
+        return PrefUtils.getPreferenceBool(name, GraphPanel.class);
+    }
+
+    private Color getPreferenceColor(String name) {
+        int rgb = PrefUtils.getPreferenceInt(name, GraphPanel.class);
+        return new Color(rgb);
+    }
+
     private void createUIComponents() {
-        mChkUseFullName = new JCheckBox("Use full name");
-        mChkUseFullName.setSelected(true);
-        mChkUseFullName.addActionListener(e -> updateGraphs());
-
-        mChkShowEdgeLabel = new JCheckBox("Edge label");
-        mChkShowEdgeLabel.addActionListener(e -> updateGraphs());
-
         mBtnExport = new JButton("Export");
         mBtnExport.addActionListener(e -> exportGraphs());
         mExportDialog = new ExportFileDialog(InheritanceInquiry.PARENT_FRAME);
 
-        mSpnHDistance = new JSpinner(new SpinnerNumberModel(GraphOptions.DEFAULT_X_DIST, 0, 600, 10));
-        mSpnVDistance = new JSpinner(new SpinnerNumberModel(GraphOptions.DEFAULT_Y_DIST, 0, 600, 10));
-        mSpnFontSize = new JSpinner(new SpinnerNumberModel(GraphOptions.DEFAULT_FONT_SIZE, 6, 72, 2));
-        mSpnHDistance.addChangeListener(e -> updateGraphs());
-        mSpnVDistance.addChangeListener(e -> updateGraphs());
-        mSpnFontSize.addChangeListener(e -> updateGraphs());
+        mChkUseFullName = new JCheckBox("Use full name");
+        mChkUseFullName.setSelected(true);
+        mChkUseFullName.addActionListener(e -> { updateGraphs(); saveBool(SettingConst.USE_FULL_NAME, mChkUseFullName.isSelected()); });
+        mChkUseFullName.setSelected(getPreferenceBool(SettingConst.USE_FULL_NAME));
 
-        mBtnFontColor = new IIColorPicker(GraphOptions.DEFAULT_FONT_COLOR);
-        ((IIColorPicker) mBtnFontColor).addColorChangedListener(newColor -> {mFontColor = newColor; updateGraphs();});
-        mBtnLabelColor = new IIColorPicker(GraphOptions.DEFAULT_LABEL_COLOR);
-        ((IIColorPicker) mBtnLabelColor).addColorChangedListener(newColor -> {mLabelColor = newColor; updateGraphs();});
-        mBtnArrowColor = new IIColorPicker(GraphOptions.DEFAULT_ARROW_COLOR);
-        ((IIColorPicker) mBtnArrowColor).addColorChangedListener(newColor -> {mArrowColor = newColor; updateGraphs();});
-        mBtnEdgeColor = new IIColorPicker(GraphOptions.DEFAULT_EDGE_COLOR);
-        ((IIColorPicker) mBtnEdgeColor).addColorChangedListener(newColor -> {mEdgeColor = newColor; updateGraphs();});
+        mChkShowEdgeLabel = new JCheckBox("Edge label");
+        mChkShowEdgeLabel.addActionListener(e -> { updateGraphs(); saveBool(SettingConst.EDGE_LABEL, mChkShowEdgeLabel.isSelected()); });
+        mChkShowEdgeLabel.setSelected(getPreferenceBool(SettingConst.EDGE_LABEL));
+
+        mSpnHDistance = new JSpinner(new SpinnerNumberModel(getPreferenceInt(SettingConst.H_DISTANCE), 0, 600, 10));
+        mSpnVDistance = new JSpinner(new SpinnerNumberModel(getPreferenceInt(SettingConst.V_DISTANCE), 0, 600, 10));
+        mSpnFontSize = new JSpinner(new SpinnerNumberModel(getPreferenceInt(SettingConst.FONT_SIZE), 6, 72, 2));
+        mSpnHDistance.addChangeListener(e -> {updateGraphs(); saveInt(SettingConst.H_DISTANCE, (Integer) mSpnHDistance.getValue()); });
+        mSpnVDistance.addChangeListener(e -> {updateGraphs(); saveInt(SettingConst.V_DISTANCE, (Integer) mSpnVDistance.getValue()); });
+        mSpnFontSize.addChangeListener(e -> {updateGraphs(); saveInt(SettingConst.FONT_SIZE, (Integer) mSpnFontSize.getValue()); });
+
+        mFontColor = getPreferenceColor(SettingConst.FONT_COLOR);
+        mBtnFontColor = new IIColorPicker(mFontColor);
+        ((IIColorPicker) mBtnFontColor).addColorChangedListener(newColor -> {mFontColor = newColor; saveInt(SettingConst.FONT_COLOR, newColor.getRGB()); updateGraphs();});
+
+        mLabelColor = getPreferenceColor(SettingConst.LABEL_COLOR);
+        mBtnLabelColor = new IIColorPicker(mLabelColor);
+        ((IIColorPicker) mBtnLabelColor).addColorChangedListener(newColor -> {mLabelColor = newColor; saveInt(SettingConst.LABEL_COLOR, newColor.getRGB()); updateGraphs();});
+
+        mArrowColor = getPreferenceColor(SettingConst.ARROW_COLOR);
+        mBtnArrowColor = new IIColorPicker(mArrowColor);
+        ((IIColorPicker) mBtnArrowColor).addColorChangedListener(newColor -> {mArrowColor = newColor; saveInt(SettingConst.ARROW_COLOR, newColor.getRGB()); updateGraphs();});
+
+//        mEdgeColor = getPreferenceColor(SettingConst.EDGE_COLOR);
+//        mBtnEdgeColor = new IIColorPicker(mEdgeColor);
+//        ((IIColorPicker) mBtnEdgeColor).addColorChangedListener(newColor -> {mEdgeColor = newColor; saveInt(SettingConst.EDGE_COLOR, newColor.getRGB()); updateGraphs();});
 
         ComboBoxModel<GraphShape> comboBoxModel = new DefaultComboBoxModel<>(GraphShape.values());
         mCmbGraphShape = new JComboBox<>(comboBoxModel);
-        mCmbGraphShape.addActionListener(e -> updateGraphs());
+        mCmbGraphShape.setSelectedIndex(getPreferenceInt(SettingConst.GRAPH_SHAPE));
+        mCmbGraphShape.addActionListener(e -> { updateGraphs(); saveInt(SettingConst.GRAPH_SHAPE, mCmbGraphShape.getSelectedIndex()); });
     }
 
     private void checkResize() {

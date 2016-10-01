@@ -48,12 +48,6 @@
                               <toolTipText value="The shape for the graph"/>
                             </properties>
                           </component>
-                          <component id="ec4ca" class="javax.swing.JButton" binding="mBtnEdgeColor" custom-create="true">
-                            <constraints/>
-                            <properties>
-                              <text value="Line"/>
-                            </properties>
-                          </component>
                           <component id="9226c" class="javax.swing.JButton" binding="mBtnArrowColor" custom-create="true">
                             <constraints/>
                             <properties>

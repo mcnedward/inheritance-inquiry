@@ -3,6 +3,7 @@ package com.mcnedward.app;
 import com.mcnedward.app.ui.form.MainPage;
 import com.mcnedward.app.ui.utils.DialogUtils;
 import com.mcnedward.app.ui.utils.IIUtils;
+import com.mcnedward.app.ui.utils.PrefUtils;
 import com.mcnedward.ii.utils.IILogger;
 
 import javax.swing.*;
@@ -49,6 +50,7 @@ public class InheritanceInquiry {
 
                 // Load the dialogs at the start
                 DialogUtils.loadDialogs();
+                PrefUtils.loadGraphDefaults();
 
                 MainPage mainPage = new MainPage();
                 frame.setContentPane(mainPage.getRoot());
