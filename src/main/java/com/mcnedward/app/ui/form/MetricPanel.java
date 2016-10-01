@@ -1,6 +1,7 @@
 package com.mcnedward.app.ui.form;
 
 import com.mcnedward.app.ui.cellRenderer.MetricCellRenderer;
+import com.mcnedward.app.ui.component.IIListModel;
 import com.mcnedward.app.ui.component.PlaceholderTextField;
 import com.mcnedward.app.ui.listener.GraphPanelListener;
 import com.mcnedward.app.ui.utils.DialogUtils;
@@ -18,10 +19,8 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Edward on 9/23/2016.
@@ -35,12 +34,14 @@ public class MetricPanel<T extends Metric> implements GraphPanelListener {
     private JLabel mMax;
     private JPanel mMetricListPanel;
     private JList<T> mMetricList;
-    private DefaultListModel<T> mCachedMetricListModel;
-    private DefaultListModel<T> mMetricListModel;
+    private IIListModel<T> mCachedMetricListModel;
+    private IIListModel<T> mMetricListModel;
     private JTextField mTxtFilter;
     private GraphPanel<T> mGraphPanel;
     private JPanel mMetricTitlePanel;
     private JButton mInfoButton;
+    private JButton mBtnSortAlpa;
+    private JButton mBtnSortMetric;
 
     private List<T> mMetrics;
     private MetricType mMetricType;
@@ -96,8 +97,8 @@ public class MetricPanel<T extends Metric> implements GraphPanelListener {
     private void checkMetricListCreation() {
         if (!mMetricListCreated) {
             mMetricListCreated = true;
-            mMetricListModel = new DefaultListModel<>();
-            mCachedMetricListModel = new DefaultListModel<>();
+            mMetricListModel = new IIListModel<>();
+            mCachedMetricListModel = new IIListModel<>();
             mMetricList = new JList<>(mMetricListModel);
             mMetricList.setCellRenderer(new MetricCellRenderer());
             mMetricList.setFont(new Font("Segoe UI", Font.PLAIN, 14));
@@ -127,6 +128,11 @@ public class MetricPanel<T extends Metric> implements GraphPanelListener {
 
     private void openInfoDialog() {
         DialogUtils.openMetricInfoDialog(mMetricType);
+    }
+
+    private void sortList(int sortType) {
+        mMetricListModel.sort(sortType);
+        mCachedMetricListModel.sort(sortType);
     }
 
     @Override
@@ -178,8 +184,15 @@ public class MetricPanel<T extends Metric> implements GraphPanelListener {
             }
         });
         mInfoButton = new JButton("?");
-        mInfoButton.setMargin(new Insets(0, 5, 0, 5));
+        mInfoButton.setMargin(new Insets(2, 5, 0, 5));
         mInfoButton.addActionListener(e -> openInfoDialog());
+
+        mBtnSortAlpa = new JButton();
+        mBtnSortAlpa.setMargin(new Insets(4, 4, 4, 4));
+        mBtnSortAlpa.addActionListener(e -> sortList(IIListModel.ALPHA));
+        mBtnSortMetric = new JButton();
+        mBtnSortMetric.setMargin(new Insets(4, 4, 4, 4));
+        mBtnSortMetric.addActionListener(e -> sortList(IIListModel.VALUE));
     }
 
 }
