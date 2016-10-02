@@ -37,6 +37,7 @@ public enum Theme {
     private static final String CHECK_BOX_BACKGROUND = "CheckBox.background";
     private static final String CHECK_BOX_FOREGROUND = "CheckBox.foreground";
     private static final String CHECK_BOX_FONT = "CheckBox.font";
+    private static final String SCROLL_PANE_BORDER = "ScrollPane.border";
 
     private String themeName;
     private Color panelColor;
@@ -79,12 +80,13 @@ public enum Theme {
         UIManager.getLookAndFeelDefaults().put(CHECK_BOX_BACKGROUND, new ColorUIResource(newTheme.panelColor()));
         UIManager.getLookAndFeelDefaults().put(CHECK_BOX_FOREGROUND, new ColorUIResource(newTheme.fontColor()));
         UIManager.getLookAndFeelDefaults().put(CHECK_BOX_FONT, new ColorUIResource(newTheme.fontColor()));
+        UIManager.getLookAndFeelDefaults().put(SCROLL_PANE_BORDER, new ColorUIResource(newTheme.panelColor()));
     }
 
     public static void updateTheme(Theme newTheme) {
         setTheme(newTheme);
         SwingUtilities.updateComponentTreeUI(InheritanceInquiry.PARENT_FRAME);
-        for (Component c : MainPage.getAppDialogs()) {
+        for (Component c : DialogUtils.getAppDialogs()) {
             SwingUtilities.updateComponentTreeUI(c);
         }
     }

@@ -37,19 +37,7 @@ public class InfoTextPane extends JTextPane {
 
     public void setText() {
         if (mMetricType == null) return;
-        String message = "";
-        switch (mMetricType) {
-            case DIT:
-                message = DialogUtils.DIT_MESSAGE;
-                break;
-            case NOC:
-                message = DialogUtils.NOC_MESSAGE;
-                break;
-            case WMC:
-                message = DialogUtils.WMC_MESSAGE;
-                break;
-        }
-        setText(message);
+        setText(DialogUtils.getInfoMessage(mMetricType));
     }
 
     @Override

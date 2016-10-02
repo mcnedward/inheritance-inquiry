@@ -1,12 +1,13 @@
 package com.mcnedward.app.ui.dialog;
 
+import com.mcnedward.app.ui.dialog.results.ExportGraphResults;
 import com.mcnedward.app.utils.SettingsConst;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * A dialog that appears after clicking the Export button in the GraphPanel options. Allows for exporting single graphs,
+ * A dialog that appears after clicking the Export button in the GraphPanel results. Allows for exporting single graphs,
  * or all graphs for a certain metric. Created by Edward on 9/26/2016.
  */
 public class ExportGraphDialog extends IIFileDialog {
@@ -67,15 +68,7 @@ public class ExportGraphDialog extends IIFileDialog {
         return SettingsConst.EXPORT_GRAPH_DIALOG;
     }
 
-    public boolean exportAll() {
-        return mRdExportAll.isSelected();
-    }
-
-    public boolean usePackages() {
-        return mChkUsePackages.isSelected();
-    }
-
-    public boolean useProjectName() {
-        return mChkUseProjectName.isSelected();
+    public ExportGraphResults getResults() {
+        return new ExportGraphResults(getDirectory(), mRdExportAll.isSelected(), mChkUsePackages.isSelected(), mChkUseProjectName.isSelected());
     }
 }

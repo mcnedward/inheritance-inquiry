@@ -1,12 +1,13 @@
 package com.mcnedward.app.ui.dialog;
 
+import com.mcnedward.app.ui.dialog.results.ExportMetricFileResults;
 import com.mcnedward.app.utils.SettingsConst;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * A dialog from the Export menu options that allows for exporting Excel sheets for a project.
+ * A dialog from the Export menu results that allows for exporting Excel sheets for a project.
  * Created by Edward on 9/26/2016.
  */
 public class ExportMetricFileDialog extends IIFileDialog {
@@ -48,23 +49,12 @@ public class ExportMetricFileDialog extends IIFileDialog {
         return SettingsConst.EXPORT_METRIC_FILE_DIALOG_KEY;
     }
 
-    public boolean exportDit() {
-        return mMetricOptionsPanel.exportDit();
-    }
-
-    public boolean exportNoc() {
-        return mMetricOptionsPanel.exportNoc();
-    }
-
-    public boolean exportWmc() {
-        return mMetricOptionsPanel.exportWmc();
-    }
-
-    public boolean exportFull() {
-        return mMetricOptionsPanel.exportFull();
-    }
-
-    public boolean useCsvFormat() {
-        return mMetricOptionsPanel.useCsvFormat();
+    public ExportMetricFileResults getResults() {
+        return new ExportMetricFileResults(getDirectory(),
+                mMetricOptionsPanel.exportDit(),
+                mMetricOptionsPanel.exportNoc(),
+                mMetricOptionsPanel.exportWmc(),
+                mMetricOptionsPanel.exportFull(),
+                mMetricOptionsPanel.useCsvFormat());
     }
 }

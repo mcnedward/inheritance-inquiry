@@ -47,8 +47,6 @@ public class InheritanceInquiry {
                 frame.setMinimumSize(new Dimension(minWidth, minHeight));
                 frame.setMaximumSize(new Dimension(WIDTH, HEIGHT));
 
-                // Load the dialogs at the start
-                DialogUtils.loadDialogs();
                 PrefUtils.loadGraphDefaults();
 
                 MainPage mainPage = new MainPage();

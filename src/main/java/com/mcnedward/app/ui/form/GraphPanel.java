@@ -3,9 +3,10 @@ package com.mcnedward.app.ui.form;
 
 import com.mcnedward.app.InheritanceInquiry;
 import com.mcnedward.app.ui.component.IIColorPicker;
-import com.mcnedward.app.ui.dialog.ExportGraphDialog;
+import com.mcnedward.app.ui.dialog.results.ExportGraphResults;
 import com.mcnedward.app.ui.listener.GraphPanelListener;
 import com.mcnedward.app.utils.ComponentUtils;
+import com.mcnedward.app.utils.DialogUtils;
 import com.mcnedward.app.utils.PrefUtils;
 import com.mcnedward.app.utils.SettingsConst;
 import com.mcnedward.ii.builder.GraphBuilder;
@@ -60,7 +61,6 @@ public class GraphPanel {
     private GraphPanelListener mListener;
     private Map<String, JungGraph> mGraphMap;
     private JungGraph mCurrentGraph;
-    private ExportGraphDialog mExportDialog;
     private Color mFontColor, mLabelColor, mArrowColor, mEdgeColor;
 
     void update(JavaSolution solution, IGraphService graphService, Collection<String> fullyQualifiedNames, GraphPanelListener listener) {
@@ -153,12 +153,12 @@ public class GraphPanel {
     }
 
     private void exportGraphs() {
-        mExportDialog.setVisible(true);
-        if (mExportDialog.isSuccessful()) {
-            boolean exportAll = mExportDialog.exportAll();
-            boolean usePackages = mExportDialog.usePackages();
-            boolean useProjectName = mExportDialog.useProjectName();
-            File directory = mExportDialog.getDirectory();
+        if (DialogUtils.openExportGraphDialogForSuccess()) {
+            ExportGraphResults results = DialogUtils.getExportGraphDialogResults();
+            boolean exportAll = results.exportAll();
+            boolean usePackages = results.usePackages();
+            boolean useProjectName = results.useProjectName();
+            File directory = results.getDirectory();
 
             Collection<JungGraph> graphs = mListener.requestGraphs(mGraphMap, exportAll);
             showCard(GRAPH_PROGRESS_CARD);
@@ -252,7 +252,6 @@ public class GraphPanel {
     private void createUIComponents() {
         mBtnExport = new JButton("Export");
         mBtnExport.addActionListener(e -> exportGraphs());
-        mExportDialog = new ExportGraphDialog(InheritanceInquiry.PARENT_FRAME);
 
         mChkUseFullName = new JCheckBox("Use full name");
         mChkUseFullName.addActionListener(e -> { updateGraphs(); saveBool(SettingsConst.USE_FULL_NAME, mChkUseFullName.isSelected()); });

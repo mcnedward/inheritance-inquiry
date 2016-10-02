@@ -1,7 +1,9 @@
 package com.mcnedward.app.ui.form;
 
 import com.mcnedward.app.InheritanceInquiry;
-import com.mcnedward.app.ui.dialog.*;
+import com.mcnedward.app.ui.dialog.results.ExportAllGraphsResults;
+import com.mcnedward.app.ui.dialog.results.ExportMetricFileResults;
+import com.mcnedward.app.utils.DialogUtils;
 import com.mcnedward.ii.builder.GraphBuilder;
 import com.mcnedward.ii.builder.MetricBuilder;
 import com.mcnedward.ii.builder.ProjectBuilder;
@@ -23,7 +25,6 @@ import com.mcnedward.ii.utils.ServiceFactory;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -41,7 +42,6 @@ public class MainPage {
     private ProgressCard mMainProgressCard;
     private JButton mBtnFile;
     private JButton mBtnGit;
-    private JPanel mHelpCard;
     private JPanel mTitlePanel;
     private JLabel mProjectName;
     private JLabel mProjectVersion;
@@ -57,17 +57,10 @@ public class MainPage {
     private static ProjectBuilder mProjectBuilder;
     private JavaSolution mSolution;
 
-    // Dialogs
-    private static ProjectFileDialog mFileDialog;
-    private static GitDialog mGitDialog;
-    private static ExportMetricFileDialog mExportMetricFileDialog;
-    private static ExportAllGraphsDialog mExportGraphMetricDialog;
-    private static PreferencesDialog mPreferencesDialog;
-
     public MainPage() {
         mProjectBuilder = new ProjectBuilder(solutionBuildListener());
         initMenu(InheritanceInquiry.PARENT_FRAME);
-        initDialogs(InheritanceInquiry.PARENT_FRAME);
+        DialogUtils.loadDialogs(InheritanceInquiry.PARENT_FRAME, gitDownloadListener());
     }
 
     private void initMenu(JFrame parent) {
@@ -76,14 +69,12 @@ public class MainPage {
 
         JMenu mnAnalyze = new JMenu("Analyze");
         menuBar.add(mnAnalyze);
-        mFileDialog = new ProjectFileDialog(parent);
         JMenuItem mntmFromFile = new JMenuItem("From file");
         mntmFromFile.addActionListener(e -> openFileDialog());
         mnAnalyze.add(mntmFromFile);
-        mGitDialog = new GitDialog(parent, gitDownloadListener());
         JMenuItem mntmFromGit = new JMenuItem("From git");
         mnAnalyze.add(mntmFromGit);
-        mntmFromGit.addActionListener(e -> mGitDialog.open());
+        mntmFromGit.addActionListener(e -> openGitDialog());
 
         JMenu exportMenu = new JMenu("Export");
         menuBar.add(exportMenu);
@@ -99,27 +90,11 @@ public class MainPage {
         JMenu settingMenu = new JMenu("Settings");
         menuBar.add(settingMenu);
         JMenuItem preferenceItem = new JMenuItem("Preferences");
-        preferenceItem.addActionListener(e -> mPreferencesDialog.open());
+        preferenceItem.addActionListener(e -> openPreferencesDialog());
         settingMenu.add(preferenceItem);
         JMenuItem aboutItem = new JMenuItem("About");
 //        aboutItem.addActionListener(e -> GitDialog.clearPreference());
         settingMenu.add(aboutItem);
-    }
-
-    private void initDialogs(JFrame parent) {
-        mExportMetricFileDialog = new ExportMetricFileDialog(parent);
-        mExportGraphMetricDialog = new ExportAllGraphsDialog(parent);
-        mPreferencesDialog = new PreferencesDialog(parent);
-    }
-
-    public static Collection<Component> getAppDialogs() {
-        Collection<Component> dialogs = new ArrayList<>();
-        dialogs.add(mGitDialog);
-        dialogs.add(mFileDialog);
-        dialogs.add(mExportMetricFileDialog);
-        dialogs.add(mExportGraphMetricDialog);
-        dialogs.add(mPreferencesDialog);
-        return dialogs;
     }
 
     private void loadSolution(JavaSolution solution) {
@@ -136,49 +111,60 @@ public class MainPage {
         mNocPanel.update(solution, ServiceFactory.nocGraphService(), solution.getNocMetricInfo(), solution.getNocMetrics());
         mWmcPanel.update(solution, null, solution.getWmcMetricInfo(), solution.getWmcMetrics());
         mFullHierarchyPanel.update(solution, ServiceFactory.fullGraphService());
-
         mGraphSettings.setEnabled(true);
         mSheetSettings.setEnabled(true);
     }
 
     private void openFileDialog() {
-        mFileDialog.open();
-        if (mFileDialog.isSuccessful()) {
+        if (DialogUtils.openProjectFileDialog()) {
             showCard(PROGRESS_CARD);
-            mProjectBuilder.setup(mFileDialog.getDirectory()).build();
+            mProjectBuilder.setup(DialogUtils.getProjectFile()).build();
         }
     }
 
+    private void openGitDialog() {
+        DialogUtils.openGitDialog();
+    }
+
+    private void openPreferencesDialog() {
+        DialogUtils.openPreferencesDialog();
+    }
+
     private void openExportMetricFileDialog() {
-        mExportMetricFileDialog.open();
-        if (mExportMetricFileDialog.isSuccessful()) {
-            MetricOptions options = new MetricOptions(mSolution, mExportMetricFileDialog.getDirectory(), mExportMetricFileDialog.exportDit(), mExportMetricFileDialog.exportNoc(), mExportMetricFileDialog.exportWmc(), mExportMetricFileDialog.exportFull());
-            options.setUseCsvFormat(mExportMetricFileDialog.useCsvFormat());
+        if (DialogUtils.openExportMetricFileDialogForSuccess()) {
+            ExportMetricFileResults results = DialogUtils.getExportMetricGraphResults();
+            MetricOptions options = new MetricOptions(mSolution,
+                    results.getDirectory(),
+                    results.exportDit(),
+                    results.exportNoc(),
+                    results.exportWmc(),
+                    results.exportFull());
+            options.setUseCsvFormat(results.useCsvFormat());
             new MetricBuilder(metricExportListener()).setup(ServiceFactory.metricService(), options).build();
         }
     }
 
     private int mGraphExportRequests;
     private void openExportGraphDialog() {
-        mExportGraphMetricDialog.open();
-        if (mExportGraphMetricDialog.isSuccessful()) {
-            String projectName = mExportGraphMetricDialog.useProjectName() ? mSolution.getProjectName() : null;
-            GraphOptions options = new GraphOptions(mExportGraphMetricDialog.getDirectory(), projectName, mExportGraphMetricDialog.usePackages());
+        if (DialogUtils.openExportAllGraphsDialog()) {
+            ExportAllGraphsResults results = DialogUtils.getExportAllGraphResults();
+            String projectName = results.usePackages() ? mSolution.getProjectName() : null;
+            GraphOptions options = new GraphOptions(results.getDirectory(), projectName, results.usePackages());
             GraphBuilder builder = new GraphBuilder(graphExportListener());
             // The graph service type doesn't matter here, since we're just doing an export
             IGraphService service = ServiceFactory.ditGraphService();
 
-            if (mExportGraphMetricDialog.exportDit()) {
+            if (results.exportDit()) {
                 Collection<JungGraph> graphs = mDitPanel.requestGraphs();
                 builder.setupForExport(service, graphs, options).build();
                 mGraphExportRequests++;
             }
-            if (mExportGraphMetricDialog.exportNoc()) {
+            if (results.exportNoc()) {
                 Collection<JungGraph> graphs = mNocPanel.requestGraphs();
                 builder.setupForExport(service, graphs, options).build();
 
             }
-            if (mExportGraphMetricDialog.exportFull()) {
+            if (results.exportFull()) {
                 Collection<JungGraph> graphs = mFullHierarchyPanel.requestGraphs();
                 builder.setupForExport(service, graphs, options).build();
                 mGraphExportRequests++;
@@ -198,7 +184,7 @@ public class MainPage {
         mBtnFile = new JButton("From File");
         mBtnFile.addActionListener(e -> openFileDialog());
         mBtnGit = new JButton("From Git");
-        mBtnGit.addActionListener(e -> mGitDialog.open());
+        mBtnGit.addActionListener(e -> openGitDialog());
 
         mDitPanel = new MetricPanel<>();
         mNocPanel = new MetricPanel<>();
