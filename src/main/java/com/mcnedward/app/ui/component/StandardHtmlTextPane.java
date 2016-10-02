@@ -7,9 +7,18 @@ public class StandardHtmlTextPane extends HtmlTextPane {
 
     private String mText;
 
+    public StandardHtmlTextPane() {
+        super();
+    }
+
     public StandardHtmlTextPane(String text) {
         super();
         mText = text;
+    }
+
+    public void setHtml(String text) {
+        mText = text;
+        updateText();
     }
 
     @Override

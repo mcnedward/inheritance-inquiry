@@ -237,7 +237,7 @@ public class MainPage {
 
             @Override
             public void onBuildError(String message, Exception exception) {
-                JOptionPane.showMessageDialog(null, message, "Build Error", JOptionPane.ERROR_MESSAGE);
+                DialogUtils.openMessageDialog(message, "Build Error");
                 IILogger.error(exception);
                 showCard(HELP_CARD);
             }
@@ -253,7 +253,7 @@ public class MainPage {
                 if (mGraphExportCount == mGraphExportRequests) {
                     mGraphExportCount = 0;
                     mGraphExportRequests = 0;
-                    JOptionPane.showMessageDialog(null, "Metric graphs exported!", "Metric Graph Export Completed", JOptionPane.INFORMATION_MESSAGE);
+                    DialogUtils.openMessageDialog("Metric graphs exported!", "Metric Graph Export Completed");
                 }
             }
 
@@ -264,7 +264,7 @@ public class MainPage {
 
             @Override
             public void onBuildError(String message, Exception exception) {
-                JOptionPane.showMessageDialog(null, message, "Graph Export Error", JOptionPane.ERROR_MESSAGE);
+                DialogUtils.openMessageDialog(message, "Graph Export Error");
             }
         };
     }
@@ -273,7 +273,7 @@ public class MainPage {
         return new MetricExportListener() {
             @Override
             public void onMetricsExported() {
-                JOptionPane.showMessageDialog(null, "Metric details exported!", "Metric Export Completed", JOptionPane.INFORMATION_MESSAGE);
+                DialogUtils.openMessageDialog("Metric details exported!", "Metric Export Completed");
             }
 
             @Override
@@ -283,7 +283,7 @@ public class MainPage {
 
             @Override
             public void onBuildError(String message, Exception exception) {
-                JOptionPane.showMessageDialog(null, message, "Metric Export Error", JOptionPane.ERROR_MESSAGE);
+                DialogUtils.openMessageDialog(message, "Metric Export Error");
             }
         };
     }
@@ -302,7 +302,9 @@ public class MainPage {
 
             @Override
             public void onBuildError(String message, Exception exception) {
-                JOptionPane.showMessageDialog(null, message, "Git Download Error", JOptionPane.ERROR_MESSAGE);
+                DialogUtils.openMessageDialog(message, "Git Download Error");
+                IILogger.error(exception);
+                showCard(HELP_CARD);
             }
 
             @Override

@@ -1,5 +1,6 @@
 package com.mcnedward.app.ui.component;
 
+import com.mcnedward.app.utils.Theme;
 import com.mcnedward.ii.utils.IILogger;
 
 import javax.swing.*;
@@ -11,7 +12,7 @@ import java.awt.*;
  */
 public abstract class HtmlTextPane extends JTextPane {
 
-    public HtmlTextPane() {
+    HtmlTextPane() {
         super();
         putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
         setContentType("text/html");
@@ -31,7 +32,7 @@ public abstract class HtmlTextPane extends JTextPane {
     protected abstract String getHtml();
 
     public void updateText() {
-        setText(getHtml());
+        setText(Theme.wrapHtml(getHtml()));
     }
 
     @Override

@@ -26,6 +26,7 @@ public class DialogUtils {
     private static InfoDialog mNocInfoDialog;
     private static InfoDialog mWmcInfoDialog;
     private static AboutDialog mAboutDialog;
+    private static MessageDialog mMessageDialog;
 
     public static void loadDialogs(JFrame parent, GitDownloadListener gitDownloadListener) {
         if (mFileDialog == null)
@@ -48,12 +49,14 @@ public class DialogUtils {
             mWmcInfoDialog = new InfoDialog(parent, Constants.WMC_TITLE, MetricType.WMC);
         if (mAboutDialog == null)
             mAboutDialog = new AboutDialog(parent);
+        if (mMessageDialog == null)
+            mMessageDialog = new MessageDialog(parent);
     }
 
     static Component[] getAppDialogs() {
         return new Component[] {
                 mFileDialog, mGitDialog, mExportMetricFileDialog, mExportGraphMetricDialog, mExportGraphDialog,
-                mPreferencesDialog, mDitInfoDialog, mNocInfoDialog, mWmcInfoDialog, mAboutDialog
+                mPreferencesDialog, mDitInfoDialog, mNocInfoDialog, mWmcInfoDialog, mAboutDialog, mMessageDialog
         };
     }
 
@@ -121,6 +124,11 @@ public class DialogUtils {
                 openWmcInfoDialog();
                 break;
         }
+    }
+
+    public static void openMessageDialog(String title, String message) {
+        mMessageDialog.setInfo(title, message);
+        mMessageDialog.open();
     }
 
     public static void openAboutDialog() {

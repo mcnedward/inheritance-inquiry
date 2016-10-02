@@ -30,7 +30,6 @@ public class InheritanceInquiry {
                     UIManager.put("ScrollBarUI", "com.mcnedward.app.ui.component.IIScrollBar");
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                     loadTheme();
-                    IIAppUtils.fixupIcons();
                 } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
                     IILogger.error("Something went wrong when trying to use the System Look and Feel...", e);
                 }

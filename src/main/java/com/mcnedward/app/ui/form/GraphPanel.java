@@ -199,7 +199,7 @@ public class GraphPanel {
 
             @Override
             public void onBuildError(String message, Exception exception) {
-                JOptionPane.showMessageDialog(mRoot, message, "Graph Build Error", JOptionPane.ERROR_MESSAGE);
+                DialogUtils.openMessageDialog( message, "Graph Build Error");
                 IILogger.error(exception);
             }
         };
@@ -219,7 +219,7 @@ public class GraphPanel {
 
             @Override
             public void onBuildError(String message, Exception exception) {
-                JOptionPane.showMessageDialog(mRoot, message, "Graph Export Error", JOptionPane.ERROR_MESSAGE);
+                DialogUtils.openMessageDialog( message, "Graph Export Error");
                 IILogger.error(exception);
             }
         };

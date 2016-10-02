@@ -1,5 +1,6 @@
 package com.mcnedward.app.ui.dialog;
 
+import com.mcnedward.app.utils.DialogUtils;
 import com.mcnedward.app.utils.PrefUtils;
 
 import javax.swing.*;
@@ -64,18 +65,18 @@ public abstract class IIFileDialog extends JDialog implements ActionListener {
      */
     private void mainAction(String directoryLocation) {
         if (directoryLocation == null || directoryLocation.equals("")) {
-            JOptionPane.showMessageDialog(null, "You need to select a directory.", "No Directory", JOptionPane.ERROR_MESSAGE);
+            DialogUtils.openMessageDialog("You need to select a directory.", "No Directory");
             return;
         }
         File directory = new File(directoryLocation);
         if (!directory.exists()) {
             if (!directory.mkdirs()) {
-                JOptionPane.showMessageDialog(null, "Could not create your directory [" + directory.getPath() + "!", "Directory Error", JOptionPane.ERROR_MESSAGE);
+                DialogUtils.openMessageDialog("Could not create your directory [" + directory.getPath() + "!", "Directory Error");
                 return;
             }
         }
         if (directory.isFile()) {
-            JOptionPane.showMessageDialog(null, "You need to choose a directory, not a file.", "Must Be Directory", JOptionPane.ERROR_MESSAGE);
+            DialogUtils.openMessageDialog("You need to choose a directory, not a file.", "Must Be Directory");
             return;
         }
         setDirectory(directory);

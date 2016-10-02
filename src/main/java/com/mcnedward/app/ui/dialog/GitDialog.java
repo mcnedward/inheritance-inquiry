@@ -1,6 +1,7 @@
 package com.mcnedward.app.ui.dialog;
 
 import com.mcnedward.app.utils.Constants;
+import com.mcnedward.app.utils.DialogUtils;
 import com.mcnedward.app.utils.PrefUtils;
 import com.mcnedward.ii.builder.GitBuilder;
 import com.mcnedward.ii.listener.GitDownloadListener;
@@ -53,15 +54,15 @@ public class GitDialog extends JDialog implements ActionListener {
         String password = mTxtPassword.getText();
         Object item = mCmbRemoteUrl.getSelectedItem();
         if (item == null) {
-            JOptionPane.showMessageDialog(null, "You need to enter the URL to a git remote repository.", "Git Download", JOptionPane.ERROR_MESSAGE);
+            DialogUtils.openMessageDialog("You need to enter the URL to a git remote repository.", "Git Download");
         } else {
             String remoteUrl = item.toString();
             if (remoteUrl == null || remoteUrl.equals("")) {
-                JOptionPane.showMessageDialog(null, "You need to enter the URL to a git remote repository.", "Git Download", JOptionPane.ERROR_MESSAGE);
+                DialogUtils.openMessageDialog("You need to enter the URL to a git remote repository.", "Git Download");
                 return;
             }
             if (!remoteUrl.endsWith(".git")) {
-                JOptionPane.showMessageDialog(null, "You need to enter a git remote repository. This should end with \".git\".", "Git Download", JOptionPane.ERROR_MESSAGE);
+                DialogUtils.openMessageDialog("You need to enter a git remote repository. This should end with \".git\".", "Git Download");
                 return;
             }
             if (username == null || username.equals("")) {
@@ -97,7 +98,7 @@ public class GitDialog extends JDialog implements ActionListener {
             mCmbRemoteUrl.addItem(remoteUrl);
         }
         PrefUtils.putPreference(Constants.GIT_USERNAME, mTxtUsername.getText(), GitDialog.class);
-        PrefUtils.putPreference(Constants.GIT_USERNAME, mTxtPassword.getText(), GitDialog.class);
+        PrefUtils.putPreference(Constants.GIT_PASSWORD, mTxtPassword.getText(), GitDialog.class);
     }
 
     private void setDialogSize(int width, int height) {

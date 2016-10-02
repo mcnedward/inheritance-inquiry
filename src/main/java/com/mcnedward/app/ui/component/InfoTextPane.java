@@ -1,7 +1,6 @@
 package com.mcnedward.app.ui.component;
 
 import com.mcnedward.app.utils.Constants;
-import com.mcnedward.app.utils.Theme;
 import com.mcnedward.ii.service.metric.MetricType;
 import com.mcnedward.ii.utils.IILogger;
 
@@ -38,7 +37,7 @@ public class InfoTextPane extends HtmlTextPane {
 
     @Override
     protected String getHtml() {
-        return Theme.wrapHtml(getInfoMessage(mMetricType));
+        return getInfoMessage(mMetricType);
     }
 
     private static String getInfoMessage(MetricType metricType) {
@@ -55,7 +54,7 @@ public class InfoTextPane extends HtmlTextPane {
                 message = Constants.WMC_MESSAGE;
                 break;
         }
-        return Theme.wrapHtml(message);
+        return message;
     }
 
 }

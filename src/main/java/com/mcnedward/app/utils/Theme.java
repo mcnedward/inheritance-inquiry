@@ -68,18 +68,11 @@ public enum Theme {
         UIManager.getLookAndFeelDefaults().put(LABEL_FOREGROUND, new ColorUIResource(newTheme.fontColor()));
         UIManager.getLookAndFeelDefaults().put(TEXT_PANE_BACKGROUND, new ColorUIResource(newTheme.panelColor()));
         UIManager.getLookAndFeelDefaults().put(TEXT_PANE_FOREGROUND, new ColorUIResource(newTheme.fontColor()));
-        UIManager.getLookAndFeelDefaults().put(TITLED_BORDER_FONT, new ColorUIResource(newTheme.fontColor()));
         UIManager.getLookAndFeelDefaults().put(TITLED_BORDER_TITLE_COLOR, new ColorUIResource(newTheme.fontColor()));
-        UIManager.getLookAndFeelDefaults().put(OPTION_PANE_FONT, new ColorUIResource(newTheme.fontColor()));
-        UIManager.getLookAndFeelDefaults().put(OPTION_PANE_MESSAGE_FONT, new ColorUIResource(newTheme.fontColor()));
-        UIManager.getLookAndFeelDefaults().put(OPTION_PANE_FOREGROUND, new ColorUIResource(newTheme.panelColor()));
-        UIManager.getLookAndFeelDefaults().put(OPTION_PANE_MESSAGE_FOREGROUND, new ColorUIResource(newTheme.panelColor()));
         UIManager.getLookAndFeelDefaults().put(RADIO_BUTTON_BACKGROUND, new ColorUIResource(newTheme.panelColor()));
         UIManager.getLookAndFeelDefaults().put(RADIO_BUTTON_FOREGROUND, new ColorUIResource(newTheme.fontColor()));
-        UIManager.getLookAndFeelDefaults().put(RADIO_BUTTON_FONT, new ColorUIResource(newTheme.fontColor()));
         UIManager.getLookAndFeelDefaults().put(CHECK_BOX_BACKGROUND, new ColorUIResource(newTheme.panelColor()));
         UIManager.getLookAndFeelDefaults().put(CHECK_BOX_FOREGROUND, new ColorUIResource(newTheme.fontColor()));
-        UIManager.getLookAndFeelDefaults().put(CHECK_BOX_FONT, new ColorUIResource(newTheme.fontColor()));
         UIManager.getLookAndFeelDefaults().put(SCROLL_PANE_BORDER, new ColorUIResource(newTheme.panelColor()));
     }
 
