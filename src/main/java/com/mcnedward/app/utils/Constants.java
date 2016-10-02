@@ -64,4 +64,7 @@ public class Constants {
     // Theme Settings
     public static final String THEME_NAME = "ThemeName";
 
+    // Use Full Screen for the app
+    public static final String FULL_SCREEN = "FullScreen";
+
 }

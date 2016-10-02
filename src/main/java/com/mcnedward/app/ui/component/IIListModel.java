@@ -1,6 +1,5 @@
 package com.mcnedward.app.ui.component;
 
-import com.mcnedward.ii.service.metric.MetricType;
 import com.mcnedward.ii.service.metric.element.Metric;
 
 import javax.swing.*;
@@ -46,6 +45,8 @@ public class IIListModel<T extends Metric> extends AbstractListModel<T> {
 
     public void addElement(T metric) {
         mMetrics.add(metric);
+        int index = mMetrics.size() - 1;
+        fireIntervalAdded(this, index, index);
     }
 
     public T getElementAt(int index){
@@ -87,7 +88,7 @@ public class IIListModel<T extends Metric> extends AbstractListModel<T> {
     }
 
     public void clear() {
-        mMetrics.clear();
+        mMetrics = new ArrayList<>();
     }
 
     public int size() {

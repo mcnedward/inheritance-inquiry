@@ -35,15 +35,29 @@ public class InheritanceInquiry {
                     IILogger.error("Something went wrong when trying to use the System Look and Feel...", e);
                 }
 
+                boolean useFullScreen = PrefUtils.getPreferenceBool(Constants.FULL_SCREEN, InheritanceInquiry.class);
+
                 GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
                 int screenWidth = gd.getDisplayMode().getWidth();
                 int screenHeight = gd.getDisplayMode().getHeight();
-                WIDTH = (int) (screenWidth * 0.8f);
-                HEIGHT = (int) (screenHeight * 0.8f);
+                int x, y;
+                if (useFullScreen) {
+                    x = 0;
+                    y = 0;
+                    WIDTH = screenWidth;
+                    HEIGHT = screenHeight;
+                    frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                } else {
+                    x = 100;
+                    y = 100;
+                    WIDTH = (int) (screenWidth * 0.8f);
+                    HEIGHT = (int) (screenHeight * 0.8f);
+                    frame.setBounds(x, y, WIDTH, HEIGHT);
+                    frame.setLocation(screenWidth / 2 - WIDTH / 2, screenHeight / 2 - HEIGHT / 2);
+                }
+
                 int minWidth = (int) (screenWidth * 0.6f);
                 int minHeight = (int) (screenHeight * 0.6f);
-                frame.setBounds(100, 100, WIDTH, HEIGHT);
-                frame.setLocation(screenWidth / 2 - WIDTH / 2, screenHeight / 2 - HEIGHT / 2);
                 frame.setMinimumSize(new Dimension(minWidth, minHeight));
                 frame.setMaximumSize(new Dimension(WIDTH, HEIGHT));
 

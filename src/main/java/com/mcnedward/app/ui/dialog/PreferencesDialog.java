@@ -1,6 +1,8 @@
 package com.mcnedward.app.ui.dialog;
 
+import com.mcnedward.app.InheritanceInquiry;
 import com.mcnedward.app.ui.form.GraphPanel;
+import com.mcnedward.app.utils.Constants;
 import com.mcnedward.app.utils.PrefUtils;
 import com.mcnedward.app.utils.Theme;
 
@@ -18,8 +20,8 @@ public class PreferencesDialog extends JDialog implements ActionListener {
     private JButton mBtnClearMetricGraph;
     private JButton mBtnClearMetricSheet;
     private JButton mBtnClearAll;
-    private JPanel mPreferencesPanel;
     private JPanel mThemesPanel;
+    private JCheckBox mChkUseFullScreen;
 
     public PreferencesDialog(JFrame parent) {
         setTitle("Preferences");
@@ -58,6 +60,10 @@ public class PreferencesDialog extends JDialog implements ActionListener {
 
         mBtnClearGraph = new JButton();
         mBtnClearGraph.addActionListener(e -> PrefUtils.clearPreferences(GraphPanel.class));
+
+        mChkUseFullScreen = new JCheckBox();
+        mChkUseFullScreen.setSelected(PrefUtils.getPreferenceBool(Constants.FULL_SCREEN, InheritanceInquiry.class));
+        mChkUseFullScreen.addActionListener(e -> PrefUtils.putPreference(Constants.FULL_SCREEN, mChkUseFullScreen.isSelected(), InheritanceInquiry.class));
 
         createThemesPanel();
     }

@@ -1,9 +1,13 @@
 package com.mcnedward.app.ui.form;
 
 import com.mcnedward.app.InheritanceInquiry;
+import com.mcnedward.app.ui.dialog.IIFileDialog;
+import com.mcnedward.app.ui.dialog.ProjectFileDialog;
 import com.mcnedward.app.ui.dialog.results.ExportAllGraphsResults;
 import com.mcnedward.app.ui.dialog.results.ExportMetricFileResults;
+import com.mcnedward.app.utils.Constants;
 import com.mcnedward.app.utils.DialogUtils;
+import com.mcnedward.app.utils.PrefUtils;
 import com.mcnedward.ii.builder.GraphBuilder;
 import com.mcnedward.ii.builder.MetricBuilder;
 import com.mcnedward.ii.builder.ProjectBuilder;
@@ -67,25 +71,43 @@ public class MainPage {
         JMenuBar menuBar = new JMenuBar();
         parent.setJMenuBar(menuBar);
 
-        JMenu mnAnalyze = new JMenu("Analyze");
-        menuBar.add(mnAnalyze);
-        JMenuItem mntmFromFile = new JMenuItem("From file");
-        mntmFromFile.addActionListener(e -> openFileDialog());
-        mnAnalyze.add(mntmFromFile);
-        JMenuItem mntmFromGit = new JMenuItem("From git");
-        mnAnalyze.add(mntmFromGit);
-        mntmFromGit.addActionListener(e -> openGitDialog());
+        JMenu menuFile = new JMenu("File");
+        menuBar.add(menuFile);
 
-        JMenu exportMenu = new JMenu("Export");
-        menuBar.add(exportMenu);
-        mGraphSettings = new JMenuItem("Metric Graphs");
+        JMenuItem mntmFromFile = new JMenuItem("Analyze From File");
+        mntmFromFile.addActionListener(e -> openFileDialog());
+        menuFile.add(mntmFromFile);
+        JMenuItem mntmFromGit = new JMenuItem("Analyze From Git");
+        menuFile.add(mntmFromGit);
+        mntmFromGit.addActionListener(e -> openGitDialog());
+        menuFile.addSeparator();
+
+        mGraphSettings = new JMenuItem("Export Metric Graphs");
         mGraphSettings.addActionListener(e -> openExportGraphDialog());
         mGraphSettings.setEnabled(false);
-        exportMenu.add(mGraphSettings);
-        mSheetSettings = new JMenuItem("Metric Sheets");
+        menuFile.add(mGraphSettings);
+        mSheetSettings = new JMenuItem("Export Metric Sheets");
         mSheetSettings.addActionListener(e -> openExportMetricFileDialog());
         mSheetSettings.setEnabled(false);
-        exportMenu.add(mSheetSettings);
+        menuFile.add(mSheetSettings);
+        menuFile.addSeparator();
+
+        java.util.List<String> recentList = PrefUtils.getPreferenceList(Constants.PROJECT_FILE_DIALOG_KEY, IIFileDialog.class);
+        int max = recentList.size() > 10 ? 10 : recentList.size();
+        for (int i = 0; i < max; i++) {
+            String recentItem = recentList.get(i);
+            File file = new File(recentItem);
+            if (!file.exists()) continue;
+            JMenuItem item = new JMenuItem(String.format("%s: %s", i + 1, recentItem));
+            item.addActionListener(e -> loadFile(file));
+            menuFile.add(item);
+        }
+        if (max > 0)
+            menuFile.addSeparator();
+
+        JMenuItem exitItem = new JMenuItem("Exit");
+        exitItem.addActionListener(e -> System.exit(0));
+        menuFile.add(exitItem);
 
         JMenu settingMenu = new JMenu("Settings");
         menuBar.add(settingMenu);
@@ -115,10 +137,14 @@ public class MainPage {
         mSheetSettings.setEnabled(true);
     }
 
+    private void loadFile(File file) {
+        showCard(PROGRESS_CARD);
+        mProjectBuilder.setup(file).build();
+    }
+
     private void openFileDialog() {
         if (DialogUtils.openProjectFileDialog()) {
-            showCard(PROGRESS_CARD);
-            mProjectBuilder.setup(DialogUtils.getProjectFile()).build();
+            loadFile(DialogUtils.getProjectFile());
         }
     }
 
