@@ -1,9 +1,4 @@
 Update list:
-	* Fix Export button text
 	* Don't allow export if none selected
-	* Loading a new project doesn't work
-	* Allow option for updating only single graphs
-	* Update fonts for some containers using FontUtil
-	* Create icon
-	* Save graph options as default
-	* GitService depends on some logger library, I think
+	* Password hashing and salting for git
+	* https for website constant

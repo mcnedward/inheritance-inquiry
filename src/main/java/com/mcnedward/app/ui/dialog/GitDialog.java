@@ -22,7 +22,7 @@ import java.awt.event.KeyEvent;
 public class GitDialog extends JDialog implements ActionListener {
 
     private static final int WIDTH = 650;
-    private static final int HEIGHT = 200;
+    private static final int HEIGHT = 250;
 
     private JPanel mRoot;
     private JButton mBtnDownload;
@@ -47,12 +47,6 @@ public class GitDialog extends JDialog implements ActionListener {
     }
 
     private void doDownloadAction() {
-        Color fontColor = Theme.getCurrentTheme().fontColor();
-        mLblUsername.setForeground(fontColor);
-        mTxtUsername.setBorder(null);
-        mLblPassword.setForeground(fontColor);
-        mTxtPassword.setBorder(null);
-
         String username = mTxtUsername.getText();
         String password = mTxtPassword.getText();
         Object item = mCmbRemoteUrl.getSelectedItem();
@@ -69,13 +63,11 @@ public class GitDialog extends JDialog implements ActionListener {
                 return;
             }
             if (username == null || username.equals("")) {
-                mLblUsername.setForeground(Color.RED);
-                mTxtUsername.setBorder(BorderFactory.createLineBorder(Color.RED));
+                DialogUtils.openMessageDialog("You need to enter your username.", "Git Download");
                 return;
             }
             if (password == null || password.equals("")) {
-                mLblPassword.setForeground(Color.RED);
-                mTxtPassword.setBorder(BorderFactory.createLineBorder(Color.RED));
+                DialogUtils.openMessageDialog("You need to enter your password.", "Git Download");
                 return;
             }
 
@@ -141,6 +133,10 @@ public class GitDialog extends JDialog implements ActionListener {
                 }
             }
         });
+        mCmbRemoteUrl.setBorder(BorderFactory.createCompoundBorder(
+                mCmbRemoteUrl.getBorder(),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+
         mTxtUsername = new JTextField();
         mTxtUsername.setFont(font);
         mTxtUsername.addKeyListener(new KeyAdapter() {
@@ -150,6 +146,10 @@ public class GitDialog extends JDialog implements ActionListener {
                 }
             }
         });
+        mTxtUsername.setBorder(BorderFactory.createCompoundBorder(
+                mTxtUsername.getBorder(),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+
         mTxtPassword = new JPasswordField();
         mTxtPassword.setFont(font);
         mTxtUsername.addKeyListener(new KeyAdapter() {
@@ -159,12 +159,16 @@ public class GitDialog extends JDialog implements ActionListener {
                 }
             }
         });
+        mTxtPassword.setBorder(BorderFactory.createCompoundBorder(
+                mTxtPassword.getBorder(),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+
         checkPreferences();
     }
 
     private void setupComboSize() {
         int width = WIDTH - (WIDTH / 4);
-        int height = 30;
+        int height = 40;
         mCmbRemoteUrl.setMinimumSize(new Dimension(width, height));
         mCmbRemoteUrl.setMaximumSize(new Dimension(width, height));
         mCmbRemoteUrl.setPreferredSize(new Dimension(width, height));

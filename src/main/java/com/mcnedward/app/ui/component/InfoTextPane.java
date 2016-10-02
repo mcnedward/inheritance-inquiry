@@ -13,11 +13,11 @@ import java.awt.*;
  */
 public class InfoTextPane extends HtmlTextPane {
 
-    private MetricType mMetricType;
+    private String mMessage;
 
-    public InfoTextPane(MetricType metricType) {
+    public InfoTextPane(String message) {
         super();
-        mMetricType = metricType;
+        mMessage = message;
         setBackground(UIManager.getColor("Label.background"));
         setBorder(UIManager.getBorder("Label.border"));
         putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
@@ -37,24 +37,7 @@ public class InfoTextPane extends HtmlTextPane {
 
     @Override
     protected String getHtml() {
-        return getInfoMessage(mMetricType);
-    }
-
-    private static String getInfoMessage(MetricType metricType) {
-        String message = "";
-        if (metricType == null) return message;
-        switch (metricType) {
-            case DIT:
-                message = Constants.DIT_MESSAGE;
-                break;
-            case NOC:
-                message = Constants.NOC_MESSAGE;
-                break;
-            case WMC:
-                message = Constants.WMC_MESSAGE;
-                break;
-        }
-        return message;
+        return mMessage;
     }
 
 }

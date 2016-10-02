@@ -25,6 +25,7 @@ import com.mcnedward.ii.service.metric.element.NocMetric;
 import com.mcnedward.ii.service.metric.element.WmcMetric;
 import com.mcnedward.ii.utils.IILogger;
 import com.mcnedward.ii.utils.ServiceFactory;
+import org.eclipse.jgit.errors.UnsupportedCredentialItem;
 
 import javax.swing.*;
 import java.awt.*;
@@ -112,10 +113,13 @@ public class MainPage {
         JMenu settingMenu = new JMenu("Settings");
         menuBar.add(settingMenu);
         JMenuItem preferenceItem = new JMenuItem("Preferences");
-        preferenceItem.addActionListener(e -> openPreferencesDialog());
+        preferenceItem.addActionListener(e -> DialogUtils.openPreferencesDialog());
         settingMenu.add(preferenceItem);
+        JMenuItem gitHelpItem = new JMenuItem("Git Help");
+        gitHelpItem.addActionListener(e -> DialogUtils.openGitHelpDialog());
+        settingMenu.add(gitHelpItem);
         JMenuItem aboutItem = new JMenuItem("About");
-        aboutItem.addActionListener(e -> openAboutDialog());
+        aboutItem.addActionListener(e -> DialogUtils.openAboutDialog());
         settingMenu.add(aboutItem);
     }
 
@@ -150,10 +154,6 @@ public class MainPage {
 
     private void openGitDialog() {
         DialogUtils.openGitDialog();
-    }
-
-    private void openPreferencesDialog() {
-        DialogUtils.openPreferencesDialog();
     }
 
     private void openExportMetricFileDialog() {
@@ -196,10 +196,6 @@ public class MainPage {
                 mGraphExportRequests++;
             }
         }
-    }
-
-    private void openAboutDialog() {
-        DialogUtils.openAboutDialog();
     }
 
     private void showCard(String card) {
@@ -303,6 +299,7 @@ public class MainPage {
             @Override
             public void onBuildError(String message, Exception exception) {
                 IILogger.error(exception);
+                message += "<br>Check Settings -> Git Help if you're having trouble.";
                 DialogUtils.openMessageDialog(message, "Git Download Error");
                 showCard(HELP_CARD);
                 mProgressSwitched = false;

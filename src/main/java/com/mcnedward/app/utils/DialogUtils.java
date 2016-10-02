@@ -25,6 +25,7 @@ public class DialogUtils {
     private static InfoDialog mDitInfoDialog;
     private static InfoDialog mNocInfoDialog;
     private static InfoDialog mWmcInfoDialog;
+    private static InfoDialog mGitHelpDialog;
     private static AboutDialog mAboutDialog;
     private static MessageDialog mMessageDialog;
 
@@ -42,11 +43,13 @@ public class DialogUtils {
         if (mPreferencesDialog == null)
             mPreferencesDialog = new PreferencesDialog(parent);
         if (mDitInfoDialog == null)
-            mDitInfoDialog = new InfoDialog(parent, Constants.DIT_TITLE, MetricType.DIT);
+            mDitInfoDialog = new InfoDialog(parent, Constants.DIT_TITLE, Constants.DIT_MESSAGE);
         if (mNocInfoDialog == null)
-            mNocInfoDialog = new InfoDialog(parent, Constants.NOC_TITLE, MetricType.NOC);
+            mNocInfoDialog = new InfoDialog(parent, Constants.NOC_TITLE, Constants.NOC_MESSAGE);
         if (mWmcInfoDialog == null)
-            mWmcInfoDialog = new InfoDialog(parent, Constants.WMC_TITLE, MetricType.WMC);
+            mWmcInfoDialog = new InfoDialog(parent, Constants.WMC_TITLE, Constants.WMC_MESSAGE);
+        if (mGitHelpDialog == null)
+            mGitHelpDialog = new InfoDialog(parent, Constants.GIT_HELP_TITLE, Constants.gitHelpMessage());
         if (mAboutDialog == null)
             mAboutDialog = new AboutDialog(parent);
         if (mMessageDialog == null)
@@ -56,7 +59,7 @@ public class DialogUtils {
     static Component[] getAppDialogs() {
         return new Component[] {
                 mFileDialog, mGitDialog, mExportMetricFileDialog, mExportGraphMetricDialog, mExportGraphDialog,
-                mPreferencesDialog, mDitInfoDialog, mNocInfoDialog, mWmcInfoDialog, mAboutDialog, mMessageDialog
+                mPreferencesDialog, mDitInfoDialog, mNocInfoDialog, mWmcInfoDialog, mGitHelpDialog, mAboutDialog, mMessageDialog
         };
     }
 
@@ -124,6 +127,10 @@ public class DialogUtils {
                 openWmcInfoDialog();
                 break;
         }
+    }
+
+    public static void openGitHelpDialog() {
+        mGitHelpDialog.open();
     }
 
     public static void openMessageDialog(String message, String title) {

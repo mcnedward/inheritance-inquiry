@@ -17,11 +17,11 @@ public class InfoDialog extends JDialog implements ActionListener {
     private JPanel mRoot;
     private JButton mBtnOk;
     private JTextPane mEdtMessage;
-    private MetricType mMetricType;
+    private String mMessage;
 
-    public InfoDialog(Frame parent, String name, MetricType metricType) {
+    public InfoDialog(Frame parent, String name, String message) {
         super(parent, name, true);
-        mMetricType = metricType;
+        mMessage = message;
         ((InfoTextPane) mEdtMessage).updateText();
         setDialogSize(WIDTH, HEIGHT);
         setContentPane(mRoot);
@@ -50,7 +50,7 @@ public class InfoDialog extends JDialog implements ActionListener {
     }
 
     private void createUIComponents() {
-        mEdtMessage = new InfoTextPane(mMetricType);
+        mEdtMessage = new InfoTextPane(mMessage);
     }
 
 }

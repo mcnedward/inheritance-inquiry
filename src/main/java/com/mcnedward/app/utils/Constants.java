@@ -1,9 +1,13 @@
 package com.mcnedward.app.utils;
 
+import java.util.ResourceBundle;
+
 /**
  * Created by Edward on 10/1/2016.
  */
 public class Constants {
+
+    private static ResourceBundle RESOURCES = ResourceBundle.getBundle("Resources");
 
     // App Details
     public static final String APP_TITLE = "Inheritance Inquiry";
@@ -14,10 +18,6 @@ public class Constants {
     private static final String JUNG = "Jung";
     private static final String JUNG_WEBSITE = "http://jung.sourceforge.net";
     private static final String COPYRIGHT_INFO = "\u00a9 Edward McNealy 2016";
-    public static String appDetails() {
-        return String.format("<div><h1 height=\"64\" style=\"line-height:64px;background-color:green;\"><img src=\"%s\" width=\"64\" height=\"64\"/>%s</h1></div><h2>%s</h2><a href=\"%s\">%s</a><p>Powered by:<ul><li><a href=\"%s\">%s</a></li><li><a href=\"%s\">%s</a></li></ul><p>%s</p>",
-        IIAppUtils.getIconPath(), APP_TITLE, DESCRIPTION, WEBSITE, WEBSITE, ECLIPSE_JDT_WEBSITE, ECLIPSE_JDT, JUNG_WEBSITE, JUNG, COPYRIGHT_INFO);
-    }
 
     // Info Dialog
     public static final String DIT_TITLE = "Depth of Inheritance Tree";
@@ -26,6 +26,20 @@ public class Constants {
     public static final String NOC_MESSAGE = "<p>The <b>Number of Children</b> (NOC) is the amount of elements that directly inherit from another single element, or the number of immediate subclasses.</p><p>For a parent class <i>A</i>, the NOC would be the amount of classes that <b>extends</b> <i>A</i>. So if there are 10 subclasses of <i>A</i>, the NOC would be 10. Classes that are at the bottom of a hierarchy treee would have an NOC of 0. This means that no other classes <b>extends</b> this class.</p><p>When a class has a high NOC, there are a large amount of other classes that will potentially be affected by changes in the parent class.</p>";
     public static final String WMC_TITLE = "Weighted Method Count";
     public static final String WMC_MESSAGE = "<p>The <b>Weighted Method Count</b> is basically the number of methods defined in a class (though this metric can have more complex descriptions*).</p><p>The amount of methods in a class, and how complex those methods are, can affect how much work is needed to maintain that class. Depending on the access level of those methods (<b>private</b>, <b>protected</b>, <b>public</b>), those methods can also have an effect on other classes.</p><p>*See: <a href=\"https://en.wikipedia.org/wiki/Cyclomatic_complexity\">Cyclomatic complexity</a></p>";
+
+    // Git Help Dialog
+    public static final String GIT_HELP_TITLE = RESOURCES.getString("git_help_title");
+    public static String gitHelpMessage() {
+        return String.format("<p>%s</p><ul><li>%s</li><li>%s</li><li>%s</li><li>%s</li><li>%s</li><li>%s</li><li>%s</li></ul>",
+                RESOURCES.getString("git_help_description"),
+                RESOURCES.getString("git_step_1"),
+                RESOURCES.getString("git_step_2"),
+                RESOURCES.getString("git_step_3"),
+                RESOURCES.getString("git_step_4"),
+                RESOURCES.getString("git_step_5"),
+                RESOURCES.getString("git_step_6"),
+                RESOURCES.getString("git_step_7"));
+    }
 
     // Graph Settings
     public static final String GRAPH_SETTINGS_KEY = "GraphSettingsKey";
