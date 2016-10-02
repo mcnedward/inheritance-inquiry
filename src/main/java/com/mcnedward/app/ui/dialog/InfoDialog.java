@@ -1,9 +1,9 @@
 package com.mcnedward.app.ui.dialog;
 
-import com.mcnedward.ii.utils.IILogger;
+import com.mcnedward.app.ui.component.InfoTextPane;
+import com.mcnedward.ii.service.metric.MetricType;
 
 import javax.swing.*;
-import javax.swing.event.HyperlinkEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,12 +17,14 @@ public class InfoDialog extends JDialog implements ActionListener {
     private JPanel mRoot;
     private JButton mBtnOk;
     private JTextPane mEdtMessage;
+    private MetricType mMetricType;
 
-    public InfoDialog(Frame parent, String name, String message) {
+    public InfoDialog(Frame parent, String name, MetricType metricType) {
         super(parent, name, true);
+        mMetricType = metricType;
+        ((InfoTextPane) mEdtMessage).setText();
         setDialogSize(WIDTH, HEIGHT);
         setContentPane(mRoot);
-        mEdtMessage.setText(message);
         pack();
         setResizable(false);
         setLocationRelativeTo(parent);
@@ -44,21 +46,7 @@ public class InfoDialog extends JDialog implements ActionListener {
     }
 
     private void createUIComponents() {
-        mEdtMessage = new JTextPane();
-        mEdtMessage.setBackground(UIManager.getColor("Label.background"));
-        mEdtMessage.setBorder(UIManager.getBorder("Label.border"));
-        mEdtMessage.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
-        mEdtMessage.setContentType("text/html");
-        mEdtMessage.addHyperlinkListener(e -> {
-            if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                if(Desktop.isDesktopSupported()) {
-                    try {
-                        Desktop.getDesktop().browse(e.getURL().toURI());
-                    } catch (Exception exception) {
-                        IILogger.error(exception);
-                    }
-                }
-            }
-        });
+        mEdtMessage = new InfoTextPane(mMetricType);
     }
+
 }

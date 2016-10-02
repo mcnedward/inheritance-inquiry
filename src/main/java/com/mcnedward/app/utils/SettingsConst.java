@@ -39,4 +39,7 @@ public class SettingsConst {
     public static final String GIT_USERNAME = "GitUsername";
     public static final String GIT_PASSWORD = "GitPassword";
 
+    // Theme Settings
+    public static final String THEME_NAME = "ThemeName";
+
 }

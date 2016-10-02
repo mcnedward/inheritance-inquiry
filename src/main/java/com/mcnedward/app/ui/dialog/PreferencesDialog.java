@@ -2,6 +2,7 @@ package com.mcnedward.app.ui.dialog;
 
 import com.mcnedward.app.ui.form.GraphPanel;
 import com.mcnedward.app.utils.PrefUtils;
+import com.mcnedward.app.utils.Theme;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -14,22 +15,17 @@ public class PreferencesDialog extends JDialog implements ActionListener {
     private JButton mBtnClearFile;
     private JButton mBtnClearGit;
     private JButton mBtnClearGraph;
-    private JTextPane mLblGit;
-    private JTextPane mLblGraph;
     private JButton mBtnClearMetricGraph;
     private JButton mBtnClearMetricSheet;
     private JButton mBtnClearAll;
+    private JPanel mPreferencesPanel;
+    private JPanel mThemesPanel;
 
     public PreferencesDialog(JFrame parent) {
         setTitle("Preferences");
         setContentPane(mRoot);
         setModal(true);
         getRootPane().setDefaultButton(mBtnOk);
-
-        String gitMessage = "<html><p>Clear the saved locations when choosing to Analyze from Git.<br>This also resets your saved username and password.</p></html>";
-        mLblGit.setText(gitMessage);
-        String graphMessage = "<html><p>Reset the graph options to the default.<br>You may have to restart the app for this to take effect.</p></html>";
-        mLblGraph.setText(graphMessage);
 
         pack();
         setResizable(false);
@@ -39,9 +35,6 @@ public class PreferencesDialog extends JDialog implements ActionListener {
     }
 
     private void createUIComponents() {
-        mLblGit = createTextPane();
-        mLblGraph = createTextPane();
-
         mBtnClearFile = new JButton();
         mBtnClearFile.addActionListener(e -> PrefUtils.clearPreferences(ProjectFileDialog.class));
 
@@ -65,15 +58,21 @@ public class PreferencesDialog extends JDialog implements ActionListener {
 
         mBtnClearGraph = new JButton();
         mBtnClearGraph.addActionListener(e -> PrefUtils.clearPreferences(GraphPanel.class));
+
+        createThemesPanel();
     }
 
-    private JTextPane createTextPane() {
-        JTextPane pane = new JTextPane();
-        pane.setBackground(UIManager.getColor("Label.background"));
-        pane.setBorder(UIManager.getBorder("Label.border"));
-        pane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
-        pane.setContentType("text/html");
-        return pane;
+    private void createThemesPanel() {
+        mThemesPanel = new JPanel();
+        ButtonGroup group = new ButtonGroup();
+        Theme currentTheme = Theme.getCurrentTheme();
+        for (Theme theme : Theme.values()) {
+            JRadioButton button = new JRadioButton(theme.themeName());
+            group.add(button);
+            button.setSelected(currentTheme.themeName().equals(theme.themeName()));
+            button.addActionListener(e -> Theme.updateTheme(theme));
+            mThemesPanel.add(button);
+        }
     }
 
     public void open() {

@@ -23,6 +23,7 @@ import com.mcnedward.ii.utils.ServiceFactory;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -59,9 +60,9 @@ public class MainPage {
     // Dialogs
     private static ProjectFileDialog mFileDialog;
     private static GitDialog mGitDialog;
-    private ExportMetricFileDialog mExportMetricFileDialog;
-    private ExportAllGraphsDialog mExportGraphMetricDialog;
-    private PreferencesDialog mPreferencesDialog;
+    private static ExportMetricFileDialog mExportMetricFileDialog;
+    private static ExportAllGraphsDialog mExportGraphMetricDialog;
+    private static PreferencesDialog mPreferencesDialog;
 
     public MainPage() {
         mProjectBuilder = new ProjectBuilder(solutionBuildListener());
@@ -109,6 +110,16 @@ public class MainPage {
         mExportMetricFileDialog = new ExportMetricFileDialog(parent);
         mExportGraphMetricDialog = new ExportAllGraphsDialog(parent);
         mPreferencesDialog = new PreferencesDialog(parent);
+    }
+
+    public static Collection<Component> getAppDialogs() {
+        Collection<Component> dialogs = new ArrayList<>();
+        dialogs.add(mGitDialog);
+        dialogs.add(mFileDialog);
+        dialogs.add(mExportMetricFileDialog);
+        dialogs.add(mExportGraphMetricDialog);
+        dialogs.add(mPreferencesDialog);
+        return dialogs;
     }
 
     private void loadSolution(JavaSolution solution) {

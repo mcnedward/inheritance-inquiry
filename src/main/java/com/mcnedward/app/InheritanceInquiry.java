@@ -1,9 +1,7 @@
 package com.mcnedward.app;
 
 import com.mcnedward.app.ui.form.MainPage;
-import com.mcnedward.app.utils.DialogUtils;
-import com.mcnedward.app.utils.IIAppUtils;
-import com.mcnedward.app.utils.PrefUtils;
+import com.mcnedward.app.utils.*;
 import com.mcnedward.ii.utils.IILogger;
 
 import javax.swing.*;
@@ -20,7 +18,7 @@ public class InheritanceInquiry {
     public static int WIDTH;
     public static int HEIGHT;
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
                 JFrame frame = new JFrame("Inheritance Inquiry");
@@ -31,6 +29,7 @@ public class InheritanceInquiry {
                 try {
                     UIManager.put("ScrollBarUI", "com.mcnedward.app.ui.component.IIScrollBar");
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                    loadTheme();
                     IIAppUtils.fixupIcons();
                 } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
                     IILogger.error("Something went wrong when trying to use the System Look and Feel...", e);
@@ -60,5 +59,11 @@ public class InheritanceInquiry {
                 e.printStackTrace();
             }
         });
-	}
+    }
+
+    private static void loadTheme() {
+        Theme currentTheme = Theme.getCurrentTheme();
+        if (currentTheme.equals(Theme.DEFAULT)) return; // Don't load if default
+        Theme.setTheme(currentTheme);
+    }
 }
