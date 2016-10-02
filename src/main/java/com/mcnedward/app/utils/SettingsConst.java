@@ -1,4 +1,4 @@
-package com.mcnedward.app.ui.utils;
+package com.mcnedward.app.utils;
 
 /**
  * Created by Edward on 10/1/2016.

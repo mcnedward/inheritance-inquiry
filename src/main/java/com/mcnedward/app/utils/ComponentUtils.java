@@ -1,4 +1,4 @@
-package com.mcnedward.app.ui.utils;
+package com.mcnedward.app.utils;
 
 import java.awt.Component;
 import java.awt.Container;

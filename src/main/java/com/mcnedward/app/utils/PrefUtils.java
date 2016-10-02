@@ -1,9 +1,10 @@
-package com.mcnedward.app.ui.utils;
+package com.mcnedward.app.utils;
 
 import com.mcnedward.app.ui.form.GraphPanel;
 import com.mcnedward.ii.service.graph.element.GraphOptions;
 import com.mcnedward.ii.utils.IILogger;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,6 +38,12 @@ public class PrefUtils {
         save(preferences);
     }
 
+    public static <T> void putPreference(String key, Color pref, Class<T> clazz) {
+        Preferences preferences = Preferences.userNodeForPackage(clazz);
+        preferences.putInt(key, pref.getRGB());
+        save(preferences);
+    }
+
 	public static <T> void putInListPreference(String key, String pref, Class<T> clazz) {
 		Preferences preferences = Preferences.userNodeForPackage(clazz);
 		String currentPref = preferences.get(key, "");
@@ -62,6 +69,11 @@ public class PrefUtils {
     public static <T> boolean getPreferenceBool(String key, Class<T> clazz) {
         Preferences preferences = Preferences.userNodeForPackage(clazz);
         return preferences.getBoolean(key, false);
+    }
+
+    public static <T> Color getPreferenceColor(String key, Class<T> clazz) {
+        Preferences preferences = Preferences.userNodeForPackage(clazz);
+        return new Color(preferences.getInt(key, 0));
     }
 	
 	public static <T> List<String> getPreferenceList(String key, Class<T> clazz) {

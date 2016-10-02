@@ -5,9 +5,9 @@ import com.mcnedward.app.InheritanceInquiry;
 import com.mcnedward.app.ui.component.IIColorPicker;
 import com.mcnedward.app.ui.dialog.ExportGraphDialog;
 import com.mcnedward.app.ui.listener.GraphPanelListener;
-import com.mcnedward.app.ui.utils.ComponentUtils;
-import com.mcnedward.app.ui.utils.PrefUtils;
-import com.mcnedward.app.ui.utils.SettingsConst;
+import com.mcnedward.app.utils.ComponentUtils;
+import com.mcnedward.app.utils.PrefUtils;
+import com.mcnedward.app.utils.SettingsConst;
 import com.mcnedward.ii.builder.GraphBuilder;
 import com.mcnedward.ii.element.JavaSolution;
 import com.mcnedward.ii.exception.GraphBuildException;
@@ -233,6 +233,10 @@ public class GraphPanel {
         PrefUtils.putPreference(checkName, value, GraphPanel.class);
     }
 
+    private void saveColor(String name, Color color) {
+        PrefUtils.putPreference(name, color, GraphPanel.class);
+    }
+
     private int getPreferenceInt(String name) {
         return PrefUtils.getPreferenceInt(name, GraphPanel.class);
     }
@@ -242,8 +246,7 @@ public class GraphPanel {
     }
 
     private Color getPreferenceColor(String name) {
-        int rgb = PrefUtils.getPreferenceInt(name, GraphPanel.class);
-        return new Color(rgb);
+        return PrefUtils.getPreferenceColor(name, GraphPanel.class);
     }
 
     private void createUIComponents() {
@@ -272,19 +275,19 @@ public class GraphPanel {
 
         mFontColor = getPreferenceColor(SettingsConst.FONT_COLOR);
         mBtnFontColor = new IIColorPicker(mFontColor);
-        ((IIColorPicker) mBtnFontColor).addColorChangedListener(newColor -> {mFontColor = newColor; saveInt(SettingsConst.FONT_COLOR, newColor.getRGB()); updateGraphs();});
+        ((IIColorPicker) mBtnFontColor).addColorChangedListener(newColor -> {mFontColor = newColor; saveColor(SettingsConst.FONT_COLOR, newColor); updateGraphs();});
 
         mLabelColor = getPreferenceColor(SettingsConst.LABEL_COLOR);
         mBtnLabelColor = new IIColorPicker(mLabelColor);
-        ((IIColorPicker) mBtnLabelColor).addColorChangedListener(newColor -> {mLabelColor = newColor; saveInt(SettingsConst.LABEL_COLOR, newColor.getRGB()); updateGraphs();});
+        ((IIColorPicker) mBtnLabelColor).addColorChangedListener(newColor -> {mLabelColor = newColor; saveColor(SettingsConst.LABEL_COLOR, newColor); updateGraphs();});
 
         mArrowColor = getPreferenceColor(SettingsConst.ARROW_COLOR);
         mBtnArrowColor = new IIColorPicker(mArrowColor);
-        ((IIColorPicker) mBtnArrowColor).addColorChangedListener(newColor -> {mArrowColor = newColor; saveInt(SettingsConst.ARROW_COLOR, newColor.getRGB()); updateGraphs();});
+        ((IIColorPicker) mBtnArrowColor).addColorChangedListener(newColor -> {mArrowColor = newColor; saveColor(SettingsConst.ARROW_COLOR, newColor); updateGraphs();});
 
 //        mEdgeColor = getPreferenceColor(SettingsConst.EDGE_COLOR);
 //        mBtnEdgeColor = new IIColorPicker(mEdgeColor);
-//        ((IIColorPicker) mBtnEdgeColor).addColorChangedListener(newColor -> {mEdgeColor = newColor; saveInt(SettingsConst.EDGE_COLOR, newColor.getRGB()); updateGraphs();});
+//        ((IIColorPicker) mBtnEdgeColor).addColorChangedListener(newColor -> {mEdgeColor = newColor; saveColor(SettingsConst.EDGE_COLOR, newColor).updateGraphs();});
 
         ComboBoxModel<GraphShape> comboBoxModel = new DefaultComboBoxModel<>(GraphShape.values());
         mCmbGraphShape = new JComboBox<>(comboBoxModel);

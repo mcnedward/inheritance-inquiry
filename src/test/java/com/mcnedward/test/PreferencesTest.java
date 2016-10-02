@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mcnedward.app.ui.utils.PrefUtils;
+import com.mcnedward.app.utils.PrefUtils;
 /**
  * @author Edward - Jun 30, 2016
  *

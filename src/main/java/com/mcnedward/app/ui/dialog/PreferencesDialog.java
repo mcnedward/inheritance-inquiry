@@ -1,10 +1,9 @@
 package com.mcnedward.app.ui.dialog;
 
 import com.mcnedward.app.ui.form.GraphPanel;
-import com.mcnedward.app.ui.utils.PrefUtils;
+import com.mcnedward.app.utils.PrefUtils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -74,7 +73,6 @@ public class PreferencesDialog extends JDialog implements ActionListener {
         pane.setBorder(UIManager.getBorder("Label.border"));
         pane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
         pane.setContentType("text/html");
-        pane.setMargin(new Insets(0, 0, 0, 0));
         return pane;
     }
 

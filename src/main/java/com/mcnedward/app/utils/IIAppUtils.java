@@ -1,4 +1,4 @@
-package com.mcnedward.app.ui.utils;
+package com.mcnedward.app.utils;
 
 import com.mcnedward.ii.utils.IILogger;
 
@@ -6,12 +6,33 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 /**
  * Created by Edward on 9/28/2016.
  */
 public class IIAppUtils {
+
+    public static java.util.List<String> getUIManagerKeys() {
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        java.util.List<String> keys = new ArrayList<>();
+        try {
+            InputStream stream = classloader.getResourceAsStream("UIManagerKeys.txt");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                keys.add(line);
+            }
+            reader.close();
+        } catch (Exception e) {
+            IILogger.error(e);
+        }
+        return keys;
+    }
 
     public static void loadIcon(JFrame frame) {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();

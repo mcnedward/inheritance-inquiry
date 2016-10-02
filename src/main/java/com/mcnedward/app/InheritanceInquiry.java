@@ -1,9 +1,9 @@
 package com.mcnedward.app;
 
 import com.mcnedward.app.ui.form.MainPage;
-import com.mcnedward.app.ui.utils.DialogUtils;
-import com.mcnedward.app.ui.utils.IIAppUtils;
-import com.mcnedward.app.ui.utils.PrefUtils;
+import com.mcnedward.app.utils.DialogUtils;
+import com.mcnedward.app.utils.IIAppUtils;
+import com.mcnedward.app.utils.PrefUtils;
 import com.mcnedward.ii.utils.IILogger;
 
 import javax.swing.*;

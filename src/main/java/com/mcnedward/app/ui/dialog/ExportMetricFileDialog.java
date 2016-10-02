@@ -1,6 +1,6 @@
 package com.mcnedward.app.ui.dialog;
 
-import com.mcnedward.app.ui.utils.SettingsConst;
+import com.mcnedward.app.utils.SettingsConst;
 
 import javax.swing.*;
 import java.awt.*;

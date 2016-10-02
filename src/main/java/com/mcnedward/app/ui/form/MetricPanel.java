@@ -5,7 +5,7 @@ import com.mcnedward.app.ui.component.IIListModel;
 import com.mcnedward.app.ui.component.PlaceholderTextField;
 import com.mcnedward.app.ui.listener.GraphPanelListener;
 import com.mcnedward.app.ui.listener.GraphRequestListener;
-import com.mcnedward.app.ui.utils.DialogUtils;
+import com.mcnedward.app.utils.DialogUtils;
 import com.mcnedward.ii.element.JavaSolution;
 import com.mcnedward.ii.service.graph.IGraphService;
 import com.mcnedward.ii.service.graph.jung.JungGraph;

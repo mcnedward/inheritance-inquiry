@@ -1,4 +1,4 @@
-package com.mcnedward.app.ui.utils;
+package com.mcnedward.app.utils;
 
 import com.mcnedward.app.InheritanceInquiry;
 import com.mcnedward.app.ui.dialog.InfoDialog;
