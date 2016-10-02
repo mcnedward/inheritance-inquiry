@@ -3,6 +3,7 @@ package com.mcnedward.app.ui.dialog;
 import com.mcnedward.app.utils.Constants;
 import com.mcnedward.app.utils.DialogUtils;
 import com.mcnedward.app.utils.PrefUtils;
+import com.mcnedward.app.utils.Theme;
 import com.mcnedward.ii.builder.GitBuilder;
 import com.mcnedward.ii.listener.GitDownloadListener;
 import com.mcnedward.ii.utils.ServiceFactory;
@@ -11,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 /**
@@ -45,9 +47,10 @@ public class GitDialog extends JDialog implements ActionListener {
     }
 
     private void doDownloadAction() {
-        mLblUsername.setForeground(Color.BLACK);
+        Color fontColor = Theme.getCurrentTheme().fontColor();
+        mLblUsername.setForeground(fontColor);
         mTxtUsername.setBorder(null);
-        mLblPassword.setForeground(Color.BLACK);
+        mLblPassword.setForeground(fontColor);
         mTxtPassword.setBorder(null);
 
         String username = mTxtUsername.getText();
@@ -129,11 +132,43 @@ public class GitDialog extends JDialog implements ActionListener {
 
         mCmbRemoteUrl = new JComboBox<>();
         mCmbRemoteUrl.setFont(font);
+        mCmbRemoteUrl.setEditable(true);
+        setupComboSize();
+        mCmbRemoteUrl.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent evt) {
+                if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                    doDownloadAction();
+                }
+            }
+        });
         mTxtUsername = new JTextField();
         mTxtUsername.setFont(font);
+        mTxtUsername.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent evt) {
+                if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                    doDownloadAction();
+                }
+            }
+        });
         mTxtPassword = new JPasswordField();
         mTxtPassword.setFont(font);
+        mTxtUsername.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent evt) {
+                if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                    doDownloadAction();
+                }
+            }
+        });
         checkPreferences();
+    }
+
+    private void setupComboSize() {
+        int width = WIDTH - (WIDTH / 4);
+        int height = 30;
+        mCmbRemoteUrl.setMinimumSize(new Dimension(width, height));
+        mCmbRemoteUrl.setMaximumSize(new Dimension(width, height));
+        mCmbRemoteUrl.setPreferredSize(new Dimension(width, height));
+        mCmbRemoteUrl.setSize(new Dimension(width, height));
     }
 
     @Override

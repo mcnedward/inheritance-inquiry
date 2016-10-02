@@ -10,9 +10,11 @@
       <grid id="e3588" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
         <constraints border-constraint="South"/>
         <properties/>
-        <border type="none"/>
+        <border type="empty">
+          <size top="0" left="0" bottom="5" right="0"/>
+        </border>
         <children>
-          <component id="e7465" class="javax.swing.JButton" binding="buttonOK">
+          <component id="e7465" class="javax.swing.JButton" binding="mBtnOk" custom-create="true">
             <constraints/>
             <properties>
               <text value="OK"/>
@@ -20,15 +22,26 @@
           </component>
         </children>
       </grid>
-      <grid id="94766" layout-manager="BorderLayout" hgap="0" vgap="0">
+      <grid id="94766" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="true" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
         <constraints border-constraint="Center"/>
         <properties/>
         <border type="empty">
-          <size top="10" left="10" bottom="10" right="10"/>
+          <size top="10" left="10" bottom="10" right="15"/>
         </border>
         <children>
-          <component id="6fa02" class="javax.swing.JTextPane" binding="mLblMessage" custom-create="true">
-            <constraints border-constraint="Center"/>
+          <component id="b4832" class="javax.swing.JLabel" binding="mLblIcon" custom-create="true">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="56efb" class="javax.swing.JTextPane" binding="mLblMessage" custom-create="true">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="50"/>
+              </grid>
+            </constraints>
             <properties>
               <editable value="false"/>
               <focusable value="false"/>
@@ -36,10 +49,6 @@
               <opaque value="false"/>
               <requestFocusEnabled value="false"/>
             </properties>
-          </component>
-          <component id="b4832" class="javax.swing.JLabel" binding="mLblIcon" custom-create="true">
-            <constraints border-constraint="West"/>
-            <properties/>
           </component>
         </children>
       </grid>

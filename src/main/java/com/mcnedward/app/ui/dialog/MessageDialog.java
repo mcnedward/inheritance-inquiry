@@ -11,11 +11,11 @@ import java.awt.event.KeyEvent;
 
 public class MessageDialog extends JDialog implements ActionListener {
 
-    private static final int WIDTH = 500;
+    private static final int WIDTH = 600;
     private static final int HEIGHT = 150;
 
     private JPanel mRoot;
-    private JButton buttonOK;
+    private JButton mBtnOk;
     private JTextPane mLblMessage;
     private JLabel mLblIcon;
 
@@ -23,7 +23,7 @@ public class MessageDialog extends JDialog implements ActionListener {
         setDialogSize(WIDTH, HEIGHT);
         setContentPane(mRoot);
         setModal(true);
-        getRootPane().setDefaultButton(buttonOK);
+        getRootPane().setDefaultButton(mBtnOk);
         setContentPane(mRoot);
         pack();
         setModal(true);
@@ -32,7 +32,7 @@ public class MessageDialog extends JDialog implements ActionListener {
         getRootPane().registerKeyboardAction(this, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
     }
 
-    public void setInfo(String title, String message) {
+    public void setInfo(String message, String title) {
         setTitle(title);
         ((StandardHtmlTextPane) mLblMessage).setHtml(message);
         pack();
@@ -42,6 +42,8 @@ public class MessageDialog extends JDialog implements ActionListener {
         mLblIcon = new JLabel();
         mLblIcon.setIcon(IIAppUtils.getScaledIcon());
         mLblMessage = new StandardHtmlTextPane();
+        mBtnOk = new JButton();
+        mBtnOk.addActionListener(e -> dispose());
     }
 
     public void open() {

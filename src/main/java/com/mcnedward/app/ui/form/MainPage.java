@@ -302,13 +302,15 @@ public class MainPage {
 
             @Override
             public void onBuildError(String message, Exception exception) {
-                DialogUtils.openMessageDialog(message, "Git Download Error");
                 IILogger.error(exception);
+                DialogUtils.openMessageDialog(message, "Git Download Error");
                 showCard(HELP_CARD);
+                mProgressSwitched = false;
             }
 
             @Override
             public void finished(File gitFile, String repoName) {
+                mProgressSwitched = false;
                 mProjectBuilder.setup(gitFile).build();
             }
         };

@@ -13,7 +13,7 @@ public class ProgressCard {
     private JLabel mLblProgress;
     private JPanel mRoot;
 
-    public void update(String message, int progress) {
+    void update(String message, int progress) {
         mProgressBar.setVisible(true);
         mLblProgress.setText(message);
         mProgressBar.setValue(progress);

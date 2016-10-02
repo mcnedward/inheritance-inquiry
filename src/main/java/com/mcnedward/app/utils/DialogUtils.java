@@ -126,8 +126,8 @@ public class DialogUtils {
         }
     }
 
-    public static void openMessageDialog(String title, String message) {
-        mMessageDialog.setInfo(title, message);
+    public static void openMessageDialog(String message, String title) {
+        mMessageDialog.setInfo(message, title);
         mMessageDialog.open();
     }
 
