@@ -93,7 +93,7 @@ public class MainPage {
         preferenceItem.addActionListener(e -> openPreferencesDialog());
         settingMenu.add(preferenceItem);
         JMenuItem aboutItem = new JMenuItem("About");
-//        aboutItem.addActionListener(e -> GitDialog.clearPreference());
+        aboutItem.addActionListener(e -> openAboutDialog());
         settingMenu.add(aboutItem);
     }
 
@@ -170,6 +170,10 @@ public class MainPage {
                 mGraphExportRequests++;
             }
         }
+    }
+
+    private void openAboutDialog() {
+        DialogUtils.openAboutDialog();
     }
 
     private void showCard(String card) {

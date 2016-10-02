@@ -1,6 +1,6 @@
 package com.mcnedward.app.ui.dialog;
 
-import com.mcnedward.app.utils.SettingsConst;
+import com.mcnedward.app.utils.Constants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,6 +40,6 @@ public class ProjectFileDialog extends IIFileDialog {
 
     @Override
     protected String getPreferenceKey() {
-        return SettingsConst.PROJECT_FILE_DIALOG_KEY;
+        return Constants.PROJECT_FILE_DIALOG_KEY;
     }
 }

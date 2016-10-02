@@ -1,7 +1,7 @@
 package com.mcnedward.app.ui.dialog;
 
+import com.mcnedward.app.utils.Constants;
 import com.mcnedward.app.utils.PrefUtils;
-import com.mcnedward.app.utils.SettingsConst;
 import com.mcnedward.ii.builder.GitBuilder;
 import com.mcnedward.ii.listener.GitDownloadListener;
 import com.mcnedward.ii.utils.ServiceFactory;
@@ -82,22 +82,22 @@ public class GitDialog extends JDialog implements ActionListener {
     }
 
     private void checkPreferences() {
-        java.util.List<String> searchedRemotes = PrefUtils.getPreferenceList(SettingsConst.GIT_SEARCHED_REMOTES, GitDialog.class);
+        java.util.List<String> searchedRemotes = PrefUtils.getPreferenceList(Constants.GIT_SEARCHED_REMOTES, GitDialog.class);
         mCmbRemoteUrl.removeAllItems();
         for (String remote : searchedRemotes)
             mCmbRemoteUrl.addItem(remote);
-        mTxtUsername.setText(PrefUtils.getPreference(SettingsConst.GIT_USERNAME, GitDialog.class));
-        mTxtPassword.setText(PrefUtils.getPreference(SettingsConst.GIT_PASSWORD, GitDialog.class));
+        mTxtUsername.setText(PrefUtils.getPreference(Constants.GIT_USERNAME, GitDialog.class));
+        mTxtPassword.setText(PrefUtils.getPreference(Constants.GIT_PASSWORD, GitDialog.class));
     }
 
     private void updatePreferences(String remoteUrl) {
-        java.util.List<String> searchedRemotes = PrefUtils.getPreferenceList(SettingsConst.GIT_SEARCHED_REMOTES, GitDialog.class);
+        java.util.List<String> searchedRemotes = PrefUtils.getPreferenceList(Constants.GIT_SEARCHED_REMOTES, GitDialog.class);
         if (!searchedRemotes.contains(remoteUrl)) {
-            PrefUtils.putInListPreference(SettingsConst.GIT_SEARCHED_REMOTES, remoteUrl, GitDialog.class);
+            PrefUtils.putInListPreference(Constants.GIT_SEARCHED_REMOTES, remoteUrl, GitDialog.class);
             mCmbRemoteUrl.addItem(remoteUrl);
         }
-        PrefUtils.putPreference(SettingsConst.GIT_USERNAME, mTxtUsername.getText(), GitDialog.class);
-        PrefUtils.putPreference(SettingsConst.GIT_USERNAME, mTxtPassword.getText(), GitDialog.class);
+        PrefUtils.putPreference(Constants.GIT_USERNAME, mTxtUsername.getText(), GitDialog.class);
+        PrefUtils.putPreference(Constants.GIT_USERNAME, mTxtPassword.getText(), GitDialog.class);
     }
 
     private void setDialogSize(int width, int height) {

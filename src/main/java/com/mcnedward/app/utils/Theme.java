@@ -1,7 +1,7 @@
 package com.mcnedward.app.utils;
 
 import com.mcnedward.app.InheritanceInquiry;
-import com.mcnedward.app.ui.form.MainPage;
+import com.mcnedward.ii.service.metric.MetricType;
 
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
@@ -50,11 +50,11 @@ public enum Theme {
     }
 
     public static Theme getCurrentTheme() {
-        String currentThemeName = PrefUtils.getPreference(SettingsConst.THEME_NAME, Theme.class);
+        String currentThemeName = PrefUtils.getPreference(Constants.THEME_NAME, Theme.class);
         Theme currentTheme;
         if (currentThemeName == null) {
             currentTheme = Theme.DEFAULT;
-            PrefUtils.putPreference(SettingsConst.THEME_NAME, currentTheme.themeName(), Theme.class);
+            PrefUtils.putPreference(Constants.THEME_NAME, currentTheme.themeName(), Theme.class);
         } else {
             currentTheme = Theme.getByThemeName(currentThemeName);
         }
@@ -62,7 +62,7 @@ public enum Theme {
     }
 
     public static void setTheme(Theme newTheme) {
-        PrefUtils.putPreference(SettingsConst.THEME_NAME, newTheme.themeName(), Theme.class);
+        PrefUtils.putPreference(Constants.THEME_NAME, newTheme.themeName(), Theme.class);
         UIManager.getLookAndFeelDefaults().put(PANEL_BACKGROUND, new ColorUIResource(newTheme.panelColor()));
         UIManager.getLookAndFeelDefaults().put(LABEL_BACKGROUND, new ColorUIResource(newTheme.panelColor()));
         UIManager.getLookAndFeelDefaults().put(LABEL_FOREGROUND, new ColorUIResource(newTheme.fontColor()));
@@ -96,6 +96,20 @@ public enum Theme {
             if (theme.themeName.equals(themeName)) return theme;
         }
         return Theme.DEFAULT;
+    }
+
+    public static String wrapHtml(String message) {
+        return String.format("<html<body style=\"background-color:%s; color: %s;\">%s</body></html>", getBackgroundColorRGB(), getColorRgb(), message);
+    }
+
+    private static String getBackgroundColorRGB() {
+        Color color = Theme.getCurrentTheme().panelColor();
+        return String.format("rgb(%s, %s, %s)", color.getRed(), color.getGreen(), color.getBlue());
+    }
+
+    private static String getColorRgb() {
+        Color color = Theme.getCurrentTheme().fontColor();
+        return String.format("rgb(%s, %s, %s)", color.getRed(), color.getGreen(), color.getBlue());
     }
 
     public String themeName() {

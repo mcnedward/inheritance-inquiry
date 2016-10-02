@@ -1,7 +1,7 @@
 package com.mcnedward.app.ui.dialog;
 
 import com.mcnedward.app.ui.dialog.results.ExportAllGraphsResults;
-import com.mcnedward.app.utils.SettingsConst;
+import com.mcnedward.app.utils.Constants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,7 +46,7 @@ public class ExportAllGraphsDialog extends IIFileDialog {
 
     @Override
     protected String getPreferenceKey() {
-        return SettingsConst.EXPORT_ALL_GRAPHS_DIALOG_KEY;
+        return Constants.EXPORT_ALL_GRAPHS_DIALOG_KEY;
     }
 
     public ExportAllGraphsResults getResults() {

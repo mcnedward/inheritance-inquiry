@@ -19,7 +19,7 @@
             <constraints border-constraint="North"/>
             <properties/>
             <border type="empty">
-              <size top="10" left="10" bottom="0" right="5"/>
+              <size top="10" left="10" bottom="0" right="10"/>
             </border>
             <children>
               <scrollpane id="68dbc">

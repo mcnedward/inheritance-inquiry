@@ -1,6 +1,7 @@
 package com.mcnedward.app.ui.component;
 
-import com.mcnedward.app.utils.DialogUtils;
+import com.mcnedward.app.utils.Constants;
+import com.mcnedward.app.utils.Theme;
 import com.mcnedward.ii.service.metric.MetricType;
 import com.mcnedward.ii.utils.IILogger;
 
@@ -11,7 +12,7 @@ import java.awt.*;
 /**
  * Created by Edward on 10/2/2016.
  */
-public class InfoTextPane extends JTextPane {
+public class InfoTextPane extends HtmlTextPane {
 
     private MetricType mMetricType;
 
@@ -35,15 +36,26 @@ public class InfoTextPane extends JTextPane {
         });
     }
 
-    public void setText() {
-        if (mMetricType == null) return;
-        setText(DialogUtils.getInfoMessage(mMetricType));
+    @Override
+    protected String getHtml() {
+        return Theme.wrapHtml(getInfoMessage(mMetricType));
     }
 
-    @Override
-    public void updateUI() {
-        super.updateUI();
-        setText();
+    private static String getInfoMessage(MetricType metricType) {
+        String message = "";
+        if (metricType == null) return message;
+        switch (metricType) {
+            case DIT:
+                message = Constants.DIT_MESSAGE;
+                break;
+            case NOC:
+                message = Constants.NOC_MESSAGE;
+                break;
+            case WMC:
+                message = Constants.WMC_MESSAGE;
+                break;
+        }
+        return Theme.wrapHtml(message);
     }
 
 }

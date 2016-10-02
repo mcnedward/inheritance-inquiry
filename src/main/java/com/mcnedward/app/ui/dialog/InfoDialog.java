@@ -22,7 +22,7 @@ public class InfoDialog extends JDialog implements ActionListener {
     public InfoDialog(Frame parent, String name, MetricType metricType) {
         super(parent, name, true);
         mMetricType = metricType;
-        ((InfoTextPane) mEdtMessage).setText();
+        ((InfoTextPane) mEdtMessage).updateText();
         setDialogSize(WIDTH, HEIGHT);
         setContentPane(mRoot);
         pack();
@@ -34,7 +34,11 @@ public class InfoDialog extends JDialog implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        setVisible(false);
+        dispose();
+    }
+
+    public void open() {
+        setVisible(true);
     }
 
     private void setDialogSize(Integer width, Integer height) {

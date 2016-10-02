@@ -1,7 +1,7 @@
 package com.mcnedward.app.ui.dialog;
 
 import com.mcnedward.app.ui.dialog.results.ExportMetricFileResults;
-import com.mcnedward.app.utils.SettingsConst;
+import com.mcnedward.app.utils.Constants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,7 +46,7 @@ public class ExportMetricFileDialog extends IIFileDialog {
 
     @Override
     protected String getPreferenceKey() {
-        return SettingsConst.EXPORT_METRIC_FILE_DIALOG_KEY;
+        return Constants.EXPORT_METRIC_FILE_DIALOG_KEY;
     }
 
     public ExportMetricFileResults getResults() {

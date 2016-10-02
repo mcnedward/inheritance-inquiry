@@ -6,9 +6,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -43,6 +42,31 @@ public class IIAppUtils {
         } catch (Exception e) {
             IILogger.error(e);
         }
+    }
+
+
+    public static ImageIcon getScaledIcon() {
+        ImageIcon icon = null;
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        try {
+            InputStream stream = classloader.getResourceAsStream("IILogo.png");
+            BufferedImage logo = ImageIO.read(stream);
+            icon = new ImageIcon(logo.getScaledInstance(64, 64, Image.SCALE_SMOOTH));
+        } catch (Exception e) {
+            IILogger.error(e);
+        }
+        return icon;
+    }
+
+    public static URL getIconPath() {
+        URL path = null;
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        try {
+            path = classloader.getResource("IILogo.png");
+        } catch (Exception e) {
+            IILogger.error(e);
+        }
+        return path;
     }
 
     public static void fixupIcons() {
