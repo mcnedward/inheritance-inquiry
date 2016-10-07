@@ -47,7 +47,7 @@ public class GitDialog extends JDialog implements ActionListener {
     private boolean mIsToken;
 
     public GitDialog(JFrame parent, GitDownloadListener listener) {
-        super(parent, "Git Project Load");
+        super(parent, "GitHub Project Load");
         mListener = listener;
         setContentPane(mRoot);
         setDialogSize(WIDTH, HEIGHT);
@@ -77,7 +77,7 @@ public class GitDialog extends JDialog implements ActionListener {
                 return;
             }
             if (token == null || token.length == 0) {
-                DialogUtils.openMessageDialog("You need to enter your password.", "Git Download");
+                DialogUtils.openMessageDialog("You need to enter your token.", "Git Download");
                 return;
             }
             updatePreferences(remoteUrl);

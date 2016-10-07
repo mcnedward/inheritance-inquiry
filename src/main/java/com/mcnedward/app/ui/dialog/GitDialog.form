@@ -15,15 +15,19 @@
         </border>
         <children>
           <grid id="402b4" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
-            <constraints border-constraint="South"/>
+            <constraints border-constraint="East"/>
             <properties/>
             <border type="none"/>
             <children>
-              <component id="252b" class="javax.swing.JButton" binding="mBtnCancel" custom-create="true">
+              <component id="2f051" class="javax.swing.JButton" binding="mBtnDownload" custom-create="true">
                 <constraints/>
                 <properties>
-                  <text value="Cancel"/>
+                  <text value="Download"/>
                 </properties>
+              </component>
+              <component id="ccbc3" class="javax.swing.JComboBox" binding="mCmbType" custom-create="true">
+                <constraints/>
+                <properties/>
               </component>
               <component id="2e24a" class="javax.swing.JButton" binding="mBtnHelp" custom-create="true">
                 <constraints/>
@@ -31,14 +35,10 @@
                   <text value="?"/>
                 </properties>
               </component>
-              <component id="ccbc3" class="javax.swing.JComboBox" binding="mCmbType" custom-create="true">
-                <constraints/>
-                <properties/>
-              </component>
-              <component id="2f051" class="javax.swing.JButton" binding="mBtnDownload" custom-create="true">
+              <component id="252b" class="javax.swing.JButton" binding="mBtnCancel" custom-create="true">
                 <constraints/>
                 <properties>
-                  <text value="Download"/>
+                  <text value="Cancel"/>
                 </properties>
               </component>
             </children>

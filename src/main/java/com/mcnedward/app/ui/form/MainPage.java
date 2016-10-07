@@ -31,18 +31,19 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.ResourceBundle;
 
 /**
  * Created by Edward on 9/25/2016.
  */
 public class MainPage {
 
+    private static ResourceBundle RESOURCES = ResourceBundle.getBundle("MainPage");
     private static final String HELP_CARD = "HelpCard";
-
     private static final String PROGRESS_CARD = "ProgressCard";
     private static final String SOLUTION_CARD = "SolutionCard";
-    private JPanel mRoot;
 
+    private JPanel mRoot;
     private JPanel mCards;
     private ProgressCard mMainProgressCard;
     private JButton mBtnFile;
@@ -75,19 +76,19 @@ public class MainPage {
         JMenu menuFile = new JMenu("File");
         menuBar.add(menuFile);
 
-        JMenuItem mntmFromFile = new JMenuItem("Analyze From File");
+        JMenuItem mntmFromFile = new JMenuItem(RESOURCES.getString("analyze_local_file"));
         mntmFromFile.addActionListener(e -> openFileDialog());
         menuFile.add(mntmFromFile);
-        JMenuItem mntmFromGit = new JMenuItem("Analyze From Git");
+        JMenuItem mntmFromGit = new JMenuItem(RESOURCES.getString("analyze_from_github"));
         menuFile.add(mntmFromGit);
         mntmFromGit.addActionListener(e -> openGitDialog());
         menuFile.addSeparator();
 
-        mGraphSettings = new JMenuItem("Export Metric Graphs");
+        mGraphSettings = new JMenuItem(RESOURCES.getString("export_metric_graphs"));
         mGraphSettings.addActionListener(e -> openExportGraphDialog());
         mGraphSettings.setEnabled(false);
         menuFile.add(mGraphSettings);
-        mSheetSettings = new JMenuItem("Export Metric Sheets");
+        mSheetSettings = new JMenuItem(RESOURCES.getString("export_metric_sheets"));
         mSheetSettings.addActionListener(e -> openExportMetricFileDialog());
         mSheetSettings.setEnabled(false);
         menuFile.add(mSheetSettings);
@@ -96,19 +97,19 @@ public class MainPage {
         addRecentItems(menuFile, Constants.LOCAL_ANALYZED_FILES);
         addRecentItems(menuFile, Constants.GIT_ANALYZED_FILES);
 
-        JMenuItem exitItem = new JMenuItem("Exit");
+        JMenuItem exitItem = new JMenuItem(RESOURCES.getString("exit"));
         exitItem.addActionListener(e -> System.exit(0));
         menuFile.add(exitItem);
 
-        JMenu settingMenu = new JMenu("Settings");
+        JMenu settingMenu = new JMenu(RESOURCES.getString("settings"));
         menuBar.add(settingMenu);
-        JMenuItem preferenceItem = new JMenuItem("Preferences");
+        JMenuItem preferenceItem = new JMenuItem(RESOURCES.getString("preferences"));
         preferenceItem.addActionListener(e -> DialogUtils.openPreferencesDialog());
         settingMenu.add(preferenceItem);
-        JMenuItem gitHelpItem = new JMenuItem("Git Help");
+        JMenuItem gitHelpItem = new JMenuItem(RESOURCES.getString("git_help"));
         gitHelpItem.addActionListener(e -> DialogUtils.openGitHelpDialog());
         settingMenu.add(gitHelpItem);
-        JMenuItem aboutItem = new JMenuItem("About");
+        JMenuItem aboutItem = new JMenuItem(RESOURCES.getString("about"));
         aboutItem.addActionListener(e -> DialogUtils.openAboutDialog());
         settingMenu.add(aboutItem);
     }

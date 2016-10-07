@@ -35,6 +35,7 @@ public class AboutDialog extends JDialog implements ActionListener {
 
     private void createUIComponents() {
         mLblAppIcon = new JLabel();
+        mLblAppIcon.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
         mLblAppIcon.setIcon(IIAppUtils.getScaledIcon());
 
         mLblWebsite = new StandardHtmlTextPane(String.format("<a href=\"%s\">%s</a>", RESOURCES.getString("website"), RESOURCES.getString("website_name")));

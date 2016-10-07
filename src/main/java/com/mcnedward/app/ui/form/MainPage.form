@@ -26,7 +26,7 @@
                 </constraints>
                 <properties>
                   <font size="18"/>
-                  <text value="Use the Analyze option or the buttons below to select a local file or remote git repository"/>
+                  <text resource-bundle="MainPage" key="hello_message"/>
                 </properties>
               </component>
               <grid id="2d515" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
@@ -42,14 +42,14 @@
                     <constraints/>
                     <properties>
                       <font size="18"/>
-                      <text value="From File"/>
+                      <text resource-bundle="MainPage" key="local_file"/>
                     </properties>
                   </component>
                   <component id="f6233" class="javax.swing.JButton" binding="mBtnGit" custom-create="true">
                     <constraints/>
                     <properties>
                       <font size="18"/>
-                      <text value="From Git"/>
+                      <text resource-bundle="MainPage" key="from_github"/>
                     </properties>
                   </component>
                 </children>

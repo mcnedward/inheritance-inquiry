@@ -9,16 +9,6 @@ public class Constants {
 
     private static ResourceBundle RESOURCES = ResourceBundle.getBundle("Resources");
 
-    // App Details
-    public static final String APP_TITLE = "Inheritance Inquiry";
-    private static final String DESCRIPTION = "An application for analyzing Java projects using software code metrics.";
-    private static final String WEBSITE = "http://www.edwardmcnealy.com";
-    private static final String ECLIPSE_JDT = "Eclipse JDT";
-    private static final String ECLIPSE_JDT_WEBSITE = "http://www.eclipse.org/jdt";
-    private static final String JUNG = "Jung";
-    private static final String JUNG_WEBSITE = "http://jung.sourceforge.net";
-    private static final String COPYRIGHT_INFO = "\u00a9 Edward McNealy 2016";
-
     // Info Dialog
     public static final String DIT_TITLE = "Depth of Inheritance Tree";
     public static final String DIT_MESSAGE = "The <b>Depth of Inheritance Tree</b> (DIT) is the amount of elements that a single element is inheriting from, all the way to the root of the inheritance hierarchy tree.</p><p>In Java, all classes inherit from java.lang.Object, so the depth of Object would be 0. So if a class <i>A</i> does not explicitly inherit from any other class (does not use the <b>extends</b> keyword), then <i>A</i> will have a DIT of 1. If a class <i>B</i> <b>extends</b> <i>A</i>, the <i>B</i> would have a DIT of 2.</p><p>There isn't really a set standard for how deep a hierarchy tree should go, but a few suggestions say that an ideal level is around 5*. As the DIT increases, the complexity of a class also increase, as there are more methods and variables that can possibly be available to a subclass.</p><p>*See: <a href=\"http://www.javaspecialists.eu/archive/Issue121.html\">How Deep is Your Hierarchy</a> and <a href=\"http://www.devx.com/architect/Article/45611\">Improve the Quality of Java-Based Projects Using Metrics</a></p>";
