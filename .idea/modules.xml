@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/InterfaceInquiry.iml" filepath="$PROJECT_DIR$/InterfaceInquiry.iml" />
+      <module fileurl="file://$PROJECT_DIR$/InheritanceInquiry.iml" filepath="$PROJECT_DIR$/InheritanceInquiry.iml" />
       <module fileurl="file://$PROJECT_DIR$/../InheritanceInquiryLib/inheritance-inquiry.iml" filepath="$PROJECT_DIR$/../InheritanceInquiryLib/inheritance-inquiry.iml" />
     </modules>
   </component>

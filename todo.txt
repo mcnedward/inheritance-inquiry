@@ -1,4 +1,3 @@
 Update list:
-	* Don't allow export if none selected
 	* Password hashing and salting for git
 	* https for website constant
