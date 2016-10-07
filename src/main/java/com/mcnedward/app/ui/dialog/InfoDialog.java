@@ -1,6 +1,7 @@
 package com.mcnedward.app.ui.dialog;
 
 import com.mcnedward.app.ui.component.InfoTextPane;
+import com.mcnedward.app.utils.IIAppUtils;
 import com.mcnedward.ii.service.metric.MetricType;
 
 import javax.swing.*;
@@ -17,6 +18,7 @@ public class InfoDialog extends JDialog implements ActionListener {
     private JPanel mRoot;
     private JButton mBtnOk;
     private JTextPane mEdtMessage;
+    private JLabel mLblAppIcon;
     private String mMessage;
 
     public InfoDialog(Frame parent, String name, String message) {
@@ -51,6 +53,9 @@ public class InfoDialog extends JDialog implements ActionListener {
     }
 
     private void createUIComponents() {
+        mLblAppIcon = new JLabel();
+        mLblAppIcon.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+        mLblAppIcon.setIcon(IIAppUtils.getScaledIcon());
         mEdtMessage = new InfoTextPane(mMessage);
     }
 

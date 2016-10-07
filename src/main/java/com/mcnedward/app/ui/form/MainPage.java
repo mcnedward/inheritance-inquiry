@@ -76,12 +76,12 @@ public class MainPage {
         JMenu menuFile = new JMenu("File");
         menuBar.add(menuFile);
 
-        JMenuItem mntmFromFile = new JMenuItem(RESOURCES.getString("analyze_local_file"));
-        mntmFromFile.addActionListener(e -> openFileDialog());
-        menuFile.add(mntmFromFile);
-        JMenuItem mntmFromGit = new JMenuItem(RESOURCES.getString("analyze_from_github"));
-        menuFile.add(mntmFromGit);
-        mntmFromGit.addActionListener(e -> openGitDialog());
+        JMenuItem fromFileItem = new JMenuItem(RESOURCES.getString("analyze_local_file"));
+        fromFileItem.addActionListener(e -> openFileDialog());
+        menuFile.add(fromFileItem);
+        JMenuItem fromGitItem = new JMenuItem(RESOURCES.getString("analyze_from_github"));
+        menuFile.add(fromGitItem);
+        fromGitItem.addActionListener(e -> openGitDialog());
         menuFile.addSeparator();
 
         mGraphSettings = new JMenuItem(RESOURCES.getString("export_metric_graphs"));

@@ -19,11 +19,13 @@ public class AboutDialog extends JDialog implements ActionListener {
     private JTextPane mLblWebsite;
     private JTextPane mLblEclipse;
     private JTextPane mLblJung;
+    private JTextPane mLblEmail;
 
     public AboutDialog(JFrame parent) {
         setTitle(RESOURCES.getString("about_dialog_title"));
         setContentPane(mRoot);
         ((HtmlTextPane) mLblWebsite).updateText();
+        ((HtmlTextPane) mLblEmail).updateText();
         ((HtmlTextPane) mLblEclipse).updateText();
         ((HtmlTextPane) mLblJung).updateText();
         pack();
@@ -39,6 +41,7 @@ public class AboutDialog extends JDialog implements ActionListener {
         mLblAppIcon.setIcon(IIAppUtils.getScaledIcon());
 
         mLblWebsite = new StandardHtmlTextPane(String.format("<a href=\"%s\">%s</a>", RESOURCES.getString("website"), RESOURCES.getString("website_name")));
+        mLblEmail = new StandardHtmlTextPane(String.format("<a href=\"mailto:%s?Subject=%s\">%s</a>", RESOURCES.getString("email"), RESOURCES.getString("email_subject"), RESOURCES.getString("email")));
         mLblEclipse = new StandardHtmlTextPane(String.format("<a href=\"%s\">%s</a>", RESOURCES.getString("eclipse_jdt_website"), RESOURCES.getString("eclipse_jdt")));
         mLblJung = new StandardHtmlTextPane(String.format("<a href=\"%s\">%s</a>", RESOURCES.getString("jung_website"), RESOURCES.getString("jung")));
     }

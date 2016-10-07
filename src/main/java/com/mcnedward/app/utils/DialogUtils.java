@@ -59,7 +59,8 @@ public class DialogUtils {
     static Component[] getAppDialogs() {
         return new Component[] {
                 mFileDialog, mGitDialog, mExportMetricFileDialog, mExportGraphMetricDialog, mExportGraphDialog,
-                mPreferencesDialog, mDitInfoDialog, mNocInfoDialog, mWmcInfoDialog, mGitHelpDialog, mAboutDialog, mMessageDialog
+                mPreferencesDialog, mDitInfoDialog, mNocInfoDialog, mWmcInfoDialog, mGitHelpDialog,
+                mAboutDialog, mMessageDialog
         };
     }
 

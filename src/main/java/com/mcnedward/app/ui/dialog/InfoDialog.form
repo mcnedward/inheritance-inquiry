@@ -23,8 +23,7 @@
           </component>
         </children>
       </grid>
-      <grid id="e3588" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-        <margin top="0" left="0" bottom="0" right="0"/>
+      <grid id="e3588" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -32,9 +31,7 @@
         <border type="none"/>
         <children>
           <scrollpane id="ea851">
-            <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="1" use-parent-layout="false"/>
-            </constraints>
+            <constraints border-constraint="Center"/>
             <properties/>
             <border type="none">
               <size top="2" left="2" bottom="2" right="2"/>
@@ -52,6 +49,13 @@
               </component>
             </children>
           </scrollpane>
+          <component id="fc3f0" class="javax.swing.JLabel" binding="mLblAppIcon" custom-create="true">
+            <constraints border-constraint="West"/>
+            <properties>
+              <font size="18"/>
+              <verifyInputWhenFocusTarget value="false"/>
+            </properties>
+          </component>
         </children>
       </grid>
     </children>
