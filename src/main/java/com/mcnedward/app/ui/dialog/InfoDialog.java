@@ -30,6 +30,7 @@ public class InfoDialog extends JDialog implements ActionListener {
         setLocationRelativeTo(parent);
         getRootPane().registerKeyboardAction(this, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
         mBtnOk.addActionListener(e -> setVisible(false));
+        mEdtMessage.setCaretPosition(0);
     }
 
     @Override

@@ -24,16 +24,27 @@ public class GitDialog extends JDialog implements ActionListener {
     private static final int WIDTH = 650;
     private static final int HEIGHT = 250;
 
+    private static final String[] TYPES = new String[] {"Basic Auth", "Token"};
+    private static final String BASIC_AUTH_LABEL_CARD = "BasicAuthLabelCard";
+    private static final String BASIC_AUTH_TEXT_CARD = "BasicAuthTextCard";
+    private static final String TOKEN_LABEL_CARD = "TokenLabelCard";
+    private static final String TOKEN_TEXT_CARD = "TokenTextCard";
+
     private JPanel mRoot;
     private JButton mBtnDownload;
     private JButton mBtnCancel;
     private JTextField mTxtUsername;
-    private JTextField mTxtPassword;
-    private JLabel mLblUsername;
-    private JLabel mLblPassword;
+    private JPasswordField mTxtPassword;
     private JComboBox<String> mCmbRemoteUrl;
+    private JButton mBtnHelp;
+    private JPasswordField mPswToken;
+    private JComboBox<String> mCmbRemoteUrlToken;
+    private JComboBox<String> mCmbType;
+    private JPanel mCardsLabels;
+    private JPanel mCardsText;
 
     private GitDownloadListener mListener;
+    private boolean mIsToken;
 
     public GitDialog(JFrame parent, GitDownloadListener listener) {
         super(parent, "Git Project Load");
@@ -47,17 +58,42 @@ public class GitDialog extends JDialog implements ActionListener {
     }
 
     private void doDownloadAction() {
-        String username = mTxtUsername.getText();
-        String password = mTxtPassword.getText();
-        Object item = mCmbRemoteUrl.getSelectedItem();
-        if (item == null) {
+        if (mIsToken) {
+            downloadForToken();
+        } else {
+            downloadForBasicAuth();
+        }
+    }
+
+    private void downloadForToken() {
+        char[] token = mPswToken.getPassword();
+        Object remote = mCmbRemoteUrl.getSelectedItem();
+        if (remote == null || remote.toString().equals("")) {
             DialogUtils.openMessageDialog("You need to enter the URL to a git remote repository.", "Git Download");
         } else {
-            String remoteUrl = item.toString();
-            if (remoteUrl == null || remoteUrl.equals("")) {
-                DialogUtils.openMessageDialog("You need to enter the URL to a git remote repository.", "Git Download");
+            String remoteUrl = remote.toString();
+            if (!remoteUrl.endsWith(".git")) {
+                DialogUtils.openMessageDialog("You need to enter a git remote repository. This should end with \".git\".", "Git Download");
                 return;
             }
+            if (token == null || token.length == 0) {
+                DialogUtils.openMessageDialog("You need to enter your password.", "Git Download");
+                return;
+            }
+            updatePreferences(remoteUrl);
+            new GitBuilder(mListener).setup(ServiceFactory.gitService(), remoteUrl, token).build();
+            close();
+        }
+    }
+
+    private void downloadForBasicAuth() {
+        String username = mTxtUsername.getText();
+        char[] password = mTxtPassword.getPassword();
+        Object remote = mCmbRemoteUrl.getSelectedItem();
+        if (remote == null || remote.toString().equals("")) {
+            DialogUtils.openMessageDialog("You need to enter the URL to a git remote repository.", "Git Download");
+        } else {
+            String remoteUrl = remote.toString();
             if (!remoteUrl.endsWith(".git")) {
                 DialogUtils.openMessageDialog("You need to enter a git remote repository. This should end with \".git\".", "Git Download");
                 return;
@@ -66,24 +102,47 @@ public class GitDialog extends JDialog implements ActionListener {
                 DialogUtils.openMessageDialog("You need to enter your username.", "Git Download");
                 return;
             }
-            if (password == null || password.equals("")) {
+            if (password == null || password.length == 0) {
                 DialogUtils.openMessageDialog("You need to enter your password.", "Git Download");
                 return;
             }
-
             updatePreferences(remoteUrl);
             new GitBuilder(mListener).setup(ServiceFactory.gitService(), remoteUrl, username, password).build();
             close();
         }
     }
 
+    private boolean validate(Object remote, char[] password) {
+        if (remote == null || remote.toString().equals("")) {
+            DialogUtils.openMessageDialog("You need to enter the URL to a git remote repository.", "Git Download");
+            return false;
+        } else {
+            String remoteUrl = remote.toString();
+            if (remoteUrl == null || remoteUrl.equals("")) {
+                DialogUtils.openMessageDialog("You need to enter the URL to a git remote repository.", "Git Download");
+                return false;
+            }
+            if (!remoteUrl.endsWith(".git")) {
+                DialogUtils.openMessageDialog("You need to enter a git remote repository. This should end with \".git\".", "Git Download");
+                return false;
+            }
+            if (password == null || password.length == 0) {
+                DialogUtils.openMessageDialog("You need to enter your password.", "Git Download");
+                return false;
+            }
+            return true;
+        }
+    }
+
     private void checkPreferences() {
         java.util.List<String> searchedRemotes = PrefUtils.getPreferenceList(Constants.GIT_SEARCHED_REMOTES, GitDialog.class);
         mCmbRemoteUrl.removeAllItems();
-        for (String remote : searchedRemotes)
+        mCmbRemoteUrlToken.removeAllItems();
+        for (String remote : searchedRemotes) {
             mCmbRemoteUrl.addItem(remote);
+            mCmbRemoteUrlToken.addItem(remote);
+        }
         mTxtUsername.setText(PrefUtils.getPreference(Constants.GIT_USERNAME, GitDialog.class));
-        mTxtPassword.setText(PrefUtils.getPreference(Constants.GIT_PASSWORD, GitDialog.class));
     }
 
     private void updatePreferences(String remoteUrl) {
@@ -93,7 +152,6 @@ public class GitDialog extends JDialog implements ActionListener {
             mCmbRemoteUrl.addItem(remoteUrl);
         }
         PrefUtils.putPreference(Constants.GIT_USERNAME, mTxtUsername.getText(), GitDialog.class);
-        PrefUtils.putPreference(Constants.GIT_PASSWORD, mTxtPassword.getText(), GitDialog.class);
     }
 
     private void setDialogSize(int width, int height) {
@@ -112,6 +170,16 @@ public class GitDialog extends JDialog implements ActionListener {
         dispose();
     }
 
+    private void showCard() {
+        if (mIsToken) {
+            ((CardLayout) mCardsLabels.getLayout()).show(mCardsLabels, TOKEN_LABEL_CARD);
+            ((CardLayout) mCardsText.getLayout()).show(mCardsText, TOKEN_TEXT_CARD);
+        } else {
+            ((CardLayout) mCardsLabels.getLayout()).show(mCardsLabels, BASIC_AUTH_LABEL_CARD);
+            ((CardLayout) mCardsText.getLayout()).show(mCardsText, BASIC_AUTH_TEXT_CARD);
+        }
+    }
+
     private void createUIComponents() {
         Font font = new Font("Segoe UI", Font.PLAIN, 18);
         mBtnCancel = new JButton();
@@ -122,6 +190,32 @@ public class GitDialog extends JDialog implements ActionListener {
         mBtnDownload.setFont(font);
         mBtnDownload.addActionListener(e -> doDownloadAction());
 
+        mBtnHelp  = new JButton();
+        mBtnHelp.setFont(font);
+        mBtnHelp.addActionListener(e -> DialogUtils.openGitHelpDialog());
+
+        mCmbType = new JComboBox<>(TYPES);
+        mCmbType.setFont(font);
+        mCmbType.addActionListener(e -> {
+            // Switch the card, and set the text of the combo boxes to match.
+            // TODO Probably a much better way to do this, but this will work for now
+            if (mCmbType.getSelectedItem() == TYPES[0]) {
+                mIsToken = false;
+                showCard();
+            }
+            else {
+                mIsToken = true;
+                showCard();
+            }
+        });
+
+        setupBasicAuthCard(font);
+        setupTokenCard(font);
+
+        checkPreferences();
+    }
+
+    private void setupBasicAuthCard(Font font) {
         mCmbRemoteUrl = new JComboBox<>();
         mCmbRemoteUrl.setFont(font);
         mCmbRemoteUrl.setEditable(true);
@@ -152,7 +246,7 @@ public class GitDialog extends JDialog implements ActionListener {
 
         mTxtPassword = new JPasswordField();
         mTxtPassword.setFont(font);
-        mTxtUsername.addKeyListener(new KeyAdapter() {
+        mTxtPassword.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent evt) {
                 if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
                     doDownloadAction();
@@ -162,8 +256,36 @@ public class GitDialog extends JDialog implements ActionListener {
         mTxtPassword.setBorder(BorderFactory.createCompoundBorder(
                 mTxtPassword.getBorder(),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+    }
 
-        checkPreferences();
+    private void setupTokenCard(Font font) {
+        mCmbRemoteUrlToken = new JComboBox<>();
+        mCmbRemoteUrlToken.setFont(font);
+        mCmbRemoteUrlToken.setEditable(true);
+        setupComboSize();
+        mCmbRemoteUrlToken.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent evt) {
+                if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                    doDownloadAction();
+                }
+            }
+        });
+        mCmbRemoteUrlToken.setBorder(BorderFactory.createCompoundBorder(
+                mCmbRemoteUrlToken.getBorder(),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+
+        mPswToken = new JPasswordField();
+        mPswToken.setFont(font);
+        mPswToken.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent evt) {
+                if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                    doDownloadAction();
+                }
+            }
+        });
+        mPswToken.setBorder(BorderFactory.createCompoundBorder(
+                mPswToken.getBorder(),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
     }
 
     private void setupComboSize() {

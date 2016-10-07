@@ -5,8 +5,7 @@ import com.mcnedward.ii.service.graph.element.GraphOptions;
 import com.mcnedward.ii.utils.IILogger;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
@@ -41,6 +40,13 @@ public class PrefUtils {
     public static <T> void putPreference(String key, Color pref, Class<T> clazz) {
         Preferences preferences = Preferences.userNodeForPackage(clazz);
         preferences.putInt(key, pref.getRGB());
+        save(preferences);
+    }
+
+    public static <T> void putPreference(String key, List<String> pref, Class<T> clazz) {
+        Preferences preferences = Preferences.userNodeForPackage(clazz);
+        String value = String.join(PREF_LIST_SEPARATOR, pref);
+        preferences.put(key, value);
         save(preferences);
     }
 
@@ -82,7 +88,7 @@ public class PrefUtils {
 		if (pref == null || pref.equals("")) {
 			return new ArrayList<>();
 		} else {
-			return Arrays.asList(pref.split(PREF_REGEX));
+			return new ArrayList<>(Arrays.asList(pref.split(PREF_REGEX)));
 		}
 	}
 

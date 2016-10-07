@@ -30,7 +30,7 @@ public class Constants {
     // Git Help Dialog
     public static final String GIT_HELP_TITLE = RESOURCES.getString("git_help_title");
     public static String gitHelpMessage() {
-        return String.format("<p>%s</p><ul><li>%s</li><li>%s</li><li>%s</li><li>%s</li><li>%s</li><li>%s</li><li>%s</li></ul>",
+        return String.format("<p>%s</p><ul><li>%s</li><li>%s</li><li>%s</li><li>%s</li><li>%s</li><li>%s</li><li>%s</li><li>%s</li></ul><p>%s</p><p>%s</p>",
                 RESOURCES.getString("git_help_description"),
                 RESOURCES.getString("git_step_1"),
                 RESOURCES.getString("git_step_2"),
@@ -38,7 +38,10 @@ public class Constants {
                 RESOURCES.getString("git_step_4"),
                 RESOURCES.getString("git_step_5"),
                 RESOURCES.getString("git_step_6"),
-                RESOURCES.getString("git_step_7"));
+                RESOURCES.getString("git_step_7"),
+                RESOURCES.getString("git_step_8"),
+                RESOURCES.getString("git_info"),
+                RESOURCES.getString("git_info_delete"));
     }
 
     // Graph Settings
@@ -73,7 +76,10 @@ public class Constants {
     // Git Settings
     public static final String GIT_SEARCHED_REMOTES = "GitSearchedRemotes";
     public static final String GIT_USERNAME = "GitUsername";
-    public static final String GIT_PASSWORD = "GitPassword";
+
+    // Analyzed Files
+    public static final String LOCAL_ANALYZED_FILES = "LocalAnalyzedFiles";
+    public static final String GIT_ANALYZED_FILES = "GitAnalyzedFiles";
 
     // Theme Settings
     public static final String THEME_NAME = "ThemeName";

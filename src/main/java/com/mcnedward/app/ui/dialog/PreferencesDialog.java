@@ -2,14 +2,14 @@ package com.mcnedward.app.ui.dialog;
 
 import com.mcnedward.app.InheritanceInquiry;
 import com.mcnedward.app.ui.form.GraphPanel;
-import com.mcnedward.app.utils.Constants;
-import com.mcnedward.app.utils.PrefUtils;
-import com.mcnedward.app.utils.Theme;
+import com.mcnedward.app.utils.*;
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 public class PreferencesDialog extends JDialog implements ActionListener {
     private JPanel mRoot;
@@ -17,11 +17,9 @@ public class PreferencesDialog extends JDialog implements ActionListener {
     private JButton mBtnClearFile;
     private JButton mBtnClearGit;
     private JButton mBtnClearGraph;
-    private JButton mBtnClearMetricGraph;
-    private JButton mBtnClearMetricSheet;
-    private JButton mBtnClearAll;
     private JPanel mThemesPanel;
     private JCheckBox mChkUseFullScreen;
+    private JButton mBtnDeleteGitProjects;
 
     public PreferencesDialog(JFrame parent) {
         setTitle("Preferences");
@@ -38,28 +36,34 @@ public class PreferencesDialog extends JDialog implements ActionListener {
 
     private void createUIComponents() {
         mBtnClearFile = new JButton();
-        mBtnClearFile.addActionListener(e -> PrefUtils.clearPreferences(ProjectFileDialog.class));
-
-        mBtnClearMetricGraph = new JButton();
-        mBtnClearMetricGraph.addActionListener(e -> {PrefUtils.clearPreferences(ExportGraphDialog.class); PrefUtils.clearPreferences(ExportAllGraphsDialog.class);});
-
-        mBtnClearMetricSheet = new JButton();
-        mBtnClearMetricSheet.addActionListener(e -> PrefUtils.clearPreferences(ExportMetricFileDialog.class));
-
-        mBtnClearGit = new JButton();
-        mBtnClearGit.addActionListener(e -> PrefUtils.clearPreferences(GitDialog.class));
-
-        mBtnClearAll = new JButton();
-        mBtnClearAll.addActionListener(e -> {
+        mBtnClearFile.addActionListener(e -> {
             PrefUtils.clearPreferences(ProjectFileDialog.class);
             PrefUtils.clearPreferences(ExportGraphDialog.class);
             PrefUtils.clearPreferences(ExportAllGraphsDialog.class);
             PrefUtils.clearPreferences(ExportMetricFileDialog.class);
+            DialogUtils.openMessageDialog("Cleared saved file locations.", "Preferences");
+        });
+
+        mBtnClearGit = new JButton();
+        mBtnClearGit.addActionListener(e -> {
             PrefUtils.clearPreferences(GitDialog.class);
+            DialogUtils.openMessageDialog("Cleared saved git remote URLs.", "Preferences");
+        });
+
+        mBtnDeleteGitProjects = new JButton();
+        mBtnDeleteGitProjects.addActionListener(e -> {
+            List<String> gitFileLocations = PrefUtils.getPreferenceList(Constants.GIT_ANALYZED_FILES, InheritanceInquiry.class);
+            for (String fileLocation : gitFileLocations) {
+                IIAppUtils.deleteTempFile(fileLocation);
+            }
+            DialogUtils.openMessageDialog(String.format("Deleted %s downloaded git projects from temporary storage.", gitFileLocations.size()), "Preferences");
         });
 
         mBtnClearGraph = new JButton();
-        mBtnClearGraph.addActionListener(e -> PrefUtils.clearPreferences(GraphPanel.class));
+        mBtnClearGraph.addActionListener(e -> {
+            PrefUtils.clearPreferences(GraphPanel.class);
+            DialogUtils.openMessageDialog("Reset the graph options.", "Preferences");
+        });
 
         mChkUseFullScreen = new JCheckBox();
         mChkUseFullScreen.setSelected(PrefUtils.getPreferenceBool(Constants.FULL_SCREEN, InheritanceInquiry.class));

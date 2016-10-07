@@ -1,12 +1,11 @@
 package com.mcnedward.app.ui.form;
 
 import com.mcnedward.app.InheritanceInquiry;
-import com.mcnedward.app.ui.dialog.IIFileDialog;
-import com.mcnedward.app.ui.dialog.ProjectFileDialog;
 import com.mcnedward.app.ui.dialog.results.ExportAllGraphsResults;
 import com.mcnedward.app.ui.dialog.results.ExportMetricFileResults;
 import com.mcnedward.app.utils.Constants;
 import com.mcnedward.app.utils.DialogUtils;
+import com.mcnedward.app.utils.IIAppUtils;
 import com.mcnedward.app.utils.PrefUtils;
 import com.mcnedward.ii.builder.GraphBuilder;
 import com.mcnedward.ii.builder.MetricBuilder;
@@ -25,11 +24,12 @@ import com.mcnedward.ii.service.metric.element.NocMetric;
 import com.mcnedward.ii.service.metric.element.WmcMetric;
 import com.mcnedward.ii.utils.IILogger;
 import com.mcnedward.ii.utils.ServiceFactory;
-import org.eclipse.jgit.errors.UnsupportedCredentialItem;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -93,18 +93,8 @@ public class MainPage {
         menuFile.add(mSheetSettings);
         menuFile.addSeparator();
 
-        java.util.List<String> recentList = PrefUtils.getPreferenceList(Constants.PROJECT_FILE_DIALOG_KEY, IIFileDialog.class);
-        int max = recentList.size() > 10 ? 10 : recentList.size();
-        for (int i = 0; i < max; i++) {
-            String recentItem = recentList.get(i);
-            File file = new File(recentItem);
-            if (!file.exists()) continue;
-            JMenuItem item = new JMenuItem(String.format("%s: %s", i + 1, recentItem));
-            item.addActionListener(e -> loadFile(file));
-            menuFile.add(item);
-        }
-        if (max > 0)
-            menuFile.addSeparator();
+        addRecentItems(menuFile, Constants.LOCAL_ANALYZED_FILES);
+        addRecentItems(menuFile, Constants.GIT_ANALYZED_FILES);
 
         JMenuItem exitItem = new JMenuItem("Exit");
         exitItem.addActionListener(e -> System.exit(0));
@@ -121,6 +111,32 @@ public class MainPage {
         JMenuItem aboutItem = new JMenuItem("About");
         aboutItem.addActionListener(e -> DialogUtils.openAboutDialog());
         settingMenu.add(aboutItem);
+    }
+
+    private void addRecentItems(JMenu menu, String key) {
+        java.util.List<String> recentList = PrefUtils.getPreferenceList(key, InheritanceInquiry.class);
+        int max = recentList.size() > 5 ? 5 : recentList.size();
+        java.util.List<String> pathsToDelete = new ArrayList<>();
+        for (int i = 0; i < max; i++) {
+            String recentItem = recentList.get(i);
+            File file = new File(recentItem);
+            if (!file.exists()) {
+                pathsToDelete.add(recentItem);
+                continue;
+            }
+            JMenuItem item = new JMenuItem(String.format("%s: %s", i + 1, recentItem));
+            item.addActionListener(e -> loadFile(file));
+            menu.add(item);
+        }
+        if (pathsToDelete.size() > 0) {
+            for (String p : pathsToDelete) {
+                recentList.remove(p);
+                max--;
+            }
+            PrefUtils.putPreference(key, recentList, InheritanceInquiry.class);
+        }
+        if (max > 0)
+            menu.addSeparator();
     }
 
     private void loadSolution(JavaSolution solution) {
@@ -144,6 +160,8 @@ public class MainPage {
     private void loadFile(File file) {
         showCard(PROGRESS_CARD);
         mProjectBuilder.setup(file).build();
+        java.util.List<String> localFiles = PrefUtils.getPreferenceList(Constants.LOCAL_ANALYZED_FILES, InheritanceInquiry.class);
+        updateAnalyzedFilePaths(Constants.LOCAL_ANALYZED_FILES, localFiles, file.getAbsolutePath());
     }
 
     private void openFileDialog() {
@@ -171,6 +189,7 @@ public class MainPage {
     }
 
     private int mGraphExportRequests;
+
     private void openExportGraphDialog() {
         if (DialogUtils.openExportAllGraphsDialog()) {
             ExportAllGraphsResults results = DialogUtils.getExportAllGraphResults();
@@ -218,6 +237,37 @@ public class MainPage {
         mFullHierarchyPanel = new FullHierarchyPanel();
     }
 
+    /**
+     * Updates the Preferences for analyzed project paths and adds the most recent to the Menu. If an old project path
+     * is being replaced (when there are more than 5 paths), this will return the path of the replaced file. This can be
+     * used to determine if the file can be deleted or not, if it was downloaded from GitHub. BE CAREFUL with this, to
+     * make sure not to delete files that are the user's saved local projects.
+     *
+     * @param key         The Preferences key.
+     * @param files       The list of already saved project paths.
+     * @param newFilePath The new file path to save.
+     * @return True if an old project path is being replaced.
+     */
+    private String updateAnalyzedFilePaths(String key, java.util.List<String> files, String newFilePath) {
+        String oldPath = null;
+        if (files.contains(newFilePath)) return null;
+        if (files.size() >= 5) {
+            oldPath = files.get(0);
+            String[] updatedList = new String[5];
+            for (int i = 0; i < 4; i++) {
+                String file = files.get(i + 1);
+                updatedList[i] = file;
+            }
+            updatedList[4] = newFilePath;
+            files = new ArrayList<>(Arrays.asList(updatedList));
+        } else {
+            files.add(newFilePath);
+        }
+        PrefUtils.putPreference(key, files, InheritanceInquiry.class);
+        initMenu(InheritanceInquiry.PARENT_FRAME);
+        return oldPath;
+    }
+
     private SolutionBuildListener solutionBuildListener() {
         return new SolutionBuildListener() {
             public void finished(JavaSolution solution) {
@@ -233,8 +283,8 @@ public class MainPage {
 
             @Override
             public void onBuildError(String message, Exception exception) {
-                DialogUtils.openMessageDialog(message, "Build Error");
                 IILogger.error(exception);
+                DialogUtils.openMessageDialog(message, "Build Error");
                 showCard(HELP_CARD);
             }
         };
@@ -243,6 +293,7 @@ public class MainPage {
     private GraphExportListener graphExportListener() {
         return new GraphExportListener() {
             private int mGraphExportCount;
+
             @Override
             public void onGraphsExport() {
                 mGraphExportCount++;
@@ -287,6 +338,7 @@ public class MainPage {
     private GitDownloadListener gitDownloadListener() {
         return new GitDownloadListener() {
             private boolean mProgressSwitched;
+
             @Override
             public void onProgressChange(String message, int progress) {
                 if (!mProgressSwitched) {
@@ -308,7 +360,11 @@ public class MainPage {
             @Override
             public void finished(File gitFile, String repoName) {
                 mProgressSwitched = false;
-                mProjectBuilder.setup(gitFile).build();
+                mProjectBuilder.setup(gitFile, repoName).build();
+                java.util.List<String> gitDownloads = PrefUtils.getPreferenceList(Constants.GIT_ANALYZED_FILES, InheritanceInquiry.class);
+                String oldProjectPath = updateAnalyzedFilePaths(Constants.GIT_ANALYZED_FILES, gitDownloads, gitFile.getAbsolutePath());
+                // Delete an old project if there are too many
+                IIAppUtils.deleteTempFile(oldProjectPath);
             }
         };
     }

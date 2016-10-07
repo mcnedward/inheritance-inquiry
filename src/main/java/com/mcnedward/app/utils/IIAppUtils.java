@@ -6,7 +6,10 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -14,6 +17,38 @@ import java.util.ArrayList;
  * Created by Edward on 9/28/2016.
  */
 public class IIAppUtils {
+
+    /**
+     * Deletes a file, if it exists, from the temp storage location.
+     * @param fileLocation The path to the file to delete.
+     */
+    public static void deleteTempFile(String fileLocation) {
+        // Delete an old project if there are too many
+        String tempDirectory = System.getProperty("java.io.tmpdir");
+        if (fileLocation != null && fileLocation.startsWith(tempDirectory)) {
+            File oldProject = new File(fileLocation);
+            boolean deleted = deleteDirectoryContents(oldProject);
+            if (!deleted) {
+                IILogger.error("Could not delete the project: %s", fileLocation);
+            }
+        }
+    }
+
+    private static boolean deleteDirectoryContents(File directory) {
+        File[] files = directory.listFiles();
+        if (files == null) return true;
+        for (File file : files) {
+            if (file.isDirectory()) {
+                boolean deleted = deleteDirectoryContents(file);
+                if (!deleted) return false;
+            }
+            else {
+                boolean deleted = file.delete();
+                if (!deleted) return false;
+            }
+        }
+        return directory.delete();
+    }
 
     public static java.util.List<String> getUIManagerKeys() {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
