@@ -19,6 +19,7 @@ public class InheritanceInquiry {
     public static int HEIGHT;
 
     public static void main(String[] args) {
+        IILogger.setLogLevels(false, false, false, true);
         EventQueue.invokeLater(() -> {
             try {
                 JFrame frame = new JFrame("Inheritance Inquiry");
@@ -74,7 +75,7 @@ public class InheritanceInquiry {
 
     private static void loadTheme() {
         Theme currentTheme = Theme.getCurrentTheme();
-        if (currentTheme.equals(Theme.DEFAULT)) return; // Don't load if default
+        if (currentTheme.equals(Theme.STANDARD)) return; // Don't load if default
         Theme.setTheme(currentTheme);
     }
 }

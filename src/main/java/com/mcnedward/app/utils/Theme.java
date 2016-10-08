@@ -1,7 +1,6 @@
 package com.mcnedward.app.utils;
 
 import com.mcnedward.app.InheritanceInquiry;
-import com.mcnedward.ii.service.metric.MetricType;
 
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
@@ -12,7 +11,7 @@ import java.awt.*;
  */
 public enum Theme {
 
-    DEFAULT("Default", defaultPanelColor(), defaultLabelColor()),
+    STANDARD("Standard", defaultPanelColor(), defaultLabelColor()),
     RED("Red", new Color(64, 24, 34), new Color(205, 180, 180)),
     BLUE("Blue", new Color(35, 45, 80), new Color(205, 205, 220)),
     GREEN("Green", new Color(15, 100, 15), new Color(175, 195, 175)),
@@ -53,7 +52,7 @@ public enum Theme {
         String currentThemeName = PrefUtils.getPreference(Constants.THEME_NAME, Theme.class);
         Theme currentTheme;
         if (currentThemeName == null) {
-            currentTheme = Theme.DEFAULT;
+            currentTheme = Theme.STANDARD;
             PrefUtils.putPreference(Constants.THEME_NAME, currentTheme.themeName(), Theme.class);
         } else {
             currentTheme = Theme.getByThemeName(currentThemeName);
@@ -88,7 +87,7 @@ public enum Theme {
         for (Theme theme : values()) {
             if (theme.themeName.equals(themeName)) return theme;
         }
-        return Theme.DEFAULT;
+        return Theme.STANDARD;
     }
 
     public static String wrapHtml(String message) {

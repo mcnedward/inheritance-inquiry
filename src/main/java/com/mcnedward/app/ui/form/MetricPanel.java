@@ -119,7 +119,7 @@ public class MetricPanel<T extends Metric> implements GraphPanelListener, GraphR
     private void moveToSelected() {
         int index = mMetricList.getSelectedIndex();
         // Don't update here if the Filter text field is focused
-        if (mFilterFocused || index == -1) return;
+        if (mFilterFocused || index == -1 || mMetricList.getModel().getSize() < index) return;
         T metric = mMetricList.getModel().getElementAt(index);
         mGraphPanel.updateGraph(metric.getFullyQualifiedName());
     }
