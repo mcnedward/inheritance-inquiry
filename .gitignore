@@ -1,5 +1,6 @@
 /build/
 /target/
+/out/
 .metadata
 bin/
 tmp/

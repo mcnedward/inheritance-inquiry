@@ -24,11 +24,13 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="inheritance-inquiry" />
+        <module name="InheritanceInquiry" />
         <module name="InterfaceInquiry" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
       <module name="inheritance-inquiry" target="1.8" />
+      <module name="InheritanceInquiry" target="1.8" />
       <module name="InterfaceInquiry" target="1.8" />
     </bytecodeTargetLevel>
   </component>
